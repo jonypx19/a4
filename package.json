@@ -1,0 +1,26 @@
+{
+  "name": "a4",
+  "version": "1.0.0",
+  "description": "CSC 309 Assignment 4",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonypx19/a4.git"
+  },
+  "keywords": [
+    "a4",
+    "csc309",
+    "express"
+  ],
+  "contributors": ["Ross Bevacqua", "Jonathan Pelastine", "George Wu", "Fullchee Zhang"],
+  "license": "none",
+  "bugs": {
+    "url": "https://github.com/jonypx19/a4/issues"
+  },
+  "homepage": "https://github.com/jonypx19/a4#readme",
+  "dependencies": {
+     "express": "4.x.x",
+     "express-validator": "2.20.x",
+     "body-parser": "1.15.x"
+   }
+}
