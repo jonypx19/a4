@@ -85,8 +85,8 @@ Assignment 4 Repository
 
 ##Contributors
 Name: Ross Bevacqua
-CDF: 
-Email:
+CDF: g3bevacq
+Email: ross.bevacqua@gmail.com
 
 Name: Jonathan Pelastine
 CDF: 
