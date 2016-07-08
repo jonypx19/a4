@@ -1,0 +1,73 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="User's Vehicles">
+		<meta name="author" content="Ross Bevacqua, George Wu">
+		<link href="css/style.css" type="text/css" rel="stylesheet">
+		<script src="scripts/jquery-3.0.0.min.js" defer></script>
+		<script src="scripts/vehicles.js" defer></script>
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a>Home</a></li>
+				<li><a>Profile</a></li>
+				<li><a>Your Vehicles</a></li>
+				<li><a>Contracts</a></li>
+				<li><a>Community</a></li>
+
+			</ul>
+		</nav>
+		<main>
+			<header>
+				<h1>Your Vehicles</h1>
+			</header>
+			<section id="list_vehicles"></section>
+			<section id="register_vehicles">
+
+				<button id="register_vehicle">Register A Vehicle</button>
+				<article class="hidden">
+					<h1>Register Your Vehicle</h1>
+					<form action="/register_vehicle">
+						<div class="form_element">
+							<label id="manufacturer">
+								<span class="label">Manufacturer:</span>
+								<input name="manu" placeholder="Nissan" required>
+							</label>
+						</div>
+						<div class="form_element">
+							<label id="model">
+								<span class="label">Model:</span>
+								<input name="model" placeholder="GT-R" required>
+							</label>
+						</div>
+						<div class="form_element">
+							<label id="year">
+								<span class="label">Year:</span>
+								<input name="year" placeholder="2014" required>
+							</label>
+						</div>
+						<div class="form_element">
+							<label id="plate">
+								<span class="label">License Plate:</span>
+								<input name="plate" placeholder="ABCD555" required>
+							</label>
+						</div>
+						<div class="form_element">
+							<label id="image">
+								<span class="label">Picture of the Vehicle</span>
+								<input name="image" type="file" accept=" .jpg/ .png" required>
+							</label>
+						</div>
+
+
+						<div class="form_element">
+                			<input id="SubmitButton" type="submit" value="Submit">
+            			</div>
+					</form>
+				</article>
+			</section>
+		</main>
+	</body>
+
+</html>
