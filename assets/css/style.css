@@ -1,0 +1,43 @@
+
+form {
+    border: 1px solid #ccc;
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 66%;
+}
+
+label, input, textarea, select, option {
+    font: 400 18pt/24pt "Helvetica", sans-serif;
+}
+
+label {
+	display: block;
+    margin: 2rem 0;
+    width: 20rem;
+}
+
+label:first-child {
+    margin-top: 0;
+}
+
+input {
+	border-radius: 5px;
+}
+
+input[type="text"]:hover {
+	/*box-shadow: 0 0 20px rgba(127, 127, 127, 0.1) inset;*/
+}
+
+input[type="submit"]:hover {
+    background-color: #fdfdfd;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    margin: 20 0 0 0;
+}
+
+input:invalid {
+  box-shadow: 0 0 3pt 2pt red;
+}
