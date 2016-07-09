@@ -41,10 +41,10 @@ app.get('/userlogin', function(req, res) {
 });
 
 app.get('/adminlogin', function(req, res){
-    res.send("Hi, you're an admin.")
-    // res.render('adminlogin',{
-    //     errors:''
-    // });
+    // res.send("Hi, you're an admin.")
+    res.render('adminlogin',{
+        errors:''
+    });
 });
 
 app.post('/login',function(req,res){

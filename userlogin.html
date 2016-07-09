@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Login</title>
+    <link rel="stylesheet" href="assets/css/login.css" type="text/css"/>
 </head>
 <body>
     <article>
@@ -10,8 +11,16 @@
             Welcome to Rent-A-Car! Please login here.
         </p>
         <form action="/login" method="post">
-            <div>
+            <div class="fields">
+                <span>
+                    Username:
+                </span>
                 <input name="user" type="text" required/>
+            </div>
+            <div class="fields">
+                <span>
+                    Password:
+                </span>
                 <input name="password" type="text" required/>
             </div>
         </form>
