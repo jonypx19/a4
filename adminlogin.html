@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AdminLogin</title>
+    <link rel="stylesheet" href="assets/css/login.css" type="text/css"/>
+</head>
+<body>
+    <article>
+        <p>
+            Hello there. I see you're an admin. You can log in here.
+        </p>
+        <form action="/login" method="post">
+            <div class="fields">
+                <span>
+                    Username:
+                </span>
+                <input name="user" type="text" required/>
+            </div>
+            <div class="fields">
+                <span>
+                    Password:
+                </span>
+                <input name="password" type="text" required/>
+            </div>
+        </form>
+    </article>
+</body>
+</html>
