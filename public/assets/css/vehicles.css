@@ -1,0 +1,122 @@
+/*General Styles*/
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 80%;
+	margin-left: 20%;
+}
+
+section {
+	border-top: 4px solid #ffaa00;
+}
+
+button {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 1.5rem;
+	padding: 1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+	color: #dd8800;
+	cursor: pointer;
+}
+
+/*Nav*/
+
+nav {
+	display: block;
+	position: fixed;
+	left: 0;
+	width: 20%;
+	height: 100%;
+	z-index: 100;
+	border-right: 2px solid #ffaa00;
+}
+
+nav ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	
+	
+}
+
+nav ul li {
+	text-align: center;
+	width: 100%;
+	border-bottom: 2px solid #ffaa00;
+}
+
+nav ul li a {
+	display: block;
+	padding: 2rem 1rem 2rem 1rem;
+}
+
+nav ul li a:hover {
+	cursor: pointer;
+	background-color: #ffaa00;
+	color: #ffffff;
+}
+/*Vehicle List Styles*/
+
+section#list_vehicles article {
+	width: 25%;
+	margin: 1rem 1rem 1rem 1rem;
+	display: inline-block;
+	overflow: auto;
+	border: 2px solid #ffaa00;
+	padding: 1rem 1rem 1rem 1rem;
+	border-radius: 10px 50px;
+
+}
+
+section#list_vehicles article span {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	float: right;
+	clear: right;
+}
+
+section#list_vehicles article button {
+	margin-left: 25%;
+	margin-right: 25%;
+	width : 50%;
+}
+
+section#list_vehicles article img {
+	width: 70%;
+	float: left;
+	clear: right;
+	border-radius: 50px;
+}
+
+/*Contract form styles*/
+
+section#contract_form {
+	padding-left: 2rem;
+	padding-right: 2rem;
+}
+
+section#contract_form article {
+	padding-left: 2rem;
+	padding-right: 2rem;
+	
+}
+
+section#contract_form article h1 {
+	text-align: center;
+	font-size: 24pt;
+}
+
+section#contract_form article span.contract_info {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	display: block;
+}
+
+/*Register Vehicle Form*/
+
+section#register_vehicles article h1 {
+	text-align: center;
+	font-size: 24pt;
+}

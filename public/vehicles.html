@@ -4,6 +4,7 @@
 		<meta name="description" content="User's Vehicles">
 		<meta name="author" content="Ross Bevacqua, George Wu">
 		<link href="css/style.css" type="text/css" rel="stylesheet">
+		<link href="css/vehicles.css" type="text/css" rel="stylesheet">
 		<script src="scripts/jquery-3.0.0.min.js" defer></script>
 		<script src="scripts/vehicles.js" defer></script>
 	</head>
@@ -23,11 +24,66 @@
 				<h1>Your Vehicles</h1>
 			</header>
 			<section id="list_vehicles"></section>
-			<section id="register_vehicles">
+			<section id="contract_form">
+				<article>
+					<h1>Create a Contract</h1>
 
-				<button id="register_vehicle">Register A Vehicle</button>
+						<form method="post">
+
+							<h2 class="selected">Selected Vehicle:</h2>
+
+							<h2 class="details">Detailing &amp; Washing</h2>
+
+							<div class="form_element">
+								<fieldset>
+									<legend>Interior</legend>
+
+									<label id="vaccum">
+										<span class="label_check">Full Vaccuming Interior</span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+									<label id="mats">
+										<span class="label_check">Clean Floor Mats</span>
+										<input type="checkbox" name="mats" value="mats">
+									</label>
+
+									<label id="vaccum">
+										<span class="label_check"></span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+									<label id="vaccum">
+										<span class="label_check"></span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+								</fieldset>
+								
+							</div>
+
+							<div id="form_element">
+								<fieldset>
+									<legend>Exterior</legend>
+									<label id="Tires">
+										<span class="label_check">Hand Wash</span>
+										<input type="checkbox" name="wash" value="wash">
+									</label>
+									<label id="Tires">
+										<span class="label_check">Clean Tires</span>
+										<input type="checkbox" name="tires" value="tires">
+									</label>
+
+								</fieldset>
+
+							</div>
+
+						</form>
+				</article>
+			</section>
+			<section id="register_vehicles">
 				<article class="hidden">
-					<h1>Register Your Vehicle</h1>
+					<h1>Register Your Vehicle</h2>
 					<form action="/register_vehicle">
 						<div class="form_element">
 							<label id="manufacturer">
