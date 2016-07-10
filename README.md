@@ -89,12 +89,12 @@ CDF: g3bevacq
 Email: ross.bevacqua@mail.utoronto.ca
 
 Name: Jonathan Pelastine
-CDF: 
-Email:
+CDF: g5jonypx
+Email: jonathan.pelastine@mail.utoronto.ca
 
 Name: George Wu
-CDF: 
-Email:
+CDF: c4wuhaoz
+Email: georgewu.wu@mail.utoronto.ca
 
 Name: Fullchee Zhang
 CDF: g5zhangf
