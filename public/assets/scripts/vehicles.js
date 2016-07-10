@@ -72,6 +72,7 @@ function createContractForm(car_values) {
 
 	
 
+
 	contract_article.data('contract_car', car_values);
 
 	$('<span>', {
