@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>AdminLogin</title>
-    <link rel="stylesheet" href="assets/css/login.css" type="text/css"/>
+    <link rel="stylesheet" href="css/login.css" type="text/css"/>
 </head>
 <body>
     <article>
@@ -21,9 +21,15 @@
                 <span>
                     Password:
                 </span>
-                <input name="password" type="text" required/>
+                <input name="password" type="password" required/>
+            </div>
+            <div class="submit">
+                <input id="submit" type="submit" value="Submit"/>
             </div>
         </form>
+        <p>
+            Are you a user? Click <a href="http://localhost:8080/userlogin">here</a> to go to the user login page.
+        </p>
     </article>
 </body>
 </html>

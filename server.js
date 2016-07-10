@@ -86,6 +86,8 @@ var server = app.listen(3000, function()
 });
 
 app.get('/adminlogin', function(req, res){
+    //TODO: Password authenication
+    //TODO: Two factor login
     // res.send("Hi, you're an admin.")
     res.render('adminlogin',{
         errors:''
