@@ -28,15 +28,62 @@
 				<article>
 					<h1>Create a Contract</h1>
 
+						<form method="post">
 
-					<h2 class="selected">Selected Vehicle:</h3>
+							<h2 class="selected">Selected Vehicle:</h2>
 
+							<h2 class="details">Detailing &amp; Washing</h2>
 
+							<div class="form_element">
+								<fieldset>
+									<legend>Interior</legend>
+
+									<label id="vaccum">
+										<span class="label_check">Full Vaccuming Interior</span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+									<label id="mats">
+										<span class="label_check">Clean Floor Mats</span>
+										<input type="checkbox" name="mats" value="mats">
+									</label>
+
+									<label id="vaccum">
+										<span class="label_check"></span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+									<label id="vaccum">
+										<span class="label_check"></span>
+										<input type="checkbox" name="vaccum" value="vaccum">
+									</label>
+
+								</fieldset>
+								
+							</div>
+
+							<div id="form_element">
+								<fieldset>
+									<legend>Exterior</legend>
+									<label id="Tires">
+										<span class="label_check">Hand Wash</span>
+										<input type="checkbox" name="wash" value="wash">
+									</label>
+									<label id="Tires">
+										<span class="label_check">Clean Tires</span>
+										<input type="checkbox" name="tires" value="tires">
+									</label>
+
+								</fieldset>
+
+							</div>
+
+						</form>
 				</article>
 			</section>
 			<section id="register_vehicles">
 				<article class="hidden">
-					<h2>Register Your Vehicle</h2>
+					<h1>Register Your Vehicle</h2>
 					<form action="/register_vehicle">
 						<div class="form_element">
 							<label id="manufacturer">

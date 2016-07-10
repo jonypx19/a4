@@ -60,33 +60,39 @@ function createContractForm(car_values) {
 		car_values = {};
 	}
 
+	if ($('section#contract_form article div#car_select').length > 0) {
+		$('section#contract_form article div#car_select').remove();
+	}
+
+	var selected_info = $('<div>', {id: 'car_select'}).insertAfter('section#contract_form article h2.selected');
+
 	console.log(car_values);
 
 	var contract_article = $('section#contract_form article');
 
-	contract_article.data('contract_car', car_values);
+	
 
-	var selected_vehicle = $('section#contract_form article h2.selected');
+	contract_article.data('contract_car', car_values);
 
 	$('<span>', {
 		class: 'contract_info',
 		text: car_values.manufacturer
-	}).insertAfter(selected_vehicle);
+	}).appendTo(selected_info);
 
 	$('<span>', {
 		class: 'contract_info',
 		text: car_values.model
-	}).insertAfter(selected_vehicle);
+	}).appendTo(selected_info);
 
 	$('<span>', {
 		class: 'contract_info',
 		text: car_values.year
-	}).insertAfter(selected_vehicle);
+	}).appendTo(selected_info);
 
 	$('<span>', {
 		class: 'contract_info',
 		text: car_values.license
-	}).insertAfter(selected_vehicle);
+	}).appendTo(selected_info);
 
 }
 
