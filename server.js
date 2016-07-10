@@ -2,6 +2,9 @@ var express = require('express');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
+var user = require('./public/assets/scripts/users.js');
+
+console.log(typeof user);
 
 // Set views path, template engine and default layout
 app.use(express.static(__dirname + '/assets'));  // built in middleware function
@@ -26,6 +29,7 @@ app.use(expressValidator({
 // Get the index page:
 app.get('/', function(req, res) {
     res.send("Hello there, how's it going?");
+    console.log(__dirname);
     
 });
 
@@ -40,9 +44,25 @@ app.get('/userlogin', function(req, res) {
 
 });
 
+app.get('/test', function(req,res){
+    res.end("Hello there");
+});
+
 app.get('/vehicles', function(req, res){
 	res.render('vehicles.html');
-})
+});
+
+app.get('/users/listUsers',function(req,res){
+    var usersArray =[];
+    var user1 = user("George", "1234", "user");
+    var user2 = user("Bob", "4321", "admin");
+    var user3 = user("Billy", "asdf", "user");
+    console.log(user1);
+    usersArray.push(user1);
+    usersArray.push(user2);
+    usersArray.push(user3);
+    res.end(JSON.stringify(usersArray));
+});
 
 app.get('/vehicles/listVehicles', function(req, res) {
 
@@ -77,12 +97,6 @@ app.get('/vehicles/listVehicles', function(req, res) {
     var result = JSON.stringify(json)
     res.write(result);
     res.end();
-});
-
-var server = app.listen(3000, function()
-{
-  var port = server.address().port;
-  console.log('Running on 127.0.0.1:%s', port);
 });
 
 app.get('/adminlogin', function(req, res){
