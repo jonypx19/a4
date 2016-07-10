@@ -4,6 +4,7 @@
 		<meta name="description" content="User's Vehicles">
 		<meta name="author" content="Ross Bevacqua, George Wu">
 		<link href="css/style.css" type="text/css" rel="stylesheet">
+		<link href="css/vehicles.css" type="text/css" rel="stylesheet">
 		<script src="scripts/jquery-3.0.0.min.js" defer></script>
 		<script src="scripts/vehicles.js" defer></script>
 	</head>
@@ -23,11 +24,19 @@
 				<h1>Your Vehicles</h1>
 			</header>
 			<section id="list_vehicles"></section>
-			<section id="register_vehicles">
+			<section id="contract_form">
+				<article>
+					<h1>Create a Contract</h1>
 
-				<button id="register_vehicle">Register A Vehicle</button>
+
+					<h2 class="selected">Selected Vehicle:</h3>
+
+
+				</article>
+			</section>
+			<section id="register_vehicles">
 				<article class="hidden">
-					<h1>Register Your Vehicle</h1>
+					<h2>Register Your Vehicle</h2>
 					<form action="/register_vehicle">
 						<div class="form_element">
 							<label id="manufacturer">

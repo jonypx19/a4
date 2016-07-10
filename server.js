@@ -4,9 +4,9 @@ var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 
 // Set views path, template engine and default layout
-app.use(express.static(__dirname + '/assets'));  // built in middleware function
+app.use(express.static(__dirname + '/public/assets'));  // built in middleware function
 app.engine('.html', require('ejs').__express);
-app.set('views', __dirname);
+app.set('views', __dirname + '/public');
 app.set('view engine', 'html');
 
 // The request body is received on GET or POST.

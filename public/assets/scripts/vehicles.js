@@ -1,5 +1,6 @@
 $(document).ready(main);
 
+/*Updates page with a list of user's personal vehicles*/
 function getVehicles() {
 	$.ajax({
 		method: "Get",
@@ -11,6 +12,11 @@ function getVehicles() {
 			console.log(user_cars);
 			for (var i = 0; i < user_cars.length; i++) {
 				var car_article = $('<article>').appendTo('section#list_vehicles');
+
+				$('<img>', {
+					class: 'vehicle_info',
+					src: '/images/' + user_cars[i].img
+				}).appendTo(car_article);
 
 				$('<span>', {
 					class: 'vehicle_info',
@@ -32,18 +38,61 @@ function getVehicles() {
 					text: user_cars[i].license
 				}).appendTo(car_article);
 
-				$('<img>', {
-					class: 'vehicle_info',
-					src: user_cars[i].image
+				var button = $('<button>', {
+					class: 'create_contract',
+					text: 'Create Contract'
 				}).appendTo(car_article);
+
+				button.data('contract', user_cars[i]);
+
+				button.on('click', function() {
+					createContractForm($(this).data('contract'));
+				});
 			}
 
 		}
 	})
 }
 
+/*Updates page with a contract form */
+function createContractForm(car_values) {
+	if (typeof car_values == 'undefined') {
+		car_values = {};
+	}
+
+	console.log(car_values);
+
+	var contract_article = $('section#contract_form article');
+
+	contract_article.data('contract_car', car_values);
+
+	var selected_vehicle = $('section#contract_form article h2.selected');
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.manufacturer
+	}).insertAfter(selected_vehicle);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.model
+	}).insertAfter(selected_vehicle);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.year
+	}).insertAfter(selected_vehicle);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.license
+	}).insertAfter(selected_vehicle);
+
+}
+
 /*Attaches controller functionality to necessary buttons and Forms*/
 function main() {
 	getVehicles();
+
 
 }
