@@ -42,6 +42,49 @@ function getVehicles() {
 	})
 }
 
+/*Updates page with a contract form */
+function createContractForm(car_values) {
+	if (typeof car_values == 'undefined') {
+		car_values = {};
+	}
+
+	if ($('section#contract_form article div#car_select').length > 0) {
+		$('section#contract_form article div#car_select').remove();
+	}
+
+	var selected_info = $('<div>', {id: 'car_select'}).insertAfter('section#contract_form article h2.selected');
+
+	console.log(car_values);
+
+	var contract_article = $('section#contract_form article');
+
+	
+
+
+	contract_article.data('contract_car', car_values);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.manufacturer
+	}).appendTo(selected_info);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.model
+	}).appendTo(selected_info);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.year
+	}).appendTo(selected_info);
+
+	$('<span>', {
+		class: 'contract_info',
+		text: car_values.license
+	}).appendTo(selected_info);
+
+}
+
 /*Attaches controller functionality to necessary buttons and Forms*/
 function main() {
 	getVehicles();
