@@ -25,6 +25,7 @@ app.use(expressValidator({
 
 // Get the index page:
 app.get('/', function(req, res) {
+    res.send("Hello there, how's it going?");
     
 });
 
@@ -32,7 +33,10 @@ app.post('/signup', function(req, res) {
 
 });
 
-app.post('/login', function(req, res) {
+app.get('/userlogin', function(req, res) {
+    res.render('userlogin',{
+        errors:''
+    });
 
 });
 
@@ -80,3 +84,21 @@ var server = app.listen(3000, function()
   var port = server.address().port;
   console.log('Running on 127.0.0.1:%s', port);
 });
+
+app.get('/adminlogin', function(req, res){
+    //TODO: Password authenication
+    //TODO: Two factor login
+    // res.send("Hi, you're an admin.")
+    res.render('adminlogin',{
+        errors:''
+    });
+});
+
+app.post('/login',function(req,res){
+    res.send("Request noted.");
+});
+
+var server = app.listen(8080,function(){
+    var port = server.address().port;
+    console.log("Running on 127.0.0.1:%s", port);
+})
