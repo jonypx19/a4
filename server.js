@@ -79,12 +79,6 @@ app.get('/vehicles/listVehicles', function(req, res) {
     res.end();
 });
 
-var server = app.listen(3000, function()
-{
-  var port = server.address().port;
-  console.log('Running on 127.0.0.1:%s', port);
-});
-
 app.get('/adminlogin', function(req, res){
     //TODO: Password authenication
     //TODO: Two factor login
