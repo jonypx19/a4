@@ -4,9 +4,9 @@ var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 
 // Set views path, template engine and default layout
-app.use(express.static(__dirname + '/assets'));  // built in middleware function
+app.use(express.static(__dirname + '/public/assets'));  // built in middleware function
 app.engine('.html', require('ejs').__express);
-app.set('views', __dirname);
+app.set('views', __dirname + '/public');
 app.set('view engine', 'html');
 
 // The request body is received on GET or POST.
@@ -92,7 +92,7 @@ app.post('/login',function(req,res){
     res.send("Request noted.");
 });
 
-var server = app.listen(8080,function(){
+var server = app.listen(3000,function(){
     var port = server.address().port;
     console.log("Running on 127.0.0.1:%s", port);
 })
