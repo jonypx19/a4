@@ -7,7 +7,7 @@ var user = require('./public/assets/scripts/users.js');
 console.log(typeof user);
 
 // Set views path, template engine and default layout
-app.use(express.static(__dirname + '/assets'));  // built in middleware function
+app.use(express.static(__dirname + '/public/assets'));  // built in middleware function
 app.engine('.html', require('ejs').__express);
 app.set('views', __dirname);
 app.set('view engine', 'html');
@@ -38,7 +38,7 @@ app.post('/signup', function(req, res) {
 });
 
 app.get('/userlogin', function(req, res) {
-    res.render('./p1/userlogin',{
+    res.render('./public/userlogin',{
         errors:''
     });
 
@@ -103,13 +103,15 @@ app.get('/adminlogin', function(req, res){
     //TODO: Password authenication
     //TODO: Two factor login
     // res.send("Hi, you're an admin.")
-    res.render('./p1/adminlogin',{
+    res.render('./public/adminlogin',{
         errors:''
     });
 });
 
 app.post('/login',function(req,res){
-    res.render('./p1/profile.html')
+    res.render('./public/profile.html',{
+        errors:''
+    });
 });
 
 var server = app.listen(8080,function(){
