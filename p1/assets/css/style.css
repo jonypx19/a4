@@ -52,11 +52,9 @@ div.scroll {
 
 body {
     padding-top: 12%;
+    padding-left: 0;
     font-family: 'Rockwell', sans-serif;
 }
-
-
-
 
 ul {
     list-style-type: none;
@@ -93,12 +91,12 @@ li a:hover:not(.active) {
     background-color: #00ace6;
 }
 
-/* Change the link color to #0059B3 (dark-blue) on hover */
+/* Change the link color to #00ace6 (mid-blue) on hover */
 li a:hover {
-    background-color: #0059B3;
+    background-color: #00ace6;
 }
 
 .active {
-    background-color: #007399;
+    background-color: #00ace6;
 }
 
