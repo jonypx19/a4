@@ -38,7 +38,7 @@ app.post('/signup', function(req, res) {
 });
 
 app.get('/userlogin', function(req, res) {
-    res.render('userlogin',{
+    res.render('./p1/userlogin',{
         errors:''
     });
 
@@ -103,13 +103,13 @@ app.get('/adminlogin', function(req, res){
     //TODO: Password authenication
     //TODO: Two factor login
     // res.send("Hi, you're an admin.")
-    res.render('adminlogin',{
+    res.render('./p1/adminlogin',{
         errors:''
     });
 });
 
 app.post('/login',function(req,res){
-    res.send("Request noted.");
+    res.render('./p1/profile.html')
 });
 
 var server = app.listen(8080,function(){
