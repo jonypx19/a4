@@ -12,6 +12,11 @@ function getVehicles() {
 			for (var i = 0; i < user_cars.length; i++) {
 				var car_article = $('<article>').appendTo('section#list_vehicles');
 
+				$('<img>', {
+					class: 'vehicle_info',
+					src: 'images/' + user_cars[i].img
+				}).appendTo(car_article);
+
 				$('<span>', {
 					class: 'vehicle_info',
 					text: user_cars[i].manufacturer
@@ -32,10 +37,17 @@ function getVehicles() {
 					text: user_cars[i].license
 				}).appendTo(car_article);
 
-				$('<img>', {
-					class: 'vehicle_info',
-					src: user_cars[i].image
-				}).appendTo(car_article);
+				var button = $('<button>', {text: 'Create Contract'}).appendTo(car_article);
+
+				button.data('selected_car', user_cars[i]);
+
+				button.on('click', function() {
+
+					var car_details = $(this).data('selected_car');
+					createContractForm(car_details);
+
+				})
+
 			}
 
 		}
