@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AdminLogin</title>
+    <link rel="stylesheet" href="css/login.css" type="text/css"/>
+</head>
+<body>
+    <article>
+        <p>
+            Hello there. I see you're an admin. You can log in here.
+        </p>
+        <form action="/login" method="post">
+            <div class="fields">
+                <span>
+                    Username:
+                </span>
+                <input name="user" type="text" required/>
+            </div>
+            <div class="fields">
+                <span>
+                    Password:
+                </span>
+                <input name="password" type="password" required/>
+            </div>
+            <div class="submit">
+                <input id="submit" type="submit" value="Submit"/>
+            </div>
+        </form>
+        <p>
+            Are you a user? Click <a href="http://localhost:8080/userlogin">here</a> to go to the user login page.
+        </p>
+    </article>
+</body>
+</html>
