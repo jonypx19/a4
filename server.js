@@ -36,7 +36,7 @@ app.get('/signup', function(req, res) {
 });
 
 app.get('/userlogin', function(req, res) {
-    res.render('./public/userlogin',{
+    res.render('userlogin.html',{
         errors:''
     });
 

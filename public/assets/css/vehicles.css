@@ -8,7 +8,7 @@ body {
 }
 
 section {
-	border-top: 4px solid #ffaa00;
+	border-top: 4px solid #00ace6;
 }
 
 button {
@@ -17,12 +17,12 @@ button {
 	margin-top: 1.5rem;
 	padding: 1rem 1rem 1rem 1rem;
 	background-color: #ffffff;
-	color: #dd8800;
+	color: #00ace6;
 	cursor: pointer;
 }
 
 /*Nav*/
-
+/*
 nav {
 	display: block;
 	position: fixed;
@@ -56,7 +56,8 @@ nav ul li a:hover {
 	cursor: pointer;
 	background-color: #ffaa00;
 	color: #ffffff;
-}
+}*/
+
 /*Vehicle List Styles*/
 
 section#list_vehicles article {
@@ -64,7 +65,7 @@ section#list_vehicles article {
 	margin: 1rem 1rem 1rem 1rem;
 	display: inline-block;
 	overflow: auto;
-	border: 2px solid #ffaa00;
+	border: 2px solid #00ace6;
 	padding: 1rem 1rem 1rem 1rem;
 	border-radius: 10px 50px;
 
