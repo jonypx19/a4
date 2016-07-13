@@ -3,22 +3,26 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="User's Vehicles">
 		<meta name="author" content="Ross Bevacqua, George Wu">
-		<link href="css/style.css" type="text/css" rel="stylesheet">
 		<link href="css/vehicles.css" type="text/css" rel="stylesheet">
+		<link href="css/style.css" type="text/css" rel="stylesheet">
 		<script src="scripts/jquery-3.0.0.min.js" defer></script>
 		<script src="scripts/vehicles.js" defer></script>
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a>Home</a></li>
-				<li><a>Profile</a></li>
-				<li><a>Your Vehicles</a></li>
-				<li><a>Contracts</a></li>
-				<li><a>Community</a></li>
+		<ul class="mainTitle">
+        	<h1> 	
+        		Car Wash Exchange   <img src="images/logo.png" style="width:50px;height:50px;">
+        	</h1>
+    	</ul>
 
-			</ul>
-		</nav>
+    	<!--Displays the main menu either on the left-hand side or at the top, depending on the size of the device-->
+		<ul class="menuItems">
+			<li><a href="/">Home</a></li>
+			<li><a href="/about">About</a></li>
+			<li><a class="active" href="/vehicles">Your Vehicles</a></li>
+			<li style="float:right"><a href="/userlogin">Log In</a></li>
+			<li style="float:right"><a href="/signup">Sign Up</a></li>
+		</ul>
 		<main>
 			<header>
 				<h1>Your Vehicles</h1>

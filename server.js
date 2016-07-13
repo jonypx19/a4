@@ -28,13 +28,11 @@ app.use(expressValidator({
 
 // Get the index page:
 app.get('/', function(req, res) {
-    res.send("Hello there, how's it going?");
-    console.log(__dirname);
-    
+    res.render('index.html');
 });
 
-app.post('/signup', function(req, res) {
-
+app.get('/signup', function(req, res) {
+    res.render('signup.html');
 });
 
 app.get('/userlogin', function(req, res) {
@@ -42,6 +40,10 @@ app.get('/userlogin', function(req, res) {
         errors:''
     });
 
+});
+
+app.get('/about', function(req,res){
+    res.render('aboutus.html');
 });
 
 app.get('/test', function(req,res){
