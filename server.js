@@ -54,6 +54,10 @@ app.get('/vehicles', function(req, res){
 	res.render('vehicles.html');
 });
 
+app.get('/contracts', function(req, res) {
+    res.render('contracts.html')
+});
+
 app.get('/users/listUsers',function(req,res){
     var usersArray =[];
     var user1 = user("George", "1234", "user");
@@ -116,7 +120,7 @@ app.post('/login',function(req,res){
     });
 });
 
-var server = app.listen(8080,function(){
+var server = app.listen(3000,function(){
     var port = server.address().port;
     console.log("Running on 127.0.0.1:%s", port);
 })
