@@ -108,6 +108,9 @@ app.get('/vehicles/listVehicles', function(req, res) {
 app.get('/adminlogin', function(req, res){
     //TODO: Password authenication
     //TODO: Two factor login
+    //TODO: Session for logged in users
+    //TODO: Database query for user creation
+    //TODO: Bio page.
     // res.send("Hi, you're an admin.")
     res.render('./public/adminlogin',{
         errors:''
