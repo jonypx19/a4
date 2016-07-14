@@ -7,7 +7,7 @@ Assignment 4 Repository
 2. Download the zip file and extract the contents.
 3. Open up the command prompt/terminal and change directories to the zip file.
 4. In the command prompt/terminal, type "node server.js"
-5. Open up a browser and go to this site: http://localhost:8080/
+5. Open up a browser and go to this site: http://localhost:3000/
 6. The site will now be open. :)
 
 ##What this is:
