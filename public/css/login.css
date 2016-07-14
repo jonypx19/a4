@@ -1,0 +1,55 @@
+div.fields{
+    margin-top: 5px;
+}
+
+body {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 12%;
+    padding-left: 0;
+    font-family: 'Rockwell', sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rockwell', sans-serif;
+    overflow: hidden;
+    background-color: #80dfff;
+    position: fixed;
+    top: 12%;
+    width: 100%;
+}
+
+ul.mainTitle{
+    top: 0;
+    height: 18%;
+    background-color: #33ccff;
+    text-align: center;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #00ace6;
+}
+
+/* Change the link color to #00ace6 (mid-blue) on hover */
+li a:hover {
+    background-color: #00ace6;
+}
+
+.active {
+    background-color: #00ace6;
+}
