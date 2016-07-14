@@ -1,64 +1,74 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Car Wash Exchange</title>
+		<title>Car Detail Exchange</title>
 
+		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
 		<script src="assets/scripts/jquery-3.0.0.min.js" defer></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<!-- <script src="assets/scripts/bootstrap.min.js" defer></script> -->
 		<script src="assets/scripts/scripts.js" defer></script>
 	</head>
 	
 	<body>
 
-		<ul class="mainTitle">
-        	<h1> 	
-        		Car Wash Exchange   <img src="images/logo.png" style="width:50px;height:50px;">
-        	</h1>
-    	</ul>
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+  			<div class="container-fluid">
+    			<div class="navbar-header">
+      				<a class="navbar-brand" href="/">Car Detail Exchange</a>
+      				<img src="images/logo.png" style="width:50px;height:50px;">
+    			</div>
+    			<ul class="nav navbar-nav">
+      				<li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+      					<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+      					<li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+      					<li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li> 
+    			</ul>
+    			<ul class="nav navbar-nav navbar-right">
+      				<li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      				<li><a href="/userlogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    			</ul>
+  			</div>
+		</nav>
 
-    	<!--Displays the main menu either on the left-hand side or at the top, depending on the size of the device-->
-		<ul class="menuItems">
-			<li><a class="active" href="/">Home</a></li>
-			<li><a href="/about">About</a></li>
-			<li><a href="/vehicles">Your Vehicles</a></li>
-			<li><a href="/contracts">Contracts</a></li>
-			<li style="float:right"><a href="/userlogin">Log In</a></li>
-			<li style="float:right"><a href="/signup">Sign Up</a></li>
-		</ul>
+        <h2>Find A Place to Wash Your Car</h2>
+        <div class="panel-group">
+    		<div class="panel panel-primary">
+      			<div class="panel-heading">Current Offerings</div>
+      				<div class="panel-body">
+						<div class="scroll">
 
+							<p>Offer 1:</p>
 
-		<header>
-            <h2>Find A Place to Wash Your Car</h2>
+							<img src="images/placeholder_car.jpg" alt="Offer 1" style="width:425px;height:315px;">
 
-            <p>Current Offerings</p>
-				<div class="scroll">OFFERINGS ARE PLACED IN THIS SCROLL BOX
+							<p>Offer 2:</p>
 
-					<p>Offer 1:</p>
+							<p>.......</p> <!--Just a placeholder; to be removed later-->
+						</div>
+					</div>
+      			</div>
+    		</div>
+  		</div>
 
-					<img src="images/placeholder_car.jpg" alt="Offer 1" style="width:425px;height:315px;">
-
-					<p>Offer 2:</p>
-
-					<p>.......</p> <!--Just a placeholder; to be removed later-->
-
-				</div>
-        </header>
-
-        <header>
-            <h2>Post Your Own Car Wash Offering</h2>
-
-            <p>Contact Information</p>
-				<div class="scroll">
-
-					<form action="/main" method="post">
-						<label>Location
-							<input type="text" required="required">
-						</label>
+  		<h2>Post Your Own Car Wash Offering</h2>
+        <div class="panel-group">
+    		<div class="panel panel-primary">
+      			<div class="panel-heading">Contact Information</div>
+      				<div class="panel-body">
+						<div class="scroll">
+							<form action="/main" method="post">
+							<label>Location
+								<input type="text" required="required">
+							</label>
 					</form>
 
 				</div>
-        </header>
-
-		
+					</div>
+      			</div>
+    		</div>
+  		</div>	
 	</body>
 </html>

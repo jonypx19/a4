@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>A4 /signup page</title>
+		<title>Car Detail Exchange - Sign Up</title>
 
+		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
-		<script src="scripts/jquery-3.0.0.min.js" defer></script>
-		<script src="scripts/scripts.js" defer></script>
+		<script src="assets/scripts/jquery-3.0.0.min.js" defer></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<!-- <script src="assets/scripts/bootstrap.min.js" defer></script> -->
+		<script src="assets/scripts/scripts.js" defer></script>
 	</head>
 	
 	<body>
-		<ul class="mainTitle">
-        	<h1> 	
-        		Car Wash Exchange   <img src="images/logo.png" style="width:50px;height:50px;">
-        	</h1>
-    	</ul>
 
-    	<!--Displays the main menu either on the left-hand side or at the top, depending on the size of the device-->
-		<ul class="menuItems">
-			<li><a href="/">Home</a></li>
-			<li><a href="/about">About</a></li>
-			<li><a href="/vehicles">Your Vehicles</a></li>
-			<li><a href="/contracts">Contracts</a></li>
-			<li style="float:right"><a href="/userlogin">Log In</a></li>
-			<li style="float:right"><a class="active" href="/signup">Sign Up</a></li>
-		</ul>
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+  			<div class="container-fluid">
+    			<div class="navbar-header">
+      				<a class="navbar-brand" href="/">Car Detail Exchange</a>
+      				<img src="images/logo.png" style="width:50px;height:50px;">
+    			</div>
+    			<ul class="nav navbar-nav">
+      				<li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+      					<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+      					<li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+      					<li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li> 
+    			</ul>
+    			<ul class="nav navbar-nav navbar-right">
+      				<li><a href="/signup" class="active"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      				<li><a href="/userlogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    			</ul>
+  			</div>
+		</nav>
 
 		<header>
             <h1>Create a Profile</h1>
