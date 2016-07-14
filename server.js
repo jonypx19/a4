@@ -54,6 +54,10 @@ app.get('/vehicles', function(req, res){
 	res.render('vehicles.html');
 });
 
+app.get('/contracts', function(req, res) {
+    res.render('contracts.html')
+});
+
 app.get('/users/listUsers',function(req,res){
     var usersArray =[];
     var user1 = user("George", "1234", "user");

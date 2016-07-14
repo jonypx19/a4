@@ -57,7 +57,7 @@ body {
     font-family: 'Rockwell', sans-serif;
 }
 
-ul {
+body > ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -76,11 +76,11 @@ ul.mainTitle{
     text-align: center;
 }
 
-li {
+body > ul li {
     float: left;
 }
 
-li a {
+body > ul li a {
     display: block;
     color: black;
     text-align: center;
@@ -88,12 +88,12 @@ li a {
     text-decoration: none;
 }
 
-li a:hover:not(.active) {
+body > ul li a:hover:not(.active) {
     background-color: #00ace6;
 }
 
 /* Change the link color to #00ace6 (mid-blue) on hover */
-li a:hover {
+body > ul li a:hover {
     background-color: #00ace6;
 }
 
