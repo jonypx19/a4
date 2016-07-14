@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <p>
@@ -26,5 +27,24 @@
             <li>Nothing here yet!</li>
         </ul>
     </p>
+
+    <h3>Who you're following</h3>
+
+    <!-- rating will be send to server with AJAX-->
+
+    <!-- States:
+    Admin/User looking at own profile: doesn't see this, can't rate yourself
+    Another user: sees this, can only send one rating -->
+    <fieldset class="rating">
+        <legend>Rate this person:</legend>
+        <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
+        <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
+        <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 stars</label>
+        <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
+        <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
+    </fieldset>
+
+
+    
 </body>
 </html>
