@@ -1,8 +1,26 @@
 var express = require('express');
+var mysql = require('mysql');
+var upload = require('./upload');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 var user = require('./public/assets/scripts/users.js');
+
+//set connection to mysql database
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'Ross',
+    password: 'Detail&Wash',
+    database: 'Detail_Wash'
+});
+
+con.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
 
 console.log(typeof user);
 
@@ -70,10 +88,27 @@ app.get('/users/listUsers',function(req,res){
     res.end(JSON.stringify(usersArray));
 });
 
+app.post('/vehicles/registerVehicle', function(req, res) {
+
+    upload.uploadImage(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        console.log(req.body);
+        console.log(req.file);
+        
+    });
+
+    res.write("File is uploaded");
+    res.end();
+});
+
 app.get('/vehicles/listVehicles', function(req, res) {
 
 	// sample json data of cars. going to replace this with a database access
 	// method 
+    var json = [];
+    /*
 	var json = [{
         manufacturer: 'Porsche',
         model: '911',
@@ -99,10 +134,16 @@ app.get('/vehicles/listVehicles', function(req, res) {
         license: 'ABCD 552',
         img: 'placeholder_car.jpg'
     }];
+    */
+
 
     var result = JSON.stringify(json)
     res.write(result);
     res.end();
+});
+
+app.get('/contracts/listContracts', function() {
+
 });
 
 app.get('/adminlogin', function(req, res){
@@ -123,7 +164,7 @@ app.post('/login',function(req,res){
     });
 });
 
-var server = app.listen(3000,function(){
+var server = app.listen(3000, function(){
     var port = server.address().port;
     console.log("Running on 127.0.0.1:%s", port);
-})
+});
