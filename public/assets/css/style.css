@@ -1,0 +1,150 @@
+
+form {
+    border: 1px solid #ccc;
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 66%;
+}
+
+label, input, textarea, select, option {
+    font: 400 18pt/24pt "Helvetica", sans-serif;
+}
+
+label {
+	display: block;
+    margin: 2rem 0;
+    width: 20rem;
+}
+
+label:first-child {
+    margin-top: 0;
+}
+
+input {
+	border-radius: 5px;
+}
+
+input[type="text"]:hover {
+	/*box-shadow: 0 0 20px rgba(127, 127, 127, 0.1) inset;*/
+}
+
+input[type="submit"]:hover {
+    background-color: #fdfdfd;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    margin: 20 0 0 0;
+}
+
+input:invalid {
+  box-shadow: 0 0 3pt 2pt red;
+}
+
+div.scroll {
+    width: 800px;
+    height: 300px;
+    overflow: scroll;
+}
+
+
+body {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 12%;
+    padding-left: 0;
+    font-family: 'Rockwell', sans-serif;
+}
+
+body > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rockwell', sans-serif;
+    overflow: hidden;
+    background-color: #80dfff;
+    position: fixed;
+    top: 12%;
+    width: 100%;
+}
+
+ul.mainTitle{
+    top: 0;
+    height: 18%;
+    background-color: #33ccff;
+    text-align: center;
+}
+
+
+body > ul li {
+    float: left;
+}
+
+body > ul li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+body > ul li a:hover:not(.active) {
+    background-color: #00264d;
+}
+
+/* Change the link color to #00ace6 (mid-blue) on hover */
+body > ul li a:hover {
+    background-color: #00264d;
+}
+
+.active {
+    background-color: #00264d;
+}
+
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    /* kick it off the screen */
+    position:absolute;
+    top:-9999px; 
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rating > input:checked ~ label {
+    color: #f70;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+}
