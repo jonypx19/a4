@@ -1,26 +1,8 @@
 var express = require('express');
-var mysql = require('mysql');
-var upload = require('./upload');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 var user = require('./public/assets/scripts/users.js');
-
-//set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
-});
-
-con.connect(function(err){
-  if(err){
-    console.log('Error connecting to Db');
-    return;
-  }
-  console.log('Connection established');
-});
 
 // may have to be installed locally
 var morgan = require('morgan');
