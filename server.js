@@ -34,7 +34,7 @@ app.use(router.router);
 
 app.use(morgan("short"));  // simple logger to the server console for debugging
 
-var server = app.listen(3000,function(){
+var server = app.listen(3000, function(){
     var port = server.address().port;
     console.log("Running on 127.0.0.1:%s", port);
-})
+});

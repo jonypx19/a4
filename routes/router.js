@@ -1,5 +1,23 @@
 var express = require('express');
+var mysql = require('mysql');
+var upload = require('../upload');
 var router = express.Router();
+
+//set connection to mysql database
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'Ross',
+    password: 'Detail&Wash',
+    database: 'Detail_Wash'
+});
+
+con.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
 
 // All of the routes
 // Get the index page:
@@ -44,6 +62,21 @@ router.get('/users/listUsers',function(req,res){
     usersArray.push(user2);
     usersArray.push(user3);
     res.end(JSON.stringify(usersArray));
+});
+
+router.post('/vehicles/registerVehicle', function(req, res) {
+
+    upload.uploadImage(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        console.log(req.body);
+        console.log(req.file);
+        
+    });
+
+    res.write("File is uploaded");
+    res.end();
 });
 
 router.get('/vehicles/listVehicles', function(req, res) {
