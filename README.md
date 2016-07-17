@@ -5,18 +5,19 @@ Assignment 4 Repository
 1. Install node.js (version 4+)
 	to check, open the command prompt/ terminal and type "node -v".
 2. Download the zip file and extract the contents.
-3. Open up the command prompt/terminal and change directories to the zip file.
-4. In the command prompt/terminal, type "node server.js"
-5. Open up a browser and go to this site: http://localhost:3000/
+3. Open up the command prompt/terminal and change directories to the a4 folder from the zip file.
+4. Type "npm install" in the command prompt/terminal. (install the module dependencies)
+5. Then type "npm start".
+5. In a browser, go to the URL: http://localhost:3000/
 6. The site will now be open. :)
 
-##What this is:
+##Sharing Economy Description:
+
 
 
 ##TODOS:
-- **Decide on an idea for a sharing economy**
 
-- **3-tier or MVC?**
+- Have 3-tier or MVC.
 
 - Home Page
 	- Social media icons in the footer
