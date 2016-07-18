@@ -7,10 +7,10 @@
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="assets/scripts/jquery-3.0.0.min.js" defer></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <!-- <script src="assets/scripts/bootstrap.min.js" defer></script> -->
-    <script src="assets/scripts/scripts.js" defer></script>
+    <script src="scripts/jquery-3.0.0.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+    <script src="scripts/bootstrap.min.js" defer></script>
+    <script src="scripts/scripts.js" defer></script>
 </head>
 <body>
 
@@ -37,7 +37,10 @@
         <p>
             Welcome to Rent-A-Car! Please login here.
         </p>
-        <form action="/login" method="post">
+        <div id="unknownid">
+            <%-errors%>
+        </div>
+        <form action="/confirmuser" method="post">
             <div class="fields">
                 <span>
                     Username:
@@ -54,6 +57,7 @@
                 <input id="submit" type="submit" value="Submit"/>
             </div>
         </form>
+        <div id = "error"></div>
         <p>
             If you're an admin, click <a href="http://localhost:3000/adminlogin">here</a>.
         </p>
