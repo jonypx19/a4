@@ -36,7 +36,10 @@
         <p>
             Hello there. I see you're an admin. You can log in here.
         </p>
-        <form action="/login" method="post">
+        <div id="unknown">
+            <%-errors%>
+        </div>
+        <form action="/confirmadmin" method="post">
             <div class="fields">
                 <span>
                     Username:
@@ -53,6 +56,7 @@
                 <input id="submit" type="submit" value="Submit"/>
             </div>
         </form>
+        <div id = "error"></div>
         <p>
             Are you a user? Click <a href="/userlogin">here</a> to go to the user login page.
         </p>

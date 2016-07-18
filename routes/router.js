@@ -2,6 +2,8 @@ var express = require('express');
 var mysql = require('mysql');
 var upload = require('../upload');
 var router = express.Router();
+var user = require('../public/assets/scripts/users.js');
+var fs = require('fs'); //For phase 1 implentation of users only.
 
 //set connection to mysql database
 var con = mysql.createConnection({
@@ -29,13 +31,6 @@ router.get('/signup', function(req, res) {
     res.render('signup.html');
 });
 
-router.get('/userlogin', function(req, res) {
-    res.render('userlogin.html',{
-        errors:''
-    });
-
-});
-
 router.get('/about', function(req,res){
     res.render('aboutus.html');
 });
@@ -53,15 +48,24 @@ router.get('/contracts', function(req, res) {
 });
 
 router.get('/users/listUsers',function(req,res){
-    var usersArray =[];
-    var user1 = user("George", "1234", "user");
-    var user2 = user("Bob", "4321", "admin");
-    var user3 = user("Billy", "asdf", "user");
-    console.log(user1);
-    usersArray.push(user1);
-    usersArray.push(user2);
-    usersArray.push(user3);
-    res.end(JSON.stringify(usersArray));
+    console.log(typeof user);
+
+    //For cross domain
+    //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
+    res.writeHead(200, {"Content-Type":"text/plain"});
+    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+        console.log(data);
+        res.end(data);
+    });
+    // var usersArray =[];
+    // var user1 = user("George", "1234", "user");
+    // var user2 = user("Bob", "4321", "admin");
+    // var user3 = user("Billy", "asdf", "user");
+    // console.log(user1);
+    // usersArray.push(user1);
+    // usersArray.push(user2);
+    // usersArray.push(user3);
+    // res.end(JSON.stringify(usersArray));
 });
 
 router.post('/vehicles/registerVehicle', function(req, res) {
@@ -116,21 +120,89 @@ router.get('/vehicles/listVehicles', function(req, res) {
 
 router.get('/adminlogin', function(req, res){
     //TODO: Password authenication
-    //TODO: Two factor login
-    //TODO: Session for logged in users
+    //TODO: Two factor login (Use google/facebook)
+    //TODO: Session for logged in users (Use cookies)
     //TODO: Database query for user creation
     //TODO: Bio page.
     // res.send("Hi, you're an admin.")
-    res.render('./public/adminlogin',{
+    res.render('../public/adminlogin',{
         errors:''
     });
 });
 
-router.post('/login',function(req,res){
-    res.render('./public/profile.html',{
+router.get('/userlogin', function(req, res) {
+    res.render('../public/userlogin.html',{
         errors:''
+    });
+
+});
+
+router.post('/confirmuser',function(req,res){
+    var username = req.body.user;
+    var password = req.body.password;
+    response = {
+        username:req.body.user,
+        password: req.body.password
+    };
+
+    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+        var object = JSON.parse(data);
+        console.log(object);
+        for(var i =0;i < 3; i++){
+            if (object[i].username === username && object[i].password === password){
+                if (object[i].privilege === "user") {
+                    res.render("profile", {
+                        name: username
+                    });
+                    return;
+                }
+                else{
+                    res.render("userlogin",{
+                        errors: "<p class=\"incorrect\">You are an admin. Please use the admin login."
+                    });
+                    return;
+                }
+            }
+        }
+        res.render("userlogin", {
+            errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+        });
     });
 });
 
+
+router.post('/confirmadmin',function(req,res){
+    var username = req.body.user;
+    var password = req.body.password;
+    response = {
+        username:req.body.user,
+        password: req.body.password
+    };
+
+    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+        var object = JSON.parse(data);
+        console.log(object);
+        for(var i =0;i < 3; i++){
+            if (object[i].username === username && object[i].password === password){
+                if (object[i].privilege === "admin") {
+                    res.render("profile", {
+                        name: username
+                    });
+                    return;
+                }
+                else{
+                    res.render("adminlogin",{
+                        errors: "<p class=\"incorrect\">You are a user. Please use the user login."
+                    });
+                    return;
+                }
+            }
+        }
+        //looped through everything didn't find matching password/username
+        res.render("adminlogin", {
+            errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+        });
+    });
+});
 // export the routings, to be used in server.js
 exports.router = router;
