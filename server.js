@@ -9,8 +9,6 @@ var morgan = require('morgan');
 
 var router = require('./routes/router.js');
 
-console.log(typeof user);
-
 // Set views path, template engine and default layout
 app.use(express.static(__dirname + '/public/assets'));  // location of static/client files
 app.engine('.html', require('ejs').__express);

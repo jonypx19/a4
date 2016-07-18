@@ -102,6 +102,11 @@ body > ul li a:hover {
     background-color: #00264d;
 }
 
+p.incorrect{
+    text-align: center;
+    color:red;
+}
+
 .rating {
     float:left;
 }

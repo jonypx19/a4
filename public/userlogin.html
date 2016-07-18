@@ -37,7 +37,10 @@
         <p>
             Welcome to Rent-A-Car! Please login here.
         </p>
-        <form action="/login" method="post">
+        <div id="unknownid">
+            <%-errors%>
+        </div>
+        <form action="/confirmuser" method="post">
             <div class="fields">
                 <span>
                     Username:
@@ -54,6 +57,7 @@
                 <input id="submit" type="submit" value="Submit"/>
             </div>
         </form>
+        <div id = "error"></div>
         <p>
             If you're an admin, click <a href="http://localhost:3000/adminlogin">here</a>.
         </p>
