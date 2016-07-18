@@ -14,7 +14,7 @@ function getVehicles() {
 
 				$('<img>', {
 					class: 'vehicle_info',
-					src: 'images/' + user_cars[i].img
+					src: user_cars[i].image
 				}).appendTo(car_article);
 
 				$('<span>', {
