@@ -70,7 +70,7 @@ router.post('/vehicles/registerVehicle', function(req, res) {
             // inserts form data for vehicle into database
             database.insertVehicle('bob', req.body, data);
             res.write("Vehicle Successfully Registered");
-            res.redirect('vehicles.html');
+            
             res.end();
         });
         
