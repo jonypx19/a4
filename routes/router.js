@@ -1,4 +1,5 @@
 var express = require('express');
+var passport = require('passport');
 var mysql = require('mysql');
 var upload = require('../upload');
 var router = express.Router();
