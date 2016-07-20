@@ -1,26 +1,17 @@
 var express = require('express');
 var passport = require('passport');
 var mysql = require('mysql');
+var fs = require('fs');
 var upload = require('../upload');
 var router = express.Router();
 var user = require('../public/assets/scripts/users.js');
 var fs = require('fs'); //For phase 1 implentation of users only.
+var model = require('../model.js');
+var temp;
 
-//set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
-});
-
-con.connect(function(err){
-  if(err){
-    console.log('Error connecting to Db');
-    return;
-  }
-  console.log('Connection established');
-});
+// create Database connection
+var database = new model.Database('localhost', 'Ross', 'Detail&Wash', 'Detail_Wash');
+database.connect()
 
 // All of the routes
 // Get the index page:
@@ -71,52 +62,44 @@ router.get('/users/listUsers',function(req,res){
 
 router.post('/vehicles/registerVehicle', function(req, res) {
 
+    // used to upload image of the client's vehicle
     upload.uploadImage(req,res,function(err) {
         if(err) {
             return res.end("Error uploading file.");
         }
-        console.log(req.body);
-        console.log(req.file);
+        
+        fs.readFile(req.file.path, "binary", function(err, data) {
+            if(err) {
+                throw err;
+            }
+
+            // inserts form data for vehicle into database
+            database.insertVehicle('bob', req.body, data);
+            res.write("Vehicle Successfully Registered");
+            
+            res.end();
+        });
         
     });
 
-    res.write("File is uploaded");
-    res.end();
 });
 
 router.get('/vehicles/listVehicles', function(req, res) {
 
-	// sample json data of cars. going to replace this with a database access
-	// method 
-	var json = [{
-        manufacturer: 'Porsche',
-        model: '911',
-        year: '2004',
-        license: 'ABCD 555',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'Nissan',
-        model: 'GT-R',
-        year: '2014',
-        license: 'ABCD 554',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'BMW',
-        model: 'M3',
-        year: '2004',
-        license: 'ABCD 553',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'Audi',
-        model: 'S5',
-        year: '2013',
-        license: 'ABCD 552',
-        img: 'placeholder_car.jpg'
-    }];
+    // bob is a  placeholder, until i can retrieve session data 
+	database.getUserVehicles('bob', function(err, data) {
 
-    var result = JSON.stringify(json)
-    res.write(result);
-    res.end();
+        for (var i = 0; i < data.length; i++) {
+            var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
+            data[i].image = "data:image/jpg;base64," + encode64;
+        }
+
+        var json = data;
+        var result = JSON.stringify(json)
+        res.write(result);
+        res.end();
+    });
+    
 });
 
 router.get('/adminlogin', function(req, res){
