@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
+var compression = require('compression');  // gzip middleware
 var user = require('./public/assets/scripts/users.js');
 
 // may have to be installed locally
@@ -31,6 +32,8 @@ app.use(expressValidator({
 app.use(router.router);
 
 app.use(morgan("short"));  // simple logger to the server console for debugging
+
+app.use(compression());  // put gzip in place
 
 var server = app.listen(3000, function(){
     var port = server.address().port;
