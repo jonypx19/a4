@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('client-sessions');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
@@ -26,7 +27,15 @@ app.use(expressValidator({
     customValidators: {
     	
     }
-})); // This line must be immediately after express.bodyParser()!    	
+})); // This line must be immediately after express.bodyParser()!
+app.use(session({
+    cookieName: 'session',
+    secret: 'passwordstring',
+    duration: 30 * 60 * 1000,
+    activeDuration: 3 * 60 * 1000,
+    httpOnly: true,
+    ephmeral: true
+}));
 
 app.use(router.router);
 
