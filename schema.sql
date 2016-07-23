@@ -4,7 +4,10 @@ CREATE TABLE  user (
 	id INTEGER PRIMARY KEY,
 	name TEXT NOT NULL,
 	email TEXT NOT NULL,
-	password TEXT NOT NULL
+	password TEXT NOT NULL,
+	month TEXT NOT NULL,
+	day INTEGER NOT NULL,
+	year INTEGER NOT NULL
 );
 
 

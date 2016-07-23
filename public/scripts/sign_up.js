@@ -18,7 +18,7 @@ $( document ).ready(function() {
 // --------------------- for signup.html--------------------
 
 // make the user correctly repeat the password
-$( '#repeat-password' ).on('input', function() {
+$( '#repeat_password' ).on('input', function() {
     var pass = $( '#password' ).val();
     var repass = $( this ).val();
 
