@@ -6,10 +6,12 @@
 		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/style.css">
+    	<!-- <link rel="stylesheet" href="css/index.css"> -->
 		<script src="scripts/jquery-3.0.0.min.js" defer></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
 		<script src="scripts/bootstrap.min.js" defer></script>
 		<script src="scripts/scripts.js" defer></script>
+		<script src="scripts/about.js" defer></script>
 	</head>
 	
 	<body>
@@ -22,9 +24,9 @@
     			</div>
     			<ul class="nav navbar-nav">
       				<li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      					<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-      					<li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
-      					<li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li> 
+      				<li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+      					<!-- <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li> -->
+      					<!-- <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>  -->
     			</ul>
     			<ul class="nav navbar-nav navbar-right">
       				<li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -33,42 +35,79 @@
   			</div>
 		</nav>
 
-        <h2>Find A Place to Wash Your Car</h2>
-        <div class="panel-group">
-    		<div class="panel panel-primary">
-      			<div class="panel-heading">Current Offerings</div>
-      				<div class="panel-body">
-						<div class="scroll">
+	    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+	      <!-- Wrapper for slides -->
+	      
+	      <div class="carousel-inner" role="listbox">
+	        <div id="main_caption" class="carousel-caption">
+	            <h1 class="main_headline">Your Car, Your Personality</h1>
+	            <h4 class="supporting_statement">Wash and Detail Cars from thousands of people in your area and meet new people!</h4>
+	            <a href="/signup"><button class="button signup">Sign Up Today!</button></a>
+	        </div>
+	        <div class="item active">
+	        	<img src="images/close_up_1.jpg" alt="Car1">
+	         	<div class="carousel-caption hyperlink">
+        			<p>http://eskipaper.com/cars-close-up-2.html#gal_post_82781_cars-close-up-2.jpg</p>
+        		</div>
+	        </div>
 
-							<p>Offer 1:</p>
+	        <div class="item">
+	         	<img src="images/close_up_2.jpg" alt="Car2">
+	          	<div class="carousel-caption hyperlink">
+        			<p>https://wall.alphacoders.com/big.php?i=229264</p>
+        		</div>
+	        </div>
 
-							<img src="images/placeholder_car.jpg" alt="Offer 1" style="width:425px;height:315px;">
+	        <div class="item">
+	        	<img src="images/close_up_3.jpg" alt="Car3">
+	        	<div class="carousel-caption hyperlink">
+        			<p>http://eskipaper.com/cars-close-up-2.html#gal_post_82781_cars-close-up-2.jpg</p>
+        		</div>
+	        </div>
 
-							<p>Offer 2:</p>
+	        <div class="item">
+	        	<img src="images/close_up_4.jpg" alt="Car4">
+	        	<div class="carousel-caption hyperlink">
+        			<p>https://wall.alphacoders.com/big.php?i=228778</p>
+        		</div>
+	        </div>
 
-							<p>.......</p> <!--Just a placeholder; to be removed later-->
-						</div>
-					</div>
-      			</div>
-    		</div>
-  		</div>
+	        <div class="item">
+	        	<img src="images/close_up_5.jpg" alt="Car5">
+	        	<div class="carousel-caption hyperlink">
+        			<p>http://www.hdfinewallpapers.com/wallpaper/best-wallpaper-of-ferrari-front-wheel-closeup</p>
+        		</div>
+	        </div>
 
-  		<h2>Post Your Own Car Wash Offering</h2>
-        <div class="panel-group">
-    		<div class="panel panel-primary">
-      			<div class="panel-heading">Contact Information</div>
-      				<div class="panel-body">
-						<div class="scroll">
-							<form action="/main" method="post">
-							<label>Location
-								<input type="text" required="required">
-							</label>
-					</form>
+	        <div class="item">
+	        	<img src="images/close_up_6.jpg" alt="Car6">
+	        	<div class="carousel-caption hyperlink">
+        			<p>http://7-themes.com/6791296-free-cars-close-up-wallpaper.html</p>
+        		</div>
+	        </div>
+	      </div>
+	    </div>
 
-				</div>
-					</div>
-      			</div>
-    		</div>
-  		</div>	
+    	<!-- The "About" Modal -->
+		<div id="myModal" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <span class="close">×</span>
+		      <h2>About Us</h2>
+		    </div>
+		    <div class="modal-body">
+				<h2>Our Mission</h2>
+					<p>Keep your car clean?</p>
+
+				<h2>Who we are</h2>
+					<p>We're people passionate about keeping cars clean.</p>
+
+				<h2>Contact Us</h2>
+					<p>Follow us on Twitter</p>
+		    </div>
+		  </div>
+		</div>
 	</body>
 </html>
