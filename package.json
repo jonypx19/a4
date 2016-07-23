@@ -37,5 +37,9 @@
     "mocha": "",
     "chai": "",
     "compression": ""
+  },
+
+  "scripts": {
+    "test": "mocha"
   }
 }

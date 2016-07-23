@@ -272,5 +272,26 @@ router.post('/confirmadmin',function(req,res){
         });
     });
 });
+
+router.post('/confirmSignup', function (req, res) {
+
+    req.assert('name', 'A name is required').notEmpty();
+    req.assert('email', 'An email address is required').notEmpty();
+    req.assert('email', 'Please enter a valid email.').isEmail();
+
+    req.assert('password', 'A password is required').notEmpty();
+    req.assert('repeat_password', 'Your password must be repeated').notEmpty();
+    
+    req.assert('password', 'Password is invalid').isLength({min: 6}).equals(req.body.repeat_password);
+
+    // TODO: add birthday validation
+
+    // TODO: if errors, display errors with ejs on the signup page
+
+    // TODO: save the info into the db
+
+    // TODO: render the home page as a logged in person
+
+});
 // export the routings, to be used in server.js
 exports.router = router;
