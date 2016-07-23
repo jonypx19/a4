@@ -3,12 +3,11 @@ var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 var compression = require('compression');  // gzip middleware
-var user = require('./public/assets/scripts/users.js');
-
-// may have to be installed locally
 var morgan = require('morgan');
 
 var router = require('./routes/router.js');
+var user = require('./public/assets/scripts/users.js');
+var signupValidation = require('./helper/signupValidation.js');
 
 // Set views path, template engine and default layout
 app.use(express.static(__dirname + '/public/assets'));  // location of static/client files
@@ -25,14 +24,27 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(expressValidator({
     customValidators: {
-    	
+        // Hint: You can re-use the regular expressions you used client-side!
+        // But be sure to use forward slashes for the start and end of the expression ...
+        isEmail: function(value) {
+            if (value.search(/.+@.+\../) !== -1) {
+                return true;
+            }
+            return false;
+        },
+        isDay: function(value) {
+        	if (typeof value === 'number' && value > 0 && value < 31) {
+        		return true;
+        	}
+        	return false;
+        },
+        isMonth: signupValidation.isMonth
+
     }
-})); // This line must be immediately after express.bodyParser()!    	
+})); // This line must be immediately after express.bodyParser()!
 
-app.use(router.router);
-
+app.use(router.router);  // get all the GET and POST routing
 app.use(morgan("short"));  // simple logger to the server console for debugging
-
 app.use(compression());  // put gzip in place
 
 var server = app.listen(3000, function(){
