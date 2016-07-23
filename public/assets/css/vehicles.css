@@ -116,6 +116,18 @@ section#contract_form article span.contract_info {
 	display: block;
 }
 
+section#contract_form article span.label_check {
+	font-size: 12pt;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+section#contract_form article span#total {
+	display: inline-block;
+	margin-left: 15%;
+	width: 50%;
+}
+
 /*Register Vehicle Form*/
 
 section#register_vehicles article h1 {

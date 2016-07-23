@@ -1,12 +1,5 @@
 /*General Styles*/
 
-body {
-	margin: 0;
-	padding: 0;
-	width: 80%;
-	margin-left: 20%;
-}
-
 section {
 	border-top: 4px solid #00ace6;
 }
@@ -22,23 +15,35 @@ button {
 }
 
 article.contract {
+	margin-top: 5%;
+	height: 300px;
 	background-color: #00bcf6;
 	overflow: auto;
 }
 
 article.contract img {
+	margin-top: 3%;
 	width: 25%;
+	min-width: 200px;
 	float: left;
 	display: inline-block;
 }
 
 article.contract p {
+	margin-top: 50px;
 	margin-left: 5%;
 	float: left;
 	
 }
 
+article.contract p span {
+	display: block;
+	font-size: 18pt;
+}
+
 article.contract div.detail_info {
+	font-size: 14pt;
+	margin-top: 5%;
 	margin-left: 5%;
 	float: left;
 	

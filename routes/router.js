@@ -7,11 +7,17 @@ var router = express.Router();
 var user = require('../public/assets/scripts/users.js');
 var fs = require('fs'); //For phase 1 implentation of users only.
 var model = require('../model.js');
-var temp;
+var node_geocoder = require('node-geocoder')
 
 // create Database connection
 var database = new model.Database('localhost', 'Ross', 'Detail&Wash', 'Detail_Wash');
 database.connect()
+
+var geocoder = node_geocoder({
+    provider: 'google',
+    httpAdapter: 'https', 
+    formatter: null 
+});
 
 // All of the routes
 // Get the index page:
@@ -60,6 +66,84 @@ router.get('/users/listUsers',function(req,res){
     // res.end(JSON.stringify(usersArray));
 });
 
+router.post('/contracts/registerContract', function(req, res) {
+    var userid='bob';
+
+
+    geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
+
+        database.checkContractStatus(req.body.vehicleid, function(err, result) {
+            req.body.latitude = res_geo[0].latitude;
+            req.body.longitude = res_geo[0].longitude;
+
+            var opt_list = ['vacuum', 'mats', 'protect', 'console', 'button_clean', 'wash', 'tires', 'wax'];
+            //check detail options
+
+            // error handleing
+            if (req.body.vehicleid == '') {
+                console.log("vehicle not selected");
+                res.redirect('/vehicles');
+                return;
+            }
+            console.log(result);
+            // if vehicle is already on a contract that is not complete
+            if (result) {
+                console.log('vehicle still on ongoing contract');
+                res.redirect('/vehicles');
+                return;
+            }
+
+            for (var i = 0; i < opt_list.length; i++) {
+                if (req.body[opt_list[i]] == undefined) {
+                    req.body[opt_list[i]] = false;
+                } else {
+                    req.body[opt_list[i]] = true;
+                }
+            }
+            
+            database.insertContract(req.body);
+
+            res.redirect('/vehicles');
+
+        });
+        
+        
+    });
+    
+    
+});
+
+router.get('/contracts/listContracts', function(req, res) {
+    var userid='bob';
+
+    database.getUserContracts(userid, function(err, data) {
+        var owner = [];
+        var washer = [];
+
+        if (data != null) {
+
+            for (var i=0; i < data.length; i++) {
+
+                var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
+                data[i].image = "data:image/jpg;base64," + encode64;
+
+                if (data[i].ownerid = userid) {
+                    owner.push(data[i]);
+                } else if (data[i].washerid = userid) {
+                    washer.push(data[i]);
+                }
+            }
+        }
+
+        var json = {};
+        json.owner = owner;
+        json.washer = washer;
+
+        var result = JSON.stringify(json);
+        res.end(result);
+    });
+});
+
 router.post('/vehicles/registerVehicle', function(req, res) {
 
     // used to upload image of the client's vehicle
@@ -77,7 +161,7 @@ router.post('/vehicles/registerVehicle', function(req, res) {
             database.insertVehicle('bob', req.body, data);
             res.write("Vehicle Successfully Registered");
             
-            res.end();
+            res.redirect('/vehicles');
         });
         
     });
@@ -89,6 +173,7 @@ router.get('/vehicles/listVehicles', function(req, res) {
     // bob is a  placeholder, until i can retrieve session data 
 	database.getUserVehicles('bob', function(err, data) {
 
+        // turns the binary image data into base64 encoded data and sends it to the page
         for (var i = 0; i < data.length; i++) {
             var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
             data[i].image = "data:image/jpg;base64," + encode64;
@@ -96,8 +181,7 @@ router.get('/vehicles/listVehicles', function(req, res) {
 
         var json = data;
         var result = JSON.stringify(json)
-        res.write(result);
-        res.end();
+        res.end(result);
     });
     
 });
