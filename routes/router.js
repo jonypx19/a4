@@ -18,7 +18,7 @@ var con = mysql.createConnection({
 });
 // create Database connection
 var database = new model.Database('localhost', 'Ross', 'Detail&Wash', 'Detail_Wash');
-database.connect()
+database.connect();
 
 var geocoder = node_geocoder({
     provider: 'google',
@@ -29,19 +29,33 @@ var geocoder = node_geocoder({
 // All of the routes
 // Get the index page:
 router.get('/', function(req, res) {
-    res.render('index.html');
+    if (req.session && req.session.username){
+        if(req.session.privilege == "user")
+            res.redirect("/userprofile");
+        else{
+            res.redirect("/adminprofile");
+        }
+    }
+    else {
+        res.render('index.html');
+    }
 });
 
 router.get('/signup', function(req, res) {
-    res.render('signup.html');
+    if (req.session && req.session.username){
+        if(req.session.privilege == "user")
+            res.redirect("/userprofile");
+        else{
+            res.redirect("/adminprofile");
+        }
+    }
+    else {
+        res.render('signup.html');
+    }
 });
 
 router.get('/about', function(req,res){
     res.render('aboutus.html');
-});
-
-router.get('/test', function(req,res){
-    res.end("Hello there");
 });
 
 router.get('/vehicles', function(req, res){
@@ -198,16 +212,33 @@ router.get('/adminlogin', function(req, res){
     //TODO: Two factor login (Use google/facebook)
     //TODO: Database query for user creation
     // res.send("Hi, you're an admin.")
-    res.render('../public/adminlogin',{
-        errors:''
-    });
+    if (req.session && req.session.username){
+        if(req.session.privilege == "user")
+            res.redirect("/userprofile");
+        else{
+            res.redirect("/adminprofile");
+        }
+    }
+    else {
+        res.render('../public/adminlogin', {
+            errors: ''
+        });
+    }
 });
 
 router.get('/userlogin', function(req, res) {
-    res.render('../public/userlogin.html',{
-        errors:''
-    });
-
+    if (req.session && req.session.username){
+        if(req.session.privilege == "user")
+            res.redirect("/userprofile");
+        else{
+            res.redirect("/adminprofile");
+        }
+    }
+    else {
+        res.render('../public/userlogin.html', {
+            errors: ''
+        });
+    }
 });
 
 router.post('/confirmuser',function(req,res){
@@ -227,6 +258,7 @@ router.post('/confirmuser',function(req,res){
             if (object[i].username === username && object[i].password === password){
                 if (object[i].privilege === "user") {
                     req.session.username = username;
+                    req.session.privilege = "user";
                     delete req.session.password; //deleting password if saved.
                     res.redirect("/userprofile");
                     return;
@@ -245,17 +277,6 @@ router.post('/confirmuser',function(req,res){
     });
 });
 
-router.get("/userprofile", function(req, res){
-    if (req.session && req.session.username) {
-        res.render("profile", {
-            name: req.session.username
-        })
-    }
-    else{
-        res.redirect("/userlogin");
-    }
-});
-
 router.post('/confirmadmin',function(req,res){
     var username = req.body.user;
     var password = req.body.password;
@@ -271,10 +292,9 @@ router.post('/confirmadmin',function(req,res){
             if (object[i].username === username && object[i].password === password){
                 if (object[i].privilege === "admin") {
                     req.session.username = username;
+                    req.session.privilege = "admin";
                     delete req.session.password; //deleting password if saved.
-                    res.render("profile", {
-                        name: username
-                    });
+                    res.redirect("/adminprofile");
                     return;
                 }
                 else{
@@ -292,10 +312,21 @@ router.post('/confirmadmin',function(req,res){
     });
 });
 
+router.get("/userprofile", function(req, res){
+    if (req.session && req.session.username) {
+        res.render("profile", {
+            name: "USER: " + req.session.username
+        });
+    }
+    else{
+        res.redirect("/userlogin");
+    }
+});
+
 router.get("/adminprofile", function(req,res){
     if (req.session && req.session.username) {
         res.render("profile", {
-            name: req.session.username
+            name: "ADMIN: " + req.session.username
         });
     }
     else{
@@ -306,7 +337,8 @@ router.get("/adminprofile", function(req,res){
 router.get("/logout", function(req,res){
     req.session.reset();
     res.redirect("/");
-})
+});
+
 router.post('/confirmSignup', function (req, res) {
 
     req.assert('name', 'A name is required').notEmpty();
