@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="/scripts/GAuth.js" async defer></script>
+    <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
     <title>Car Detail Exchange - Log In</title>
 
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
@@ -58,6 +61,8 @@
             </div>
         </form>
         <div id = "error"></div>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <a onclick="signOut()">Logout</a>
         <p>
             If you're an admin, click <a href="http://localhost:3000/adminlogin">here</a>.
         </p>
