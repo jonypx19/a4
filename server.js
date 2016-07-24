@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('client-sessions');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
@@ -24,24 +25,35 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(expressValidator({
     customValidators: {
-        // Hint: You can re-use the regular expressions you used client-side!
-        // But be sure to use forward slashes for the start and end of the expression ...
-        isEmail: function(value) {
-            if (value.search(/.+@.+\../) !== -1) {
+    // Hint: You can re-use the regular expressions you used client-side!
+    // But be sure to use forward slashes for the start and end of the expression ...
+    isEmail: function(value) {
+        if (value.search(/.+@.+\../) !== -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    },
+    isDay: function(value) {
+            if (typeof value === 'number' && value > 0 && value < 31) {
                 return true;
             }
             return false;
-        },
-        isDay: function(value) {
-        	if (typeof value === 'number' && value > 0 && value < 31) {
-        		return true;
-        	}
-        	return false;
-        },
-        isMonth: signupValidation.isMonth
+        }
 
-    }
+    },
+    isMonth: signupValidation.isMonth
 })); // This line must be immediately after express.bodyParser()!
+
+app.use(session({
+    cookieName: 'session',
+    secret: 'passwordstring',
+    duration: 30 * 60 * 1000,
+    activeDuration: 3 * 60 * 1000,
+    httpOnly: true,
+    ephmeral: true
+}));
 
 app.use(router.router);  // get all the GET and POST routing
 app.use(morgan("short"));  // simple logger to the server console for debugging
