@@ -3,7 +3,7 @@
 section {
 	border-top: 4px solid #00ace6;
 }
-
+/*
 button {
 	margin-left: 15%;
 	margin-right: 15%;
@@ -13,11 +13,18 @@ button {
 	color: #00ace6;
 	cursor: pointer;
 }
+*/
+
+button#search_contracts {
+	display: block;
+	margin: auto;
+}
 
 article.contract {
 	margin-top: 5%;
 	height: 300px;
-	background-color: #00bcf6;
+	background-color: #0059b3;
+	color: white;
 	overflow: auto;
 }
 

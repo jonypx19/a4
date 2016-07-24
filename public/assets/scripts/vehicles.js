@@ -37,7 +37,7 @@ function getVehicles() {
 					text: user_cars[i].license_plate
 				}).appendTo(car_article);
 
-				var button = $('<button>', {text: 'Create Contract'}).appendTo(car_article);
+				var button = $('<button>', {class: 'button signup', text: 'Create Contract'}).appendTo(car_article);
 
 				button.data('selected_car', user_cars[i]);
 

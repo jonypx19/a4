@@ -43,8 +43,6 @@ function createContractsList(contracts) {
 			class: 'car_info'
 		}).appendTo(article);
 
-		console.log(contracts[i]);
-
 		$('<span>', {
 			text: 'Manufacturer: ' + contracts[i].make
 		}).appendTo(car);
@@ -109,4 +107,8 @@ function createContractsList(contracts) {
 
 function main() {
 	getContracts();
+
+	$('button#search_contracts').on('click', function() {
+		window.location.href = '/contracts/search';
+	});
 }

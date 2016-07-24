@@ -1,12 +1,5 @@
 /*General Styles*/
 
-body {
-	margin: 0;
-	padding: 0;
-	width: 80%;
-	margin-left: 20%;
-}
-
 section {
 	border-top: 4px solid #00ace6;
 }
@@ -81,6 +74,8 @@ section#list_vehicles article span {
 section#list_vehicles article button {
 	margin-left: 25%;
 	margin-right: 25%;
+	font-size: 14pt;
+	padding: 0;
 	width : 50%;
 }
 

@@ -42,8 +42,21 @@ router.get('/vehicles', function(req, res){
 });
 
 router.get('/contracts', function(req, res) {
-    res.render('contracts.html')
+    res.render('contracts.html');
 });
+
+router.get('/contracts/search', function(req, res) {
+    res.render('contract_search.html')
+});
+
+router.post('/search/searchContracts', function(req, res) {
+    geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country, function(err, res_geo) {
+        database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, function (err, result) {
+            res.end(JSON.stringify(result));
+            return;
+        });
+    });
+})
 
 router.get('/users/listUsers',function(req,res){
     console.log(typeof user);
@@ -66,13 +79,17 @@ router.get('/users/listUsers',function(req,res){
     // res.end(JSON.stringify(usersArray));
 });
 
+router.post('/contracts/takeContract', function(req, res) {
+    
+});
+
 router.post('/contracts/registerContract', function(req, res) {
     var userid='bob';
 
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
 
-        database.checkContractStatus(req.body.vehicleid, function(err, result) {
+        database.checkContractStatus(req.body.vehicleid, function(err, result, contract) {
             req.body.latitude = res_geo[0].latitude;
             req.body.longitude = res_geo[0].longitude;
 
@@ -85,7 +102,7 @@ router.post('/contracts/registerContract', function(req, res) {
                 res.redirect('/vehicles');
                 return;
             }
-            console.log(result);
+            
             // if vehicle is already on a contract that is not complete
             if (result) {
                 console.log('vehicle still on ongoing contract');
@@ -124,9 +141,6 @@ router.get('/contracts/listContracts', function(req, res) {
 
             for (var i=0; i < data.length; i++) {
 
-                var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
-                data[i].image = "data:image/jpg;base64," + encode64;
-
                 if (data[i].ownerid = userid) {
                     owner.push(data[i]);
                 } else if (data[i].washerid = userid) {
@@ -149,20 +163,15 @@ router.post('/vehicles/registerVehicle', function(req, res) {
     // used to upload image of the client's vehicle
     upload.uploadImage(req,res,function(err) {
         if(err) {
-            return res.end("Error uploading file.");
+            res.end("Error uploading file.");
+            return;
         }
-        
-        fs.readFile(req.file.path, "binary", function(err, data) {
-            if(err) {
-                throw err;
-            }
 
-            // inserts form data for vehicle into database
-            database.insertVehicle('bob', req.body, data);
-            res.write("Vehicle Successfully Registered");
+
+        // inserts form data for vehicle into database
+        database.insertVehicle('bob', req.body, req.file.path.slice(req.file.path.indexOf('/images')));
             
-            res.redirect('/vehicles');
-        });
+        res.redirect('/vehicles');
         
     });
 
@@ -174,10 +183,6 @@ router.get('/vehicles/listVehicles', function(req, res) {
 	database.getUserVehicles('bob', function(err, data) {
 
         // turns the binary image data into base64 encoded data and sends it to the page
-        for (var i = 0; i < data.length; i++) {
-            var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
-            data[i].image = "data:image/jpg;base64," + encode64;
-        }
 
         var json = data;
         var result = JSON.stringify(json)
