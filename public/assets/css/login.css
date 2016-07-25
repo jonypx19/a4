@@ -5,51 +5,50 @@ div.fields{
 body {
     width: 100%;
     margin-left: 0;
-    padding-top: 3%;
+    padding-top: 7%;
     padding-left: 0;
     font-family: 'Rockwell', sans-serif;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    font-family: 'Rockwell', sans-serif;
-    overflow: hidden;
-    background-color: #80dfff;
-    position: fixed;
-    top: 12%;
-    width: 100%;
+form {
+    border: 1px solid #ccc;
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 66%;
 }
 
-ul.mainTitle{
-    top: 0;
-    height: 18%;
-    background-color: #33ccff;
-    text-align: center;
+label, input, textarea, select, option {
+    font: 400 18pt/24pt "Helvetica", sans-serif;
 }
 
-li {
-    float: left;
-}
-
-li a {
+label {
     display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+    margin: 2rem 0;
+    width: 20rem;
 }
 
-li a:hover:not(.active) {
-    background-color: #00ace6;
+label:first-child {
+    margin-top: 0;
 }
 
-/* Change the link color to #00ace6 (mid-blue) on hover */
-li a:hover {
-    background-color: #00ace6;
+input {
+    border-radius: 5px;
 }
 
-.active {
-    background-color: #00ace6;
+input[type="text"]:hover {
+    /*box-shadow: 0 0 20px rgba(127, 127, 127, 0.1) inset;*/
+}
+
+input[type="submit"]:hover {
+    background-color: #fdfdfd;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    margin: 20 0 0 0;
+}
+
+input:invalid {
+  box-shadow: 0 0 3pt 2pt red;
 }
