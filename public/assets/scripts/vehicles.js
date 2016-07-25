@@ -37,7 +37,7 @@ function getVehicles() {
 					text: user_cars[i].license_plate
 				}).appendTo(car_article);
 
-				var button = $('<button>', {text: 'Create Contract'}).appendTo(car_article);
+				var button = $('<button>', {class: 'button signup', text: 'Create Contract'}).appendTo(car_article);
 
 				button.data('selected_car', user_cars[i]);
 
@@ -178,6 +178,7 @@ function setPrices() {
 
 /*Attaches controller functionality to necessary buttons and Forms*/
 function main() {
+	console.log($.session);
 	getVehicles();
 	$('fieldset.detail label').on('click', function() {
 		var total = setPrices();
