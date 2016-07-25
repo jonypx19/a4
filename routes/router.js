@@ -17,7 +17,7 @@ var con = mysql.createConnection({
     database: 'Detail_Wash'
 });
 // create Database connection
-var database = new model.Database('localhost', 'Ross', 'Detail&Wash', 'Detail_Wash');
+var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
 database.connect();
 
 var geocoder = node_geocoder({
@@ -63,7 +63,20 @@ router.get('/vehicles', function(req, res){
 });
 
 router.get('/contracts', function(req, res) {
-    res.render('contracts.html')
+    res.render('contracts.html');
+});
+
+router.get('/contracts/search', function(req, res) {
+    res.render('contract_search.html')
+});
+
+router.post('/search/searchContracts', function(req, res) {
+    geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country, function(err, res_geo) {
+        database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, function (err, result) {
+            res.end(JSON.stringify(result));
+            return;
+        });
+    });
 });
 
 router.get('/users/listUsers',function(req,res){
@@ -87,13 +100,32 @@ router.get('/users/listUsers',function(req,res){
     // res.end(JSON.stringify(usersArray));
 });
 
+router.post('/search/takeContract', function(req, res) {
+    database.checkContractStatus(req.body.id, 'taken', function(err, result) {
+         var obj = {};
+        
+        if (result) {
+            obj.message = "Contract has already been taken";
+            res.end(JSON.stringify(obj));
+        } else {
+            database.changeContractStatus(req.body.id, req.session.userid,'taken', function(err) {
+
+            });
+            obj.message = "Contract has been Successfully taken";
+            res.end(JSON.stringify(obj));
+        }
+
+        
+    });
+});
+
 router.post('/contracts/registerContract', function(req, res) {
-    var userid='bob';
+    var userid=req.session.userid;
 
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
 
-        database.checkContractStatus(req.body.vehicleid, function(err, result) {
+        database.checkDuplicateContract(req.body.vehicleid, function(err, result) {
             req.body.latitude = res_geo[0].latitude;
             req.body.longitude = res_geo[0].longitude;
 
@@ -106,7 +138,7 @@ router.post('/contracts/registerContract', function(req, res) {
                 res.redirect('/vehicles');
                 return;
             }
-            console.log(result);
+            
             // if vehicle is already on a contract that is not complete
             if (result) {
                 console.log('vehicle still on ongoing contract');
@@ -135,7 +167,8 @@ router.post('/contracts/registerContract', function(req, res) {
 });
 
 router.get('/contracts/listContracts', function(req, res) {
-    var userid='bob';
+    var userid=req.sessoin.userid;
+    console.log(req.session.username);
 
     database.getUserContracts(userid, function(err, data) {
         var owner = [];
@@ -145,12 +178,9 @@ router.get('/contracts/listContracts', function(req, res) {
 
             for (var i=0; i < data.length; i++) {
 
-                var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
-                data[i].image = "data:image/jpg;base64," + encode64;
-
-                if (data[i].ownerid = userid) {
+                if (data[i].ownerid == userid) {
                     owner.push(data[i]);
-                } else if (data[i].washerid = userid) {
+                } else if (data[i].washerid == userid) {
                     washer.push(data[i]);
                 }
             }
@@ -170,20 +200,15 @@ router.post('/vehicles/registerVehicle', function(req, res) {
     // used to upload image of the client's vehicle
     upload.uploadImage(req,res,function(err) {
         if(err) {
-            return res.end("Error uploading file.");
+            res.end("Error uploading file.");
+            return;
         }
-        
-        fs.readFile(req.file.path, "binary", function(err, data) {
-            if(err) {
-                throw err;
-            }
 
-            // inserts form data for vehicle into database
-            database.insertVehicle('bob', req.body, data);
-            res.write("Vehicle Successfully Registered");
+
+        // inserts form data for vehicle into database
+        database.insertVehicle(req.session.userid, req.body, req.file.path.slice(req.file.path.indexOf('/images')));
             
-            res.redirect('/vehicles');
-        });
+        res.redirect('/vehicles');
         
     });
 
@@ -192,13 +217,9 @@ router.post('/vehicles/registerVehicle', function(req, res) {
 router.get('/vehicles/listVehicles', function(req, res) {
 
     // bob is a  placeholder, until i can retrieve session data 
-	database.getUserVehicles('bob', function(err, data) {
+	database.getUserVehicles(req.session.userid, function(err, data) {
 
         // turns the binary image data into base64 encoded data and sends it to the page
-        for (var i = 0; i < data.length; i++) {
-            var encode64 = new Buffer(data[i].image.toString(), 'binary').toString('base64');
-            data[i].image = "data:image/jpg;base64," + encode64;
-        }
 
         var json = data;
         var result = JSON.stringify(json)
@@ -256,6 +277,14 @@ router.post('/confirmuser',function(req,res){
     }
     var username = req.body.user;
     var password = req.body.password;
+
+    //adding database query here to check if user is in the data base
+    // then sets the users id in the session data
+    database.checkUser(username, password, function(err, result, id){
+        if (result) {
+           req.session.userid = id;
+        } 
+    });
 
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);

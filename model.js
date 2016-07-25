@@ -11,6 +11,11 @@ var Database = function (host_name, username, pass, database_name) {
 
 }
 
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 Database.prototype.connect = function() {
 	//establish connection to mysql database
 
@@ -23,6 +28,27 @@ Database.prototype.connect = function() {
 	});
 };
 
+// User Queries
+
+Database.prototype.checkUser = function(email, password, callback) {
+	this.con.query("SELECT id FROM users WHERE email=? and password=?",
+		[email, password],
+		function (err, result) {
+			if (err) {
+				console.log(err);
+				callback(err, null, null);
+			} 
+
+			if (result.length == 1) {
+				callback(null, true, result[0].id);
+			} else {
+				callback(null, false, null);
+			}
+		});
+}
+
+// Vehicles Queries
+
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 	
 	this.con.query("INSERT INTO vehicles (ownerid, make, model, year, license_plate, image) \
@@ -30,7 +56,7 @@ Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 		[username, vehicle.manu, vehicle.model, vehicle.year, vehicle.plate, image_data], 
 		function (err, result) {
 			if (err) {
-				console.log("An Error occured during inserting vehicle");
+				console.log(err);
 
 			}
 		});
@@ -48,7 +74,37 @@ Database.prototype.getUserVehicles = function(username, callback) {
 	});
 }
 
-Database.prototype.checkContractStatus = function(vehicleid, callback) {
+// Contract Queries
+
+Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
+	this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
+		[status, washer, contractid],
+		function(err, result) {
+			if (err) {
+				console.log("couldn't update contract");
+				callback(err);
+			} else {
+				callback(null);
+			}
+		});
+}
+
+Database.prototype.checkContractStatus = function(contractid, status, callback) {
+	this.con.query("SELECT id, vehicleid, status FROM contract WHERE vehicleid=? and status=?",
+		[contractid, status],
+		function(err, result) {
+			if (err) {
+				console.log("Couldn't select contracts");
+				callback(err, null);
+			} else if (result.length > 0) {
+				callback(null, true);
+			} else {
+				callback(null, false);
+			}
+		});
+}
+
+Database.prototype.checkDuplicateContract = function(vehicleid, callback) {
 	this.con.query("SELECT id, vehicleid, status FROM contract WHERE vehicleid=? and (status='available' or status='taken')",
 		[vehicleid],
 		function(err, result) {
@@ -60,7 +116,7 @@ Database.prototype.checkContractStatus = function(vehicleid, callback) {
 			} else {
 				callback(null, false);
 			}
-		})
+		});
 }
 
 Database.prototype.insertContract = function(contract) {
@@ -76,8 +132,40 @@ Database.prototype.insertContract = function(contract) {
 		});
 }
 
+Database.prototype.findClientContracts = function(lat, lon, callback) {
+	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available'", function (err, result) {
+		if (err) {
+			console.log("could not select Contracts");
+			callback(err, null);
+			return;
+		}
+
+		// filters results based on local distance
+		var new_res = result.filter(function(value) {
+			var lon2 = value.longitude;
+			var lat2 = value.latitude;
+
+			var R = 6371; // Radius of the earth in km
+			var dLat = deg2rad(lat2-lat);  // deg2rad below
+			var dLon = deg2rad(lon2-lon); 
+			var a = 
+			Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(deg2rad(lat)) * Math.cos(deg2rad(lat2)) * 
+			Math.sin(dLon/2) * Math.sin(dLon/2); 
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c; // Distance in km
+
+		    value.distance = Number(Math.round(d+'e2')+'e-2');
+
+		    return d <= 5;
+		});
+
+		callback(null, new_res);
+	});
+}
+
 Database.prototype.getUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, vehicleid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+	this.con.query("SELECT contract.id, washerid, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
 		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
 		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
 		WHERE ownerid=? or washerid=?", 

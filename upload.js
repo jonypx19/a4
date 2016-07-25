@@ -1,10 +1,10 @@
 var multer = require("multer");
 var storage = multer.diskStorage({
 	destination: function(req, file, callback) {
-		callback(null, './tmp');
+		callback(null, './public/assets/images');
 	},
 	filename: function(req, file, callback) {
-		callback(null, file.fieldname);
+		callback(null, "bob_" + file.originalname);
 	}
 });
 

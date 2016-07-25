@@ -1,7 +1,7 @@
 -- note: user password MUST be bcrypted and salted
 
-CREATE TABLE  user (
-	id INTEGER PRIMARY KEY,
+CREATE TABLE  users (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name TEXT NOT NULL,
 	email TEXT NOT NULL,
 	password TEXT NOT NULL,
@@ -16,22 +16,22 @@ CREATE TABLE  user (
 
 -- owner is the userid of the owner
 -- image is the URL
-CREATE TABLE vehicle (
-	id INTEGER PRIMARY KEY,
-	make TEXT NOT NULL,
-	model TEXT NOT NULL,
-	model_year INTEGER NOT NULL,
-	license_plate TEXT NOT NULL,
+CREATE TABLE vehicles (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	make VARCHAR(45) NOT NULL,
+	model VARCHAR(45) NOT NULL,
+	year INTEGER NOT NULL,
+	license_plate VARCHAR(45) NOT NULL,
 	ownerid INTEGER NOT NULL,
-	image TEXT,
+	image VARCHAR(100),
 	
-	FOREIGN KEY(ownerid) REFERENCES user(id)
+	FOREIGN KEY(ownerid) REFERENCES users(id)
 );
 
 CREATE TABLE contract (
-	id INTEGER PRIMARY KEY,
-	latitude TEXT,
-	longitude TEXT,
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	latitude VARCHAR(100) NOT NULL,
+	longitude VARCHAR(100) NOT NULL,
 	washerid INTEGER NOT NULL,
 	vehicleid INTEGER NOT NULL,
 	price INTEGER NOT NULL,
@@ -43,24 +43,30 @@ CREATE TABLE contract (
 	hand_wash BOOLEAN NOT NULL,
 	clean_tires BOOLEAN NOT NULL,
 	hand_wax BOOLEAN NOT NULL,
+	country VARCHAR(45) NOT NULL,
+	address VARCHAR(45) NOT NULL,
+	province VARCHAR(45) NOT NULL,
+	city VARCHAR(45) NOT NULL,
+	postal_code VARCHAR(45) NOT NULL,
+	status VARCHAR(45) NOT NULL,
 	
-	FOREIGN KEY(washerid) REFERENCES user(id),
-	FOREIGN KEY(vehicleid) REFERENCES vehicle(id)
+	FOREIGN KEY(washerid) REFERENCES users(id),
+	FOREIGN KEY(vehicleid) REFERENCES vehicles(id)
 	
 );
 
 -- subject: the person being written about
 -- author: the person writing the review
 CREATE TABLE review (
-	id INTEGER PRIMARY KEY,
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	subjectid INTEGER NOT NULL,
 	authorid INTEGER NOT NULL,
 	contractid INTEGER NOT NULL,
 	content TEXT,
 	rating INTEGER,
 	
-	FOREIGN KEY(subjectid) REFERENCES user(id),
-	FOREIGN KEY(authorid) REFERENCES user(id),
+	FOREIGN KEY(subjectid) REFERENCES users(id),
+	FOREIGN KEY(authorid) REFERENCES users(id)
 );
 
 INSERT INTO users (id, name, email, password)
@@ -75,6 +81,6 @@ INSERT INTO users (id, name, email, password)
 	VALUES (11, 'Mysterion', 'whois@myserion.com', '$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq');
 
 -- owned by user 11
-INSERT INTO vehicle (id, make, model, model_year, license_plate, ownerid, image)
+INSERT INTO vehicles (id, make, model, year, license_plate, ownerid, image)
 	VALUES (1, 'Mystery Machine', 'N/A', '1969', 'AAAA 111', '11', 'images/placeholder_car.jpg');
 	
