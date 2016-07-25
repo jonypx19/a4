@@ -178,6 +178,7 @@ function setPrices() {
 
 /*Attaches controller functionality to necessary buttons and Forms*/
 function main() {
+	console.log($.session);
 	getVehicles();
 	$('fieldset.detail label').on('click', function() {
 		var total = setPrices();

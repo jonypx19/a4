@@ -110,9 +110,33 @@ function searchContracts() {
 					text: 'Distance: ' + contracts[i].distance
 				}).appendTo(local);
 
-				$('<button>', {class: 'add_contract', text:'Take Contract'}).appendTo(article);
+				var b = $('<button>', {class: 'add_contract', text:'Take Contract'}).appendTo(article);
+				b.data('id', contracts[i].id);
+
+				b.on('click', function() {
+					takeContract($(this).data('id'));
+					$(this).parent().remove();
+				});
 			}
 			
+		}
+	});
+}
+
+function takeContract(contractid) {
+	var input = {
+			id: contractid
+		};
+	$.ajax({
+		type: 'post',
+		url: '/search/takeContract',
+		"Content-Type": 'application/json',
+		dataType: 'json',
+		data: input,
+
+		success: function(json) {
+			console.log(json);
+			$('#message').text(json.message);
 		}
 	});
 }

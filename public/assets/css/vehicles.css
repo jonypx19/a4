@@ -129,3 +129,8 @@ section#register_vehicles article h1 {
 	text-align: center;
 	font-size: 24pt;
 }
+
+section#register_vehicles span {
+	color: black;
+	line-height: 2;
+}

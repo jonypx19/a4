@@ -65,3 +65,10 @@ button:hover {
 	background-color: green;
     color: white;
 }
+
+span#message {
+	display: block;
+	text-align: center;
+	font-size: 18pt;
+	color: green;
+}

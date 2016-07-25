@@ -35,7 +35,7 @@ Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 		[username, vehicle.manu, vehicle.model, vehicle.year, vehicle.plate, image_data], 
 		function (err, result) {
 			if (err) {
-				console.log("An Error occured during inserting vehicle");
+				console.log(err);
 
 			}
 		});
@@ -53,19 +53,47 @@ Database.prototype.getUserVehicles = function(username, callback) {
 	});
 }
 
-Database.prototype.checkContractStatus = function(vehicleid, callback) {
+Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
+	this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
+		[status, washer, contractid],
+		function(err, result) {
+			if (err) {
+				console.log("couldn't update contract");
+				callback(err);
+			} else {
+				callback(null);
+			}
+		});
+}
+
+Database.prototype.checkContractStatus = function(contractid, status, callback) {
+	this.con.query("SELECT id, vehicleid, status FROM contract WHERE vehicleid=? and status=?",
+		[contractid, status],
+		function(err, result) {
+			if (err) {
+				console.log("Couldn't select contracts");
+				callback(err, null);
+			} else if (result.length > 0) {
+				callback(null, true);
+			} else {
+				callback(null, false);
+			}
+		});
+}
+
+Database.prototype.checkDuplicateContract = function(vehicleid, callback) {
 	this.con.query("SELECT id, vehicleid, status FROM contract WHERE vehicleid=? and (status='available' or status='taken')",
 		[vehicleid],
 		function(err, result) {
 			if (err) {
 				console.log("Couldn't select contracts");
-				callback(err, null, null);
+				callback(err, null);
 			} else if (result.length > 0) {
-				callback(null, true, result);
+				callback(null, true);
 			} else {
-				callback(null, false, result);
+				callback(null, false);
 			}
-		})
+		});
 }
 
 Database.prototype.insertContract = function(contract) {
@@ -82,7 +110,7 @@ Database.prototype.insertContract = function(contract) {
 }
 
 Database.prototype.findClientContracts = function(lat, lon, callback) {
-	this.con.query("SELECT * FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) WHERE status='available'", function (err, result) {
+	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available'", function (err, result) {
 		if (err) {
 			console.log("could not select Contracts");
 			callback(err, null);
