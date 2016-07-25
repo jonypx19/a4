@@ -40,11 +40,20 @@ app.use(expressValidator({
                 return true;
             }
             return false;
-        }
-
     },
-    isMonth: signupValidation.isMonth
-})); // This line must be immediately after express.bodyParser()!
+
+    isMonth: signupValidation.isMonth,
+
+    isYear: signupValidation.isYear,
+
+    isPassword: function(value) {
+    	// could enforce more password requirements
+		if (value.length > 6) {
+			return true;
+		}
+		return false;
+    }
+}})); // This line must be immediately after express.bodyParser()!
 
 app.use(session({
     cookieName: 'session',
