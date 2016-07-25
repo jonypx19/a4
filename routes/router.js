@@ -111,7 +111,7 @@ router.post('/search/takeContract', function(req, res) {
             obj.message = "Contract has already been taken";
             res.end(JSON.stringify(obj));
         } else {
-            database.changeContractStatus(req.body.id, '11','taken', function(err) {
+            database.changeContractStatus(req.body.id, req.session.userid,'taken', function(err) {
 
             });
             obj.message = "Contract has been Successfully taken";
@@ -123,7 +123,7 @@ router.post('/search/takeContract', function(req, res) {
 });
 
 router.post('/contracts/registerContract', function(req, res) {
-    var userid='11';
+    var userid=req.session.userid;
 
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
@@ -170,7 +170,8 @@ router.post('/contracts/registerContract', function(req, res) {
 });
 
 router.get('/contracts/listContracts', function(req, res) {
-    var userid='11';
+    var userid=req.sessoin.userid;
+    console.log(req.session.username);
 
     database.getUserContracts(userid, function(err, data) {
         var owner = [];
@@ -180,9 +181,9 @@ router.get('/contracts/listContracts', function(req, res) {
 
             for (var i=0; i < data.length; i++) {
 
-                if (data[i].ownerid = userid) {
+                if (data[i].ownerid == userid) {
                     owner.push(data[i]);
-                } else if (data[i].washerid = userid) {
+                } else if (data[i].washerid == userid) {
                     washer.push(data[i]);
                 }
             }
@@ -208,7 +209,7 @@ router.post('/vehicles/registerVehicle', function(req, res) {
 
 
         // inserts form data for vehicle into database
-        database.insertVehicle('11', req.body, req.file.path.slice(req.file.path.indexOf('/images')));
+        database.insertVehicle(req.session.userid, req.body, req.file.path.slice(req.file.path.indexOf('/images')));
             
         res.redirect('/vehicles');
         
@@ -219,7 +220,7 @@ router.post('/vehicles/registerVehicle', function(req, res) {
 router.get('/vehicles/listVehicles', function(req, res) {
 
     // bob is a  placeholder, until i can retrieve session data 
-	database.getUserVehicles('11', function(err, data) {
+	database.getUserVehicles(req.session.userid, function(err, data) {
 
         // turns the binary image data into base64 encoded data and sends it to the page
 
@@ -271,6 +272,14 @@ router.post('/confirmuser',function(req,res){
         username:req.body.user,
         password: req.body.password
     };
+
+    //adding database query here to check if user is in the data base
+    // then sets the users id in the session data
+    database.checkUser(username, password, function(err, result, id){
+        if (result) {
+           req.session.userid = id;
+        } 
+    });
 
 
 
