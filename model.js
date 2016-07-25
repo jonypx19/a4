@@ -28,6 +28,27 @@ Database.prototype.connect = function() {
 	});
 };
 
+// User Queries
+
+Database.prototype.checkUser = function(email, password, callback) {
+	this.con.query("SELECT id FROM users WHERE email=? and password=?",
+		[email, password],
+		function (err, result) {
+			if (err) {
+				console.log(err);
+				callback(err, null, null);
+			} 
+
+			if (result.length == 1) {
+				callback(null, true, result[0].id);
+			} else {
+				callback(null, false, null);
+			}
+		});
+}
+
+// Vehicles Queries
+
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 	
 	this.con.query("INSERT INTO vehicles (ownerid, make, model, year, license_plate, image) \
@@ -52,6 +73,8 @@ Database.prototype.getUserVehicles = function(username, callback) {
 
 	});
 }
+
+// Contract Queries
 
 Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
 	this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
@@ -142,7 +165,7 @@ Database.prototype.findClientContracts = function(lat, lon, callback) {
 }
 
 Database.prototype.getUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, vehicleid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+	this.con.query("SELECT contract.id, washerid, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
 		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
 		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
 		WHERE ownerid=? or washerid=?", 
