@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrator</title>
+
+    <script src="scripts/jquery-3.0.0.min.js" defer></script>
+    <script src="/scripts/GAuth.js" defer></script>
+    <script src="/scripts/userObject.js" defer></script>
+    <script src="/scripts/admin.js" defer></script>
+</head>
+<body>
+    <p>
+        Welcome <%- name %>! This is your user profile. From here, you can delete users.
+    </p>
+    <div id="payload">
+
+    </div>
+    <form action="/logout" method="get">
+        <input type="submit" id="logout" name="logout" value="Logout"/>
+    </form>
+</body>
+</html>
