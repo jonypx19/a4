@@ -57,7 +57,7 @@ body {
     font-family: 'Rockwell', sans-serif;
 }
 
-body > ul {
+/*body > ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -96,7 +96,7 @@ body > ul li a:hover:not(.active) {
 /* Change the link color to #00ace6 (mid-blue) on hover */
 body > ul li a:hover {
     background-color: #00264d;
-}
+}*/
 
 .active {
     background-color: #00264d;
@@ -175,8 +175,8 @@ p.incorrect{
     display: inline-block;
     font-size: 20px;
     margin: 4px 2px;
-    -webkit-transition-duration: 0.9s; /* Safari */
-    transition-duration: 0.9s;
+    -webkit-transition-duration: 0.1s; /* Safari */
+    transition-duration: 0.1s;
     cursor: pointer;
 }
 
