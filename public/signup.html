@@ -35,10 +35,7 @@
             <h1>Create a Profile</h1>
         </header>
 
-		<!-- TODO: Make sure the claim below is correct -->
-		<!-- Option to log in if you already have an account is always in the top right corner -->
-		
-		<!-- securely send it to the server -->
+		<!-- send data to the server via POST-->
 		<form action="/confirmSignup" method="post">
 				<label>Name
 					<input type="text" name="name" required="required">
@@ -46,7 +43,7 @@
 
 				<label>Email
 					<input type="text" name="email" required="required" pattern=".+@.+\..+">
-					<span class="error"><%- errors.error_email %></span>
+					<span class="error"><%= errors.error_email %></span>
 				</label>
 
 				<label>Password (at least 6 characters)

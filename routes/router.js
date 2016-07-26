@@ -170,7 +170,7 @@ router.post('/contracts/registerContract', function(req, res) {
 });
 
 router.get('/contracts/listContracts', function(req, res) {
-    var userid=req.sessoin.userid;
+    var userid=req.session.userid;
     console.log(req.session.username);
 
     database.getUserContracts(userid, function(err, data) {
@@ -394,13 +394,13 @@ router.post('/confirmSignup', function (req, res) {
     var isValidDate = signupValidation.isValidDate(req.body.month, req.body.day, req.body.year);
 
     // sanitation
-    req.body.name = req.sanitize(req.param('name'));
-    req.body.email = req.sanitize(req.param('email'));
-    req.body.password = req.sanitize(req.param('password'));
-    req.body.repeat_password = req.sanitize(req.param('repeat_password'));
-    req.body.month = req.sanitize(req.param('month'));
-    req.body.day = req.sanitize(req.param('day'));
-    req.body.year = req.sanitize(req.param('year'));
+    req.body.name = req.sanitize(req.body.name);
+    req.body.email = req.sanitize(req.body.email);
+    req.body.password = req.sanitize(req.body.password);
+    req.body.repeat_password = req.sanitize(req.body.repeat_password);
+    req.body.month = req.sanitize(req.body.month);
+    req.body.day = req.sanitize(req.body.day);
+    req.body.year = req.sanitize(req.body.year);
 
     // TODO: if errors, display errors with ejs on the signup page
 
@@ -408,51 +408,42 @@ router.post('/confirmSignup', function (req, res) {
     var errors = req.validationErrors();
     var mappedErrors = req.validationErrors(true);
 
-    if (! isValidDate) {
-        var dateError = {
-            param: 'year',
-            msg: 'The date you entered is invalid',
-            value: ''
-        };
-        errors.push(dateError);
-        mappedErrors.push(dateError);
-    }
 
     for (var i = 0; i < errors.length; i++) {
         console.log(errors[i]);
     }
 
-    // send back error message to user if they exist
+    // send validation errors back
     if (errors) {
         var errorMsgs = { "errors": {} };
 
         if ( mappedErrors.email ) {
-            errorMsgs.errors.error_email = mappedErrors.email.msg;
+            errorMsgs.errors.error_email = 'The email you entered is invalid.';
         }
 
         if ( ! isValidDate ) {
-            errorMsgs.errors.error_date = 'The date you entered is invalid';
+            errorMsgs.errors.error_date = 'The date you entered is invalid.';
         }
 
         req.session.errors = errors;
         res.render('/signup', errorMsgs);
     }
 
-    // no errors
-    else {
-        // save the request info into the db
-        var userAlreadyExists = database.insertUser(req.body);
 
-        if (userAlreadyExists) {
-            console.log('00000000000000000000000000000000000000000000000000')
-            res.render('/signup', {
+    // save the request info into the db
+    database.insertUser(req.body, function (err){
+        if (err) {
+            res.render('signup', {
                 'errors': {
-                    'email': 'There is already an account with this email.'
+                    'error_email': 'There is already an account with this email.'
                 }
+
             });
         }
-        res.redirect('/userlogin');
-    }
+        else {
+            res.redirect('/userlogin');
+        }
+    });
 });
 // export the routings, to be used in server.js
 exports.router = router;
