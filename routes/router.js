@@ -379,6 +379,7 @@ router.get("/logout", function(req,res){
 
 router.post('/confirmSignup', function (req, res) {
 
+    // validation
     req.assert('name', 'A name is required').notEmpty();
     req.assert('email', 'An email address is required').notEmpty();
     req.assert('email', 'Please enter a valid email.').isEmail();
@@ -392,7 +393,14 @@ router.post('/confirmSignup', function (req, res) {
 
     var isValidDate = signupValidation.isValidDate(req.body.month, req.body.day, req.body.year);
 
-
+    // sanitation
+    req.body.name = req.sanitize(req.param('name'));
+    req.body.email = req.sanitize(req.param('email'));
+    req.body.password = req.sanitize(req.param('password'));
+    req.body.repeat_password = req.sanitize(req.param('repeat_password'));
+    req.body.month = req.sanitize(req.param('month'));
+    req.body.day = req.sanitize(req.param('day'));
+    req.body.year = req.sanitize(req.param('year'));
 
     // TODO: if errors, display errors with ejs on the signup page
 

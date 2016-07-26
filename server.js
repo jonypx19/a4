@@ -3,6 +3,7 @@ var session = require('client-sessions');
 var app = express();
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
+var expressSanitizer = require('express-sanitizer')
 var compression = require('compression');  // gzip middleware
 var morgan = require('morgan');
 
@@ -53,7 +54,10 @@ app.use(expressValidator({
 		}
 		return false;
     }
-}})); // This line must be immediately after express.bodyParser()!
+}})); // This line must be immediately after express.bodyParser()
+
+app.use(expressSanitizer());  // no options used
+
 
 app.use(session({
     cookieName: 'session',
