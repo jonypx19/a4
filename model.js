@@ -45,8 +45,29 @@ Database.prototype.checkUser = function(email, password, callback) {
 				callback(null, false, null);
 			}
 		});
-}
+};
 
+// used after a user signs up
+Database.prototype.insertUser = function(user, callback) {
+
+	// id is auto incremented
+	this.con.query('INSERT INTO users (name, email, password, month, day, year) VALUES (?, ?, ?, ?, ?, ?)',
+		[user.name, user.email, user.password, user.month, user.day, user.year],
+		function (err, result) {
+			if (err) {
+				console.log('Could not insert user');
+
+				console.log('model.js: ' + err.code);
+
+				if (err.code === 'ER_DUP_ENTRY') {
+					callback(err);
+				}
+			}
+			else {
+				callback(null);
+			}
+		});
+};
 // Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
@@ -56,6 +77,7 @@ Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 		[username, vehicle.manu, vehicle.model, vehicle.year, vehicle.plate, image_data], 
 		function (err, result) {
 			if (err) {
+				console.log('Could not insert vehicle');
 				console.log(err);
 
 			}

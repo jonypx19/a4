@@ -1,8 +1,10 @@
 var express = require('express');
 var session = require('client-sessions');
 var app = express();
+var path = require('path');
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
+var expressSanitizer = require('express-sanitizer')
 var compression = require('compression');  // gzip middleware
 var morgan = require('morgan');
 
@@ -11,9 +13,9 @@ var user = require('./public/assets/scripts/users.js');
 var signupValidation = require('./helper/signupValidation.js');
 
 // Set views path, template engine and default layout
-app.use(express.static(__dirname + '/public/assets'));  // location of static/client files
+app.use(express.static(path.join(__dirname + '/public/assets')));  // location of static/client files
 app.engine('.html', require('ejs').__express);
-app.set('views', __dirname + '/public');
+app.set('views', path.join(__dirname + '/public'));
 app.set('view engine', 'html');
 
 // The request body is received on GET or POST.
@@ -53,7 +55,10 @@ app.use(expressValidator({
 		}
 		return false;
     }
-}})); // This line must be immediately after express.bodyParser()!
+}})); // This line must be immediately after express.bodyParser()
+
+app.use(expressSanitizer());  // no options used
+
 
 app.use(session({
     cookieName: 'session',
