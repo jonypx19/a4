@@ -432,9 +432,18 @@ router.post('/confirmSignup', function (req, res) {
 
     // no errors
     else {
-        // TODO: save the request info into the db
+        // save the request info into the db
+        var userAlreadyExists = database.insertUser(req.body);
 
-        res.redirect('/login');
+        if (userAlreadyExists) {
+            console.log('00000000000000000000000000000000000000000000000000')
+            res.render('/signup', {
+                'errors': {
+                    'email': 'There is already an account with this email.'
+                }
+            });
+        }
+        res.redirect('/userlogin');
     }
 });
 // export the routings, to be used in server.js

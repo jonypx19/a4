@@ -104,7 +104,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
-  `email` text NOT NULL,
+  `email` text NOT NULL UNIQUE,
   `password` text NOT NULL,
   `month` text NOT NULL,
   `day` int(11) NOT NULL,
