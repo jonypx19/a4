@@ -19,7 +19,7 @@ var con = mysql.createConnection({
 });
 // create Database connection
 var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-database.connect()
+database.connect();
 
 var geocoder = node_geocoder({
     provider: 'google',
@@ -266,12 +266,20 @@ router.get('/userlogin', function(req, res) {
 });
 
 router.post('/confirmuser',function(req,res){
+    //res.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
+    var username;
+    var password;
+    if (req.body.isGoogleSignIn){
+        username = req.body.name;
+        req.session.username = username;
+        req.session.privilege = "user";
+        //TODO: find the username from the db. If it doesn't exist, just put it in
+        //as a new one with privilege = user.(since this is verified as a google account).
+        res.redirect("/userprofile");
+        return;
+    }
     var username = req.body.user;
     var password = req.body.password;
-    response = {
-        username:req.body.user,
-        password: req.body.password
-    };
 
     //adding database query here to check if user is in the data base
     // then sets the users id in the session data
@@ -280,8 +288,6 @@ router.post('/confirmuser',function(req,res){
            req.session.userid = id;
         } 
     });
-
-
 
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);
@@ -357,7 +363,7 @@ router.get("/userprofile", function(req, res){
 
 router.get("/adminprofile", function(req,res){
     if (req.session && req.session.username) {
-        res.render("profile", {
+        res.render("adminprofile", {
             name: "ADMIN: " + req.session.username
         });
     }

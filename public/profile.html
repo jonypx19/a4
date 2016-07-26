@@ -5,6 +5,7 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/profile.css">
+    <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
     <script src="scripts/jquery-3.0.0.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
     <script src="scripts/bootstrap.min.js" defer></script>
@@ -12,6 +13,20 @@
     <script src="scripts/about.js" defer></script>
 </head>
 <body>
+    <script>
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+
+        function onLoad() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init();
+            });
+        }
+    </script>
 
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
         <div class="container-fluid">
@@ -58,19 +73,25 @@
         Welcome <%- name %>! This is your user profile. See information about yourself.
     </p>
     <p>
-        These are your car wash listings:
+        These are the people you're following currently.
         <ul>
             <li>Nothing here yet!</li>
         </ul>
     </p>
     <p>
-        Here are your ratings!
+        These are your current contracts.
         <ul>
             <li>Nothing here yet!</li>
         </ul>
     </p>
     <p>
-        Here are the people you're following.
+        These are your vehicles.
+        <ul>
+            <li>Nothing here yet!</li>
+        </ul>
+    </p>
+    <p>
+        These are our comments and ratings.
         <ul>
             <li>Nothing here yet!</li>
         </ul>
@@ -93,8 +114,10 @@
     </fieldset>
 
     <form action="/logout" method="get">
-        <input type="submit" id="logout" name="logout" value="Logout"/>
+        <input type="submit" onclick="signOut();" id="logout" name="logout" value="Logout"/>
     </form>
+
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
     
 </body>
 </html>
