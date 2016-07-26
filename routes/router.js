@@ -24,7 +24,7 @@ database.connect()
 var geocoder = node_geocoder({
     provider: 'google',
     httpAdapter: 'https', 
-    formatter: null 
+    formatter: null
 });
 
 // All of the routes
@@ -428,8 +428,7 @@ router.post('/confirmSignup', function (req, res) {
     else {
         // TODO: save the request info into the db
 
-        // TODO: render the home page as a logged in person
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 // export the routings, to be used in server.js
