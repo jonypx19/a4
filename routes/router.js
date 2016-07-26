@@ -8,6 +8,7 @@ var user = require('../public/assets/scripts/users.js');
 var fs = require('fs'); //For phase 1 implentation of users only.
 var model = require('../model.js');
 var node_geocoder = require('node-geocoder');
+var signupValidation = require('../helper/signupValidation.js');
 
 //set connection to mysql database
 var con = mysql.createConnection({
@@ -23,7 +24,7 @@ database.connect();
 var geocoder = node_geocoder({
     provider: 'google',
     httpAdapter: 'https', 
-    formatter: null 
+    formatter: null
 });
 
 // All of the routes
@@ -50,7 +51,9 @@ router.get('/signup', function(req, res) {
         }
     }
     else {
-        res.render('signup.html');
+        res.render('signup.html', {
+            errors: ''
+        });
     }
 });
 
@@ -381,18 +384,58 @@ router.post('/confirmSignup', function (req, res) {
     req.assert('email', 'Please enter a valid email.').isEmail();
 
     req.assert('password', 'A password is required').notEmpty();
+    req.assert('password', 'A password is required').isPassword();
+
     req.assert('repeat_password', 'Your password must be repeated').notEmpty();
     
     req.assert('password', 'Password is invalid').isLength({min: 6}).equals(req.body.repeat_password);
 
-    // TODO: add birthday validation
+    var isValidDate = signupValidation.isValidDate(req.body.month, req.body.day, req.body.year);
+
+
 
     // TODO: if errors, display errors with ejs on the signup page
 
-    // TODO: save the info into the db
+    // check for errors and map them if they exist
+    var errors = req.validationErrors();
+    var mappedErrors = req.validationErrors(true);
 
-    // TODO: render the home page as a logged in person
+    if (! isValidDate) {
+        var dateError = {
+            param: 'year',
+            msg: 'The date you entered is invalid',
+            value: ''
+        };
+        errors.push(dateError);
+        mappedErrors.push(dateError);
+    }
 
+    for (var i = 0; i < errors.length; i++) {
+        console.log(errors[i]);
+    }
+
+    // send back error message to user if they exist
+    if (errors) {
+        var errorMsgs = { "errors": {} };
+
+        if ( mappedErrors.email ) {
+            errorMsgs.errors.error_email = mappedErrors.email.msg;
+        }
+
+        if ( ! isValidDate ) {
+            errorMsgs.errors.error_date = 'The date you entered is invalid';
+        }
+
+        req.session.errors = errors;
+        res.render('/signup', errorMsgs);
+    }
+
+    // no errors
+    else {
+        // TODO: save the request info into the db
+
+        res.redirect('/login');
+    }
 });
 // export the routings, to be used in server.js
 exports.router = router;

@@ -46,11 +46,13 @@
 
 				<label>Email
 					<input type="text" name="email" required="required" pattern=".+@.+\..+">
+					<span class="error"><%- errors.error_email %></span>
 				</label>
 
 				<label>Password
 					<!-- at least 6 characters -->
 					<input id="password" name="password" type="password" required="required" pattern=".{6,}">
+
 				</label>
 
 				<label>Repeat Password
@@ -79,6 +81,7 @@
 					<select name="day" id="day" required="required"></select>
 
 					<select name="year" id="year" required="required"></select>
+					<span class="error"><%- errors.error_date %></span>
 				</div>
 				<input id="signup_button" type="submit" value="Sign up">
 		</form>
