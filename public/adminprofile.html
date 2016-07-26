@@ -13,6 +13,7 @@
     <script src="/scripts/GAuth.js" defer></script>
     <script src="/scripts/userObject.js" defer></script>
     <script src="/scripts/admin.js" defer></script>
+    <script src="scripts/about.js" defer></script>
 </head>
 <body>
 
@@ -41,5 +42,28 @@
     <form action="/logout" method="get">
         <input type="submit" id="logout" name="logout" value="Logout"/>
     </form>
+
+
+    <!-- The "About" Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>About Us</h2>
+            </div>
+            <div class="modal-body">
+                <h2>Our Mission</h2>
+                    <p>Keep your car clean?</p>
+
+                <h2>Who we are</h2>
+                    <p>We're people passionate about keeping cars clean.</p>
+
+                <h2>Contact Us</h2>
+                    <p>Follow us on Twitter</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
