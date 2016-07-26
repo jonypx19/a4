@@ -280,11 +280,11 @@ router.post('/confirmuser',function(req,res){
 
     //adding database query here to check if user is in the data base
     // then sets the users id in the session data
-    database.checkUser(username, password, function(err, result, id){
-        if (result) {
-           req.session.userid = id;
-        } 
-    });
+    // database.checkUser(username, password, function(err, result, id){
+    //     if (result) {
+    //        req.session.userid = id;
+    //     }
+    // });
 
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);
