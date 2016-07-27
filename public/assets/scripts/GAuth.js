@@ -19,6 +19,7 @@ function onSignIn(googleUser){
             dataType:"json",
             data: JSONObject
     });
+    location.replace("http://localhost:3000/userprofile");
 }
 
 function onLoad(){

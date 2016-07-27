@@ -231,9 +231,73 @@ router.get('/vehicles/listVehicles', function(req, res) {
     
 });
 
+router.get("/getComments/:email",function(req,res){
+    if (req.session && req.session.username){
+        //TODO: Get all the comments on the user based on email. Also get rating.
+        //TODO: Return as a JSON object
+
+        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
+    }
+    else{
+        //If there isn't a user logged in, redirect to login page
+        res.redirect("/userlogin");
+    }
+});
+
+router.get("/getFollowing/:email",function(req,res){
+    if (req.session && req.session.username){
+        //TODO: Get all the followers of the user based on email.
+        //TODO: REturn as a JSON object.
+
+        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
+    }
+    else{
+        //If there isn't a user logged in, redirect to login page.
+        res.redirect("/userlogin");
+    }
+});
+
+router.get('/user/:email', function(req,res){
+    //If there does not exist a currently logged in user, redirect to login page. If there's an admin, do the same.
+    //TODO: Search the db based on the username. Find that user. Get their name, comments, and rating. Return it as an object here. Don't send JSON in the response.
+    if(req.session && req.session.username){
+        if (req.session.privilege == "admin"){
+            res.redirect("/adminprofile");
+            return;
+        }
+        else{
+            console.log(req.params.email);
+            res.render("viewProfile", {
+                rating:3,
+                name:req.params.email
+            });
+            return;
+        }
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+});
+
+router.post('/submitComment/:email', function(req,res){
+    if (req.session && req.session.username) {
+        var currentUser = req.session.username; //The current user. Use this as a from attribute so that we can identify who sent to comment. Might need to update the schema
+        var comment = req.body.comment; //The comment given.
+        var rating = req.body.rating; //The rating given.
+        var userToSubmitTo = req.params.email; //Email that you should query the db for the user of which you will post the comment
+
+        //Do the posting here.
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+
+});
+
 router.get('/adminlogin', function(req, res){
     //TODO: Password authenication
-    //TODO: Two factor login (Use google/facebook)
     //TODO: Database query for user creation
     // res.send("Hi, you're an admin.")
     if (req.session && req.session.username){
@@ -274,7 +338,7 @@ router.post('/confirmuser',function(req,res){
         req.session.username = username;
         req.session.privilege = "user";
         //TODO: find the username from the db. If it doesn't exist, just put it in
-        //as a new one with privilege = user.(since this is verified as a google account).
+        //TODO: as a new one with privilege = user.(since this is verified as a google account).
         res.redirect("/userprofile");
         return;
     }
@@ -283,11 +347,11 @@ router.post('/confirmuser',function(req,res){
 
     //adding database query here to check if user is in the data base
     // then sets the users id in the session data
-    database.checkUser(username, password, function(err, result, id){
-        if (result) {
-           req.session.userid = id;
-        } 
-    });
+    // database.checkUser(username, password, function(err, result, id){
+    //     if (result) {
+    //        req.session.userid = id;
+    //     }
+    // });
 
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);

@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $.ajax({
-        url: "http://127.0.0.1:3000/users/listUsers",
+        url: "http://localhost:3000/users/listUsers",
         type:"GET",
         dataType:"json"
     }).done(function(data){
@@ -29,6 +29,7 @@ $(document).ready(function(){
         }
         $("#payload").append($list);
     });
+    
 });
 
 function deleteUser(name){
