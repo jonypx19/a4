@@ -10,25 +10,25 @@ var model = require('../model.js');
 var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 
-//set connection to mysql database
-// var con = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'Ross',
-//     password: 'Detail&Wash',
-//     database: 'Detail_Wash'
-// });
+// set connection to mysql database
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'Ross',
+    password: 'Detail&Wash',
+    database: 'Detail_Wash'
+});
 
 // create Database connection
-// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
 
-// login credentials for Heroku ClearDB
-var con = mysql.createConnection({
-    host: 'us-cdbr-iron-east-04.cleardb.net',
-    user: 'bf7055f108f91a',
-    password: '8a5f2a1f',
-    database: 'heroku_fb3dc2d4bdd13bf'
-});
-var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+// // login credentials for Heroku ClearDB
+// var con = mysql.createConnection({
+//     host: 'us-cdbr-iron-east-04.cleardb.net',
+//     user: 'bf7055f108f91a',
+//     password: '8a5f2a1f',
+//     database: 'heroku_fb3dc2d4bdd13bf'
+// });
+// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
@@ -278,7 +278,6 @@ router.get('/user/:email', function(req,res){
     if(req.session && req.session.username){
         if (req.session.privilege == "admin"){
             res.redirect("/adminprofile");
-            return;
         }
         else{
             console.log(req.params.email);
@@ -438,6 +437,21 @@ router.get("/userprofile", function(req, res){
     else{
         res.redirect("/userlogin");
     }
+});
+
+router.post('/rateuser', function(req, res) {
+    if (req.session && req.session.username) {
+
+        req.body.rating = req.sanitize(req.body.rating);
+
+        // add the rating to the database
+        
+    }
+    else {
+        console.log('User attempted to rate a user without a login');
+    }
+
+    return;
 });
 
 router.get("/adminprofile", function(req,res){
