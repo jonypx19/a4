@@ -1,71 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="/scripts/jquery-3.0.0.min.js" defer></script>
-    <script src="/scripts/GAuth.js" async defer></script>
-    <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
-    <title>Car Detail Exchange - Log In</title>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="/scripts/GAuth.js" async defer></script>
+        <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
+        <title>Car Detail Exchange - Log In</title>
 
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script src="scripts/bootstrap.min.js" defer></script>
-    <script src="scripts/jquery-3.0.0.min.js" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+        <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/login.css">
+        <script src="scripts/jquery-3.0.0.min.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+        <script src="scripts/bootstrap.min.js" defer></script>
+        <script src="scripts/scripts.js" defer></script>
+        <script src="scripts/login.js" defer></script>
+        <script src="scripts/about.js" defer></script>
+    </head>
+    <body>
 
-    <script src="scripts/scripts.js" defer></script>
-</head>
-<body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Car Detail Exchange</a>
-                <img src="images/logo.png" style="width:50px;height:50px;">
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Car Detail Exchange</a>
+                    <img src="images/logo.png" style="width:50px;height:50px;">
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                </ul>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            </ul>
+        </nav>
+
+        <article>
+            <!-- <form action="/confirmuser" method="post">
+                <div class="fields">
+                    <span>
+                        Username:
+                    </span>
+                    <input name="user" type="text" required/>
+                </div>
+                <div class="fields">
+                    <span>
+                        Password:
+                    </span>
+                    <input name="password" type="password" required/>
+                </div>
+                <div class="submit">
+                    <input id="submit" type="submit" value="Submit"/>
+                </div>
+            </form> -->
+            <div class="wrapper">
+                <form class="login" action="/confirmuser" method="post">
+                    <p class="title">Log in</p>
+                    <div id="unknownid">
+                        <%-errors%>
+                    </div>
+                    <input name="user" type="text" placeholder="Username" autofocus/>
+                    <input name="password" type="password" placeholder="Password" />
+                    <button>
+                      <i class="spinner"></i>
+                      <span class="state">Submit</span>
+                    </button>
+                    <div id = "error"></div>
+                    <p>Alternative Method:</p>
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    <a onclick="signOut()">Logout</a>
+                    <p>If you're an admin, click <a href="http://localhost:3000/adminlogin">here</a>.</p>
+                </form>
+            </div>
+        </article>
+
+        <!-- The "About" Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">×</span>
+                    <h2>About Us</h2>
+                </div>
+                <div class="modal-body">
+                    <h2>Our Mission</h2>
+                        <p>Keep your car clean?</p>
+
+                    <h2>Who we are</h2>
+                        <p>We're people passionate about keeping cars clean.</p>
+
+                    <h2>Contact Us</h2>
+                        <p>Follow us on Twitter</p>
+                </div>
+            </div>
         </div>
-    </nav>
-
-    <article>
-        <p>
-            Welcome to Rent-A-Car! Please login here.
-        </p>
-        <div id="unknownid">
-            <%-errors%>
-        </div>
-        <form action="/confirmuser" method="post">
-            <div class="fields">
-                <span>
-                    Username:
-                </span>
-                <input name="user" type="text" required/>
-            </div>
-            <div class="fields">
-                <span>
-                    Password:
-                </span>
-                <input name="password" type="password" required/>
-            </div>
-            <div class="submit">
-                <input id="submit" type="submit" value="Submit"/>
-            </div>
-        </form>
-        <div id = "error"></div>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a onclick="signOut()">Logout</a>
-        <p>
-            If you're an admin, click <a href="http://localhost:3000/adminlogin">here</a>.
-        </p>
-    </article>
-</body>
+    </body>
 </html>
