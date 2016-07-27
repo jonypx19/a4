@@ -203,4 +203,31 @@ Database.prototype.getUserContracts = function(username, callback) {
 	});
 }
 
+Database.prototype.insertReview = function(washer_email, rater_email, comment, rating) {
+	this.con.query('CREATE VIEW rater_vehicle AS\
+		SELECT u.id AS userid, v.id AS vehicleid\
+		FROM users u, vehicles v\
+		WHERE ? = u.email and v.ownerid = u.id\
+		\
+		CREATE VIEW washer_id AS\
+		SELECT u.id\
+		FROM users u\
+		WHERE ? = u.email;\
+		\
+		CREATE VIEW contractExists AS\
+		SELECT COUNT(c.id) AS contractNumbers\
+		FROM contract c, washer_id w, rater_vehicle r\
+		WHERE c.washerid = w.id and r.vehicleid = c.vehicleid\
+		\
+		INSERT INTO review (subjectid, authorid, contractid, content, rating) \
+		VALUES (washer_id.id, rater_vehicle.userid, ?, ?)\
+		WHERE contractExists.contractNumbers > 0', [rater_email, washer_email, comment, rating],
+		function (err, result) {
+			if (err) {
+				console.log('Could not insert review');
+				console.log(err);
+			}
+		});
+};
+
 exports.Database = Database;

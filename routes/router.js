@@ -294,19 +294,28 @@ router.get('/user/:email', function(req,res){
     }
 });
 
+// TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
     if (req.session && req.session.username) {
-        var currentUser = req.session.username; //The current user. Use this as a from attribute so that we can identify who sent to comment. Might need to update the schema
-        var comment = req.body.comment; //The comment given.
+        var rater = req.session.username; // current user
+        var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
-        var userToSubmitTo = req.params.email; //Email that you should query the db for the user of which you will post the comment
+        var washer = req.params.email;
 
         //Do the posting here.
+        database.insertReview(washer, rater, comment, rating);
+
     }
-    else{
+
+    // need to login to make a review
+    else {
         res.redirect("/userlogin");
         return;
     }
+
+    // refresh the page which should now have the new comment
+    // go back to that user's profile
+    res.render('/user/' + washer);
 
 });
 
@@ -445,6 +454,8 @@ router.post('/rateuser', function(req, res) {
         req.body.rating = req.sanitize(req.body.rating);
 
         // add the rating to the database
+
+
         
     }
     else {
@@ -494,8 +505,6 @@ router.post('/confirmSignup', function (req, res) {
     req.body.month = req.sanitize(req.body.month);
     req.body.day = req.sanitize(req.body.day);
     req.body.year = req.sanitize(req.body.year);
-
-    // TODO: if errors, display errors with ejs on the signup page
 
     // check for errors and map them if they exist
     var errors = req.validationErrors();
