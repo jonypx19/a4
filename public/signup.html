@@ -1,85 +1,83 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Car Detail Exchange - Sign Up</title>
+<head>
+	<title>Car Detail Exchange - Sign Up</title>
 
-		<!-- in server.js, the express.static points to public/assets: that's the "current directory" -->
-		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/style.css">
-		<script src="scripts/jquery-3.0.0.min.js" defer></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
-		<script src="scripts/bootstrap.min.js" defer></script>
-		<script src="scripts/sign_up.js" defer></script>
-	</head>
+	<!-- in server.js, the express.static points to public/assets: that's the "current directory" -->
+	<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="/css/style.css"> -->
+	<link rel="stylesheet" href="/css/login.css">
+
+	<script src="scripts/jquery-3.0.0.min.js" defer></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+	<script src="scripts/bootstrap.min.js" defer></script>
+	<script src="scripts/sign_up.js" defer></script>
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">Car Detail Exchange</a>
+				<img src="images/logo.png" style="width:50px;height:50px;">
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+				<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li> 
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="/userlogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- send data to the server via POST-->
+	<div class="wrapper">
+	<form action="/confirmSignup" class="login" method="post">
+		<h2 class="title">Sign up</h2>
+		<label for="name">Name</label>
+		<input type="text" id="name" name="name" autofocus="" required="required">
 	
-	<body>
+		<label for="email">Email</label>
+		<input type="text" id="email" name="email" required="required" pattern=".+@.+\..+">
+		<span class="error"><%= errors.error_email %></span>
 
-		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
-  			<div class="container-fluid">
-    			<div class="navbar-header">
-      				<a class="navbar-brand" href="/">Car Detail Exchange</a>
-      				<img src="images/logo.png" style="width:50px;height:50px;">
-    			</div>
-    			<ul class="nav navbar-nav">
-      				<li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-      					<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li> 
-    			</ul>
-    			<ul class="nav navbar-nav navbar-right">
-      				<li><a href="/userlogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    			</ul>
-  			</div>
-		</nav>
+		<label for="password">Password (at least 6 characters)</label>
+		<input id="password" name="password" type="password" required="required" pattern=".{6,}">
 
-		<header>
-            <h1>Create a Profile</h1>
-        </header>
+		<label for="repeat_password">Repeat Password</label>
+		<input id="repeat_password" name="repeat_password" type="password" required="required">
 
-		<!-- send data to the server via POST-->
-		<form action="/confirmSignup" method="post">
-				<label>Name
-					<input type="text" name="name" required="required">
-				</label>
+		<!-- birthday for later authentication -->
+		<div id="birthday">
+			<label for="birthday">Birthday:</label>
+			<select name="month" id="month" required="required">
+				<option value="January">January</option>
+				<option value="February">February</option>
+				<option value="March">March</option>
+				<option value="April">April</option>
+				<option value="May">May</option>
+				<option value="June">June</option>
+				<option value="July">July</option>
+				<option value="August">August</option>
+				<option value="September">September</option>
+				<option value="October">October</option>
+				<option value="November">November</option>
+				<option value="December">December</option>
+			</select>
 
-				<label>Email
-					<input type="text" name="email" required="required" pattern=".+@.+\..+">
-					<span class="error"><%= errors.error_email %></span>
-				</label>
+			<select name="day" id="day" required="required"></select>
 
-				<label>Password (at least 6 characters)
-					<input id="password" name="password" type="password" required="required" pattern=".{6,}">
+			<select name="year" id="year" required="required"></select>
+			<span class="error"><%- errors.error_date %></span>
+		</div>
+		<input id="signup_button" type="submit" value="Sign up">
+	</form>
+	</div>
 
-				</label>
 
-				<label>Repeat Password
-					<!-- at least 6 characters -->
-					<input id="repeat_password" name="repeat_password" type="password" required="required">
-				</label>
-				
-				<!-- birthday for later authentication -->
-				<div id="birthday">
-					Birthday:
-					<select name="month" id="month" required="required">
-						<option value="January">January</option>
-						<option value="February">February</option>
-						<option value="March">March</option>
-						<option value="April">April</option>
-						<option value="May">May</option>
-						<option value="June">June</option>
-						<option value="July">July</option>
-						<option value="August">August</option>
-						<option value="September">September</option>
-						<option value="October">October</option>
-						<option value="November">November</option>
-						<option value="December">December</option>
-					</select>
-
-					<select name="day" id="day" required="required"></select>
-
-					<select name="year" id="year" required="required"></select>
-					<span class="error"><%- errors.error_date %></span>
-				</div>
-				<input id="signup_button" type="submit" value="Sign up">
-		</form>
-	</body>
+</body>
 </html>

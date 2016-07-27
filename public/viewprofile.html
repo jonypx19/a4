@@ -5,9 +5,12 @@
     <title><%-name-%> Profile</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script src="scripts/bootstrap.min.js" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+    <script src="/scripts/bootstrap.min.js" defer></script>
+    <!-- <script src="/scripts/profile.js" defer></script> -->
+
 </head>
 <body>
     <script>
@@ -59,7 +62,8 @@
             <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
             <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
         </fieldset>
-        <input type="text" id="comment" name="comment" placeholder="Submit a comment here" required/>
+
+        <textarea name="comment" id="comment" name="comment" placeholder="Submit a comment here"></textarea>
         <input id="submit" type="submit" value="Submit"/>
     </form>
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>

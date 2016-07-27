@@ -36,8 +36,8 @@ input {
     border-radius: 5px;
 }
 
-input[type="text"]:hover {
-    /*box-shadow: 0 0 20px rgba(127, 127, 127, 0.1) inset;*/
+input:invalid {
+  box-shadow: 0 0 3pt 2pt red;
 }
 
 input[type="submit"]:hover {
@@ -49,13 +49,6 @@ input[type="submit"] {
     padding: 0.5rem 2rem;
     margin: 20 0 0 0;
 }
-
-input:invalid {
-  box-shadow: 0 0 3pt 2pt red;
-}
-
-
-
 
 
 /*Login Box*/
@@ -88,7 +81,7 @@ input:invalid {
   border-radius: 2px 2px 5px 5px;
   padding: 10px 20px 20px 20px;
   width: 90%;
-  max-width: 320px;
+  max-width: 400px;
   background: #ffffff;
   position: relative;
   padding-bottom: 80px;
@@ -119,10 +112,10 @@ input:invalid {
   padding: 15px 10px;
   margin-bottom: 10px;
   width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid #aaa;
   transition: border-width 0.2s ease;
   border-radius: 2px;
-  color: #ccc;
+  color: #000;
 }
 .login input + i.fa {
   color: #fff;
@@ -150,8 +143,7 @@ input:invalid {
   text-decoration: none;
 }
 .login .title {
-  color: #444;
-  font-size: 1.2em;
+  font-size: 2em;
   font-weight: bold;
   margin: 10px 0 30px 0;
   border-bottom: 1px solid #eee;
