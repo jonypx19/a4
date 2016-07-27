@@ -9,7 +9,6 @@
     <script src="scripts/jquery-3.0.0.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
     <script src="scripts/bootstrap.min.js" defer></script>
-    <script src="scripts/scripts.js" defer></script>
     <script src="scripts/about.js" defer></script>
 </head>
 <body>
@@ -41,7 +40,7 @@
                 <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
             </ul>
             <ul id="navigation" class="nav navbar-nav navbar-right">
-                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
         </div>
     </nav>
@@ -79,25 +78,11 @@
         </ul>
     </p>
     <p>
-        These are your current contracts.
-        <ul>
-            <li>Nothing here yet!</li>
-        </ul>
-    </p>
-    <p>
-        These are your vehicles.
-        <ul>
-            <li>Nothing here yet!</li>
-        </ul>
-    </p>
-    <p>
         These are our comments and ratings.
         <ul>
             <li>Nothing here yet!</li>
         </ul>
     </p>
-
-    <h3>Who you're following</h3>
 
     <!-- rating will be send to server with AJAX-->
 
