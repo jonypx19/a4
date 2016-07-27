@@ -203,6 +203,8 @@ Database.prototype.getUserContracts = function(username, callback) {
 	});
 }
 
+
+// TODO: SQL syntax error
 Database.prototype.insertReview = function(washer_email, rater_email, comment, rating) {
 	this.con.query('CREATE VIEW rater_vehicle AS\
 		SELECT u.id AS userid, v.id AS vehicleid\
