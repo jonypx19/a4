@@ -11,16 +11,16 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 
 //set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
-});
+// var con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'Ross',
+//     password: 'Detail&Wash',
+//     database: 'Detail_Wash'
+// });
 
 // login credentials for Heroku ClearDB
 var con = mysql.createConnection({
-    host: 'us-cdbr-iron-east-04.cleardb.net/',
+    host: 'us-cdbr-iron-east-04.cleardb.net',
     user: 'bf7055f108f91a',
     password: '8a5f2a1f',
     database: 'heroku_fb3dc2d4bdd13bf'
