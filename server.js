@@ -18,6 +18,8 @@ app.engine('.html', require('ejs').__express);
 app.set('views', path.join(__dirname + '/public'));
 app.set('view engine', 'html');
 
+app.set('port', (process.env.PORT || 3000));  // set the port number
+
 // The request body is received on GET or POST.
 // A middleware that just simplifies things a bit.
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -73,7 +75,7 @@ app.use(router.router);  // get all the GET and POST routing
 app.use(morgan("short"));  // simple logger to the server console for debugging
 app.use(compression());  // put gzip in place
 
-var server = app.listen(3000, function(){
+var server = app.listen(app.get('port'), function(){
     var port = server.address().port;
-    console.log("Running on 127.0.0.1:%s", port);
+    console.log("Running on port ", app.get('port'));
 });
