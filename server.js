@@ -12,6 +12,8 @@ var router = require('./routes/router.js');
 var user = require('./public/assets/scripts/users.js');
 var signupValidation = require('./helper/signupValidation.js');
 
+app.use(morgan('tiny'));  // simple logger to the server console for debugging
+
 // Set views path, template engine and default layout
 app.use(express.static(path.join(__dirname + '/public/assets')));  // location of static/client files
 app.engine('.html', require('ejs').__express);
@@ -72,7 +74,6 @@ app.use(session({
 }));
 
 app.use(router.router);  // get all the GET and POST routing
-app.use(morgan("short"));  // simple logger to the server console for debugging
 app.use(compression());  // put gzip in place
 
 var server = app.listen(app.get('port'), function(){
