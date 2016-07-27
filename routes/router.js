@@ -18,6 +18,9 @@ var signupValidation = require('../helper/signupValidation.js');
 //     database: 'Detail_Wash'
 // });
 
+// create Database connection
+// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+
 // login credentials for Heroku ClearDB
 var con = mysql.createConnection({
     host: 'us-cdbr-iron-east-04.cleardb.net',
@@ -25,11 +28,13 @@ var con = mysql.createConnection({
     password: '8a5f2a1f',
     database: 'heroku_fb3dc2d4bdd13bf'
 });
-var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf')
+var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
-// create Database connection
-// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
 database.connect();
+
+
+
+
 
 var geocoder = node_geocoder({
     provider: 'google',
