@@ -117,6 +117,25 @@ router.post('/search/takeContract', function(req, res) {
 
         
     });
+
+});
+
+router.post('/contracts/cancelContract', function(req, res) {
+    database.changeContractStatus(req.body.id, 'delete', 'available', function(err) {
+        if (err) {
+            console.log("Couldn't cancel contract");
+            console.log(err);
+        } 
+    });
+});
+
+router.post('/contracts/completeContract', function(req, res) {
+    database.changeContractStatus(req.body.id, null, 'complete', function(err){
+        if (err) {
+            console.log("Couldn't confirm contract completion");
+            console.log(err);
+        }
+    });
 });
 
 router.post('/contracts/registerContract', function(req, res) {
@@ -167,10 +186,10 @@ router.post('/contracts/registerContract', function(req, res) {
 });
 
 router.get('/contracts/listContracts', function(req, res) {
-    var userid=req.sessoin.userid;
-    console.log(req.session.username);
+    var userid=req.session.userid;
 
     database.getUserContracts(userid, function(err, data) {
+        console.log(data);
         var owner = [];
         var washer = [];
 
@@ -274,12 +293,22 @@ router.post('/confirmuser',function(req,res){
     // then sets the users id in the session data
     database.checkUser(username, password, function(err, result, id){
         if (result) {
-           req.session.userid = id;
-        } 
+            req.session.userid = id;
+            req.session.username = username;
+            req.session.privilege = "user";
+            delete req.session.password; //deleting password if saved.
+            res.redirect("/userprofile");
+            return;
+        } else{
+            res.render("userlogin", {
+                errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+            });
+            return;
+        }
     });
 
-
-
+// added a database method above instead of reading from json file
+/*
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);
         console.log(object);
@@ -304,6 +333,7 @@ router.post('/confirmuser',function(req,res){
             errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
         });
     });
+*/
 });
 
 router.post('/confirmadmin',function(req,res){

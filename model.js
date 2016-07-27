@@ -77,8 +77,10 @@ Database.prototype.getUserVehicles = function(username, callback) {
 // Contract Queries
 
 Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
-	this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
-		[status, washer, contractid],
+
+	if (washer === 'delete') {
+		this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
+		[status, null, contractid],
 		function(err, result) {
 			if (err) {
 				console.log("couldn't update contract");
@@ -87,10 +89,23 @@ Database.prototype.changeContractStatus = function(contractid, washer, status, c
 				callback(null);
 			}
 		});
+	} else {
+		this.con.query("UPDATE contract SET status=? WHERE id=?",
+		[status, contractid],
+		function(err, result) {
+			if (err) {
+				console.log("couldn't update contract");
+				callback(err);
+			} else {
+				callback(null);
+			}
+		});
+	}
+	
 }
 
 Database.prototype.checkContractStatus = function(contractid, status, callback) {
-	this.con.query("SELECT id, vehicleid, status FROM contract WHERE vehicleid=? and status=?",
+	this.con.query("SELECT id, vehicleid, status FROM contract WHERE id=? and status=?",
 		[contractid, status],
 		function(err, result) {
 			if (err) {

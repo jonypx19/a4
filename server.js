@@ -5,7 +5,6 @@ var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
 var compression = require('compression');  // gzip middleware
 var morgan = require('morgan');
-
 var router = require('./routes/router.js');
 var user = require('./public/assets/scripts/users.js');
 var signupValidation = require('./helper/signupValidation.js');
