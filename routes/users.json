@@ -2,16 +2,19 @@
 	{
 		"username": "George",
 		"password": "1234",
-		"privilege": "user"
+		"privilege": "user",
+		"email": "Georgehzwu@gmail.com"
 	},
 	{
 		"username": "Bob",
 		"password": "4321",
-		"privilege": "admin"
+		"privilege": "admin",
+		"email": "Bob@gmail.com"
 	},
 	{
 		"username": "Billy",
 		"password": "asdf",
-		"privilege": "user"
+		"privilege": "user",
+		"email": "Billy@gmail.com"
 	}
 ]

@@ -24,6 +24,13 @@ var isMonth = function(month) {
 	return true;
 };
 
+var isYear = function(year) {
+	if (typeof year === 'number' && year > 1905 && year <= 2016) {
+		return true;
+	}
+	return false;
+}
+
 var isValidDate = function(month, day, year) {
 	if (! isMonth(month)) {
 		return false;
@@ -54,4 +61,5 @@ var isValidDate = function(month, day, year) {
 
 exports.capitalize = capitalize;
 exports.isMonth = isMonth;
+exports.isYear = isYear;
 exports.isValidDate = isValidDate;
