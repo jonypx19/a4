@@ -8,22 +8,38 @@ var user = require('../public/assets/scripts/users.js');
 var fs = require('fs'); //For phase 1 implentation of users only.
 var model = require('../model.js');
 var node_geocoder = require('node-geocoder');
+var signupValidation = require('../helper/signupValidation.js');
 
-//set connection to mysql database
+// set connection to mysql database
 var con = mysql.createConnection({
     host: 'localhost',
     user: 'Ross',
     password: 'Detail&Wash',
     database: 'Detail_Wash'
 });
+
 // create Database connection
 var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-database.connect()
+
+// // login credentials for Heroku ClearDB
+// var con = mysql.createConnection({
+//     host: 'us-cdbr-iron-east-04.cleardb.net',
+//     user: 'bf7055f108f91a',
+//     password: '8a5f2a1f',
+//     database: 'heroku_fb3dc2d4bdd13bf'
+// });
+// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+
+database.connect();
+
+
+
+
 
 var geocoder = node_geocoder({
     provider: 'google',
     httpAdapter: 'https', 
-    formatter: null 
+    formatter: null
 });
 
 // All of the routes
@@ -50,7 +66,9 @@ router.get('/signup', function(req, res) {
         }
     }
     else {
-        res.render('signup.html');
+        res.render('signup.html', {
+            errors: ''
+        });
     }
 });
 
@@ -188,6 +206,8 @@ router.post('/contracts/registerContract', function(req, res) {
 router.get('/contracts/listContracts', function(req, res) {
     var userid=req.session.userid;
 
+    console.log(req.session.username);
+
     database.getUserContracts(userid, function(err, data) {
         console.log(data);
         var owner = [];
@@ -247,9 +267,72 @@ router.get('/vehicles/listVehicles', function(req, res) {
     
 });
 
+router.get("/getComments/:email",function(req,res){
+    if (req.session && req.session.username){
+        //TODO: Get all the comments on the user based on email. Also get rating.
+        //TODO: Return as a JSON object
+
+        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
+    }
+    else{
+        //If there isn't a user logged in, redirect to login page
+        res.redirect("/userlogin");
+    }
+});
+
+router.get("/getFollowing/:email",function(req,res){
+    if (req.session && req.session.username){
+        //TODO: Get all the followers of the user based on email.
+        //TODO: REturn as a JSON object.
+
+        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
+    }
+    else{
+        //If there isn't a user logged in, redirect to login page.
+        res.redirect("/userlogin");
+    }
+});
+
+router.get('/user/:email', function(req,res){
+    //If there does not exist a currently logged in user, redirect to login page. If there's an admin, do the same.
+    //TODO: Search the db based on the username. Find that user. Get their name, comments, and rating. Return it as an object here. Don't send JSON in the response.
+    if(req.session && req.session.username){
+        if (req.session.privilege == "admin"){
+            res.redirect("/adminprofile");
+        }
+        else{
+            console.log(req.params.email);
+            res.render("viewProfile", {
+                rating:3,
+                name:req.params.email
+            });
+            return;
+        }
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+});
+
+router.post('/submitComment/:email', function(req,res){
+    if (req.session && req.session.username) {
+        var currentUser = req.session.username; //The current user. Use this as a from attribute so that we can identify who sent to comment. Might need to update the schema
+        var comment = req.body.comment; //The comment given.
+        var rating = req.body.rating; //The rating given.
+        var userToSubmitTo = req.params.email; //Email that you should query the db for the user of which you will post the comment
+
+        //Do the posting here.
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+
+});
+
 router.get('/adminlogin', function(req, res){
     //TODO: Password authenication
-    //TODO: Two factor login (Use google/facebook)
     //TODO: Database query for user creation
     // res.send("Hi, you're an admin.")
     if (req.session && req.session.username){
@@ -282,15 +365,24 @@ router.get('/userlogin', function(req, res) {
 });
 
 router.post('/confirmuser',function(req,res){
+    //res.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
+    var username;
+    var password;
+    if (req.body.isGoogleSignIn){
+        username = req.body.name;
+        req.session.username = username;
+        req.session.privilege = "user";
+        //TODO: find the username from the db. If it doesn't exist, just put it in
+        //TODO: as a new one with privilege = user.(since this is verified as a google account).
+        res.redirect("/userprofile");
+        return;
+    }
     var username = req.body.user;
     var password = req.body.password;
-    response = {
-        username:req.body.user,
-        password: req.body.password
-    };
 
     //adding database query here to check if user is in the data base
     // then sets the users id in the session data
+    
     database.checkUser(username, password, function(err, result, id){
         if (result) {
             req.session.userid = id;
@@ -309,6 +401,7 @@ router.post('/confirmuser',function(req,res){
 
 // added a database method above instead of reading from json file
 /*
+
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);
         console.log(object);
@@ -382,9 +475,24 @@ router.get("/userprofile", function(req, res){
     }
 });
 
+router.post('/rateuser', function(req, res) {
+    if (req.session && req.session.username) {
+
+        req.body.rating = req.sanitize(req.body.rating);
+
+        // add the rating to the database
+        
+    }
+    else {
+        console.log('User attempted to rate a user without a login');
+    }
+
+    return;
+});
+
 router.get("/adminprofile", function(req,res){
     if (req.session && req.session.username) {
-        res.render("profile", {
+        res.render("adminprofile", {
             name: "ADMIN: " + req.session.username
         });
     }
@@ -400,23 +508,71 @@ router.get("/logout", function(req,res){
 
 router.post('/confirmSignup', function (req, res) {
 
+    // validation
     req.assert('name', 'A name is required').notEmpty();
     req.assert('email', 'An email address is required').notEmpty();
     req.assert('email', 'Please enter a valid email.').isEmail();
 
     req.assert('password', 'A password is required').notEmpty();
+    req.assert('password', 'A password is required').isPassword();
+
     req.assert('repeat_password', 'Your password must be repeated').notEmpty();
     
     req.assert('password', 'Password is invalid').isLength({min: 6}).equals(req.body.repeat_password);
 
-    // TODO: add birthday validation
+    var isValidDate = signupValidation.isValidDate(req.body.month, req.body.day, req.body.year);
+
+    // sanitation
+    req.body.name = req.sanitize(req.body.name);
+    req.body.email = req.sanitize(req.body.email);
+    req.body.password = req.sanitize(req.body.password);
+    req.body.repeat_password = req.sanitize(req.body.repeat_password);
+    req.body.month = req.sanitize(req.body.month);
+    req.body.day = req.sanitize(req.body.day);
+    req.body.year = req.sanitize(req.body.year);
 
     // TODO: if errors, display errors with ejs on the signup page
 
-    // TODO: save the info into the db
+    // check for errors and map them if they exist
+    var errors = req.validationErrors();
+    var mappedErrors = req.validationErrors(true);
 
-    // TODO: render the home page as a logged in person
 
+    for (var i = 0; i < errors.length; i++) {
+        console.log(errors[i]);
+    }
+
+    // send validation errors back
+    if (errors) {
+        var errorMsgs = { "errors": {} };
+
+        if ( mappedErrors.email ) {
+            errorMsgs.errors.error_email = 'The email you entered is invalid.';
+        }
+
+        if ( ! isValidDate ) {
+            errorMsgs.errors.error_date = 'The date you entered is invalid.';
+        }
+
+        req.session.errors = errors;
+        res.render('/signup', errorMsgs);
+    }
+
+
+    // save the request info into the db
+    database.insertUser(req.body, function (err){
+        if (err) {
+            res.render('signup', {
+                'errors': {
+                    'error_email': 'There is already an account with this email.'
+                }
+
+            });
+        }
+        else {
+            res.redirect('/userlogin');
+        }
+    });
 });
 // export the routings, to be used in server.js
 exports.router = router;
