@@ -100,3 +100,8 @@ Email: georgewu.wu@mail.utoronto.ca
 Name: Fullchee Zhang
 CDF: g5zhangf
 Email: fullchee.zhang@mail.utoronto.ca
+
+
+Additional Steps:
+1) Hash the session id.
+	Just like a cookie, we should hash it to prevent malicious users from trying to pose as other users and especially as admins.

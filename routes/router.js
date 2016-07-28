@@ -9,26 +9,27 @@ var fs = require('fs'); //For phase 1 implentation of users only.
 var model = require('../model.js');
 var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
+var bcrypt = require('bcryptjs');
 
 // set connection to mysql database
-// var con = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'Ross',
-//     password: 'Detail&Wash',
-//     database: 'Detail_Wash'
-// });
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'Ross',
+    password: 'Detail&Wash',
+    database: 'Detail_Wash'
+});
 
-// // create Database connection
-// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+// create Database connection
+var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
 
 // login credentials for Heroku ClearDB
-var con = mysql.createConnection({
-    host: 'us-cdbr-iron-east-04.cleardb.net',
-    user: 'bf7055f108f91a',
-    password: '8a5f2a1f',
-    database: 'heroku_fb3dc2d4bdd13bf'
-});
-var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+// var con = mysql.createConnection({
+//     host: 'us-cdbr-iron-east-04.cleardb.net',
+//     user: 'bf7055f108f91a',
+//     password: '8a5f2a1f',
+//     database: 'heroku_fb3dc2d4bdd13bf'
+// });
+// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
@@ -365,41 +366,67 @@ router.post('/confirmuser',function(req,res){
         res.redirect("/userprofile");
         return;
     }
-    var username = req.body.user;
-    var password = req.body.password;
+    var username = req.sanitize(req.body.user);  // prevent XSS
+    var password = req.sanitize(req.body.password);
 
-    //adding database query here to check if user is in the data base
-    // then sets the users id in the session data
-    // database.checkUser(username, password, function(err, result, id){
-    //     if (result) {
-    //        req.session.userid = id;
-    //     }
-    // });
+    // fullchee: finish confirm user with bcrypt
 
-    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-        var object = JSON.parse(data);
-        console.log(object);
-        for(var i =0;i < 3; i++){
-            if (object[i].username === username && object[i].password === password){
-                if (object[i].privilege === "user") {
+
+    // Step 1: fetch the password from that user in the db
+    database.checkUser(username, function(err, result){
+        
+        bcrypt.compare(password, result.password, function(err, passwordValid) {
+            if (passwordValid) {
+                req.session.userid = result.id;
+
+                // SUCCESS
+
+                // TODO: how does the db know who's an admin?
+                if (result.id > 10) {  // user
                     req.session.username = username;
                     req.session.privilege = "user";
-                    delete req.session.password; //deleting password if saved.
+                    delete req.session.password; //deleting password if saved
                     res.redirect("/userprofile");
                     return;
                 }
-                else{
+            }
+            else {
                     res.render("userlogin",{
-                        errors: "<p class=\"incorrect\">You are an admin. Please use the admin login."
+                        errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
                     });
                     return;
                 }
-            }
-        }
-        res.render("userlogin", {
-            errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
         });
     });
+
+    // step 2: compare the hash with the given password
+
+
+    // OLD WAY, READ A JSON FILE
+    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+    //     var object = JSON.parse(data);
+    //     console.log(object);
+    //     for(var i =0;i < 3; i++){
+    //         if (object[i].username === username && object[i].password === password){
+    //             if (object[i].privilege === "user") {
+    //                 req.session.username = username;
+    //                 req.session.privilege = "user";
+    //                 delete req.session.password; //deleting password if saved.
+    //                 res.redirect("/userprofile");
+    //                 return;
+    //             }
+    //             else{
+    //                 res.render("userlogin",{
+    //                     errors: "<p class=\"incorrect\">You are an admin. Please use the admin login."
+    //                 });
+    //                 return;
+    //             }
+    //         }
+    //     }
+    //     res.render("userlogin", {
+    //         errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+    //     });
+    // });
 });
 
 router.post('/confirmadmin',function(req,res){
@@ -531,20 +558,33 @@ router.post('/confirmSignup', function (req, res) {
         res.render('/signup', errorMsgs);
     }
 
+    // hash and salt password before storing
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
 
-    // save the request info into the db
-    database.insertUser(req.body, function (err){
-        if (err) {
-            res.render('signup', {
-                'errors': {
-                    'error_email': 'There is already an account with this email.'
+            req.body.password = hash;
+
+            // save the request info into the db
+            database.insertUser(req.body, function (err){
+                if (err) {
+                    res.render('signup', {
+                        'errors': {
+                            'error_email': 'There is already an account with this email.'
+                        }
+
+                    });
                 }
-
+                else {
+                    res.redirect('/userlogin');
+                }
             });
-        }
-        else {
-            res.redirect('/userlogin');
-        }
+            
+        });
     });
 });
 // export the routings, to be used in server.js
