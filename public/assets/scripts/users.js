@@ -1,7 +1,7 @@
 /**
  * Created by George on 2016-07-10.
  */
-
+//User Object
 var userFunctions = function(username, password, privilege){
     var object = new Object();
     object.username = username;
