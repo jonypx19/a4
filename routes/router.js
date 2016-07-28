@@ -447,22 +447,25 @@ router.post('/confirmuser',function(req,res){
 
                 // SUCCESS
 
-                // TODO: how does the db know who's an admin?
+                console.log(result);
+
+                // TODO (fullchee): how does the db know who's an admin?
                 if (result.id > 10) {  // user
                     req.session.username = username;
                     req.session.privilege = "user";
+                    req.session.email = username;
                     delete req.session.password; //deleting password if saved
                     res.redirect("/userprofile");
                     return;
-                }
+                } 
             }
         });
     }
 
-        res.render("userlogin",{
-            errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
-        });
-        return;
+    res.render("userlogin",{
+        errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
+    });
+    return;
     });
 
     // step 2: compare the hash with the given password
