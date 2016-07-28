@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title>User Profile</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
-    <script src="scripts/jquery-3.0.0.min.js" defer></script>
+    <script src="/scripts/jquery-3.0.0.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
-    <script src="scripts/bootstrap.min.js" defer></script>
-    <script src="scripts/about.js" defer></script>
-    <script src="scripts/profile.js" defer></script>
+    <script src="/scripts/bootstrap.min.js" defer></script>
+    <script src="/scripts/about.js" defer></script>
+    <script src="/scripts/profile.js" defer></script>
+    <script src="/scripts/getInformation.js" defer></script>
 </head>
 <body>
     <script>
@@ -72,18 +73,20 @@
     <p>
         Welcome <%- name %>! This is your user profile. See information about yourself.
     </p>
-    <p>
-        These are the people you're following currently.
-        <ul>
-            <li>Nothing here yet!</li>
-        </ul>
-    </p>
-    <p>
-        These are our comments and ratings.
-        <ul>
-            <li>Nothing here yet!</li>
-        </ul>
-    </p>
+    <div id="following">
+        <p id="users">
+            These are the people you're following currently.
+        </p>
+    </div>
+
+    <div id="comments">
+        <p id="rating">
+            This is your average rating:
+        </p>
+        <p id="comment">
+            These are your comments:
+        </p>
+    </div>
 
     <!-- rating will be send to server with AJAX-->
 
