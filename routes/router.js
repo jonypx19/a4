@@ -97,11 +97,13 @@ router.post('/search/searchContracts', function(req, res) {
     });
 });
 
-router.get('/users/listUsers',function(req,res){
+router.get('/user/listUsers',function(req,res){
     console.log(typeof user);
 
     //For cross domain
     //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
+
+    //TODO: Return an array of all users that have privilege=users.
     res.writeHead(200, {"Content-Type":"text/plain"});
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         console.log(data);
@@ -310,43 +312,61 @@ router.get('/vehicles/listVehicles', function(req, res) {
 
 router.get("/getComments",function(req,res){
     if (req.session && req.session.email){
-        //TODO: Get all the comments on the user based on current user. Also get rating.
-        //TODO: Return as a JSON object
-        fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-            var mainData = JSON.parse(data);
-            console.log(mainData);
-            var commentArray = [];
-            for(var i =0;i < mainData.length; i++){
-                if (mainData[i].email == req.session.email){
-                    for (var j = 0; j < mainData[i].comments.length; j++){
-                        var commentObject = new Object();
-                        commentObject.from = mainData[i].comments[j].from;
-                        commentObject.content = mainData[i].comments[j].content;
-                        commentObject.rating = mainData[i].comments[j].rating;
-                        console.log(mainData[i].comments[j].from);
-                        console.log(mainData[i].comments[j].content);
-                        console.log(mainData[i].comments[j].rating);
-                        commentArray.push(commentObject);
+
+        if(req.session.viewedEmail){
+            //Return based on email
+            //TODO: Get all the comments (should have rating, from, and content) on the user based on req.session.viewedEmail.
+            //TODO: Return as an array of objects
+            fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
+                var mainData = JSON.parse(data);
+                console.log(mainData);
+                var commentArray = [];
+                for (var i = 0; i < mainData.length; i++) {
+                    if (mainData[i].email == req.session.viewedEmail) {
+                        for (var j = 0; j < mainData[i].comments.length; j++) {
+                            var commentObject = new Object();
+                            commentObject.from = mainData[i].comments[j].from;
+                            commentObject.content = mainData[i].comments[j].content;
+                            commentObject.rating = mainData[i].comments[j].rating;
+                            //console.log(mainData[i].comments[j].from);
+                            //console.log(mainData[i].comments[j].content);
+                            //console.log(mainData[i].comments[j].rating);
+                            commentArray.push(commentObject);
+                        }
+                        break;
                     }
-                    break;
+
                 }
+                delete req.session.viewedEmail;
+                res.send(JSON.stringify(commentArray));
+            });
+        }
+        else {
+            //TODO: Get all the comments (should have rating, from, and content) on the user based on current user.
+            //TODO: Return as an array of objects
+            fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
+                var mainData = JSON.parse(data);
+                console.log(mainData);
+                var commentArray = [];
+                for (var i = 0; i < mainData.length; i++) {
+                    if (mainData[i].email == req.session.email) {
+                        for (var j = 0; j < mainData[i].comments.length; j++) {
+                            var commentObject = new Object();
+                            commentObject.from = mainData[i].comments[j].from;
+                            commentObject.content = mainData[i].comments[j].content;
+                            commentObject.rating = mainData[i].comments[j].rating;
+                            //console.log(mainData[i].comments[j].from);
+                            //console.log(mainData[i].comments[j].content);
+                            //console.log(mainData[i].comments[j].rating);
+                            commentArray.push(commentObject);
+                        }
+                        break;
+                    }
 
-            }
-            res.send(JSON.stringify(commentArray));
-        });
-        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
-    }
-    else{
-        //If there isn't a user logged in, redirect to login page
-        res.redirect("/userlogin");
-    }
-});
-
-
-router.get("/getComments/:email",function(req,res){
-    if (req.session && req.session.email){
-        //TODO: Get all the comments on the user based on email. Also get rating.
-        //TODO: Return as a JSON object
+                }
+                res.send(JSON.stringify(commentArray));
+            });
+        }
         //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
     }
     else{
@@ -358,7 +378,7 @@ router.get("/getComments/:email",function(req,res){
 router.get("/getFollowing",function(req,res){
     if (req.session && req.session.email){
         //TODO: Get all the followers of the user based on email.
-        //TODO: Return as a JSON object.
+        //TODO: Return as an array of objects (should have data full name and email). Check out users.json for reference.
         fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
             var mainData = JSON.parse(data);
             console.log(mainData);
@@ -369,8 +389,8 @@ router.get("/getFollowing",function(req,res){
                         var followerObject = new Object();
                         followerObject.username = mainData[i].following[j].username;
                         followerObject.email = mainData[i].following[j].email;
-                        console.log(mainData[i].comments[j].username);
-                        console.log(mainData[i].comments[j].email);
+                        //console.log(mainData[i].comments[j].username);
+                        //console.log(mainData[i].comments[j].email);
                         followerArray.push(followerObject);
                     }
                     break;
@@ -388,22 +408,9 @@ router.get("/getFollowing",function(req,res){
     }
 });
 
-router.get("/getFollowing/:email",function(req,res){
-    if (req.session && req.session.email){
-        //TODO: Get all the followers of the user based on email.
-        //TODO: REturn as a JSON object.
-
-        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
-    }
-    else{
-        //If there isn't a user logged in, redirect to login page.
-        res.redirect("/userlogin");
-    }
-});
-
 router.get('/user/:email', function(req,res){
     //If there does not exist a currently logged in user, redirect to login page. If there's an admin, do the same.
-    //TODO: Search the db based on the username. Find that user. Get their name, comments, and rating. Return it as an object here. Don't send JSON in the response.
+    //TODO: Search the db based on the email. Find that user. Get their name, comments, and ratings. Return it as an object here. Check out the users.json for reference.
     if(req.session && req.session.email){
         if (req.session.privilege == "admin"){
             res.redirect("/adminprofile");
@@ -412,8 +419,8 @@ router.get('/user/:email', function(req,res){
 
             // TODO: (Fullchee) get the average rating from db
             console.log(req.params.email);
+            req.session.viewedEmail=req.params.email;
             res.render("viewprofile", {
-                rating:3,
                 name:req.params.email
             });
             return;
@@ -512,7 +519,18 @@ router.post('/confirmuser',function(req,res){
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
+<<<<<<< HEAD
 // added a database method above instead of reading from json file
+=======
+    //TODO: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
+    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+    //     var object = JSON.parse(data);
+    //     console.log(object);
+    //     for(var i =0;i < data.length; i++){
+    //         if (object[i].email === username && object[i].password === password){
+    //             if (object[i].privilege === "user") {
+    //                 req.session.email = username;
+>>>>>>> 25247d0055d36dd6357159a48bc481f9d0ed4d10
 
     // Step 1: fetch the password from that user in the db
     database.checkUser(username, function(err, result) {
@@ -523,11 +541,12 @@ router.post('/confirmuser',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
+                //TODO: FETCH THE FULL NAME FOR USERNAME.
                 delete req.session.password; //deleting password if saved
 
                 if (! result.isadmin) {  // user
                     req.session.privilege = "user";
-                    res.redirect("/user/" + req.session.email);
+                    res.redirect("/userprofile");
                     return;
                 }
                 else {
@@ -582,10 +601,11 @@ router.post('/confirmadmin',function(req,res){
         password: req.body.password
     };
 
+    //TODO: Return a user. Needs to return an object that has attributes email and username and (maybe) password.
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         var object = JSON.parse(data);
         console.log(object);
-        for(var i =0;i < 3; i++){
+        for(var i =0;i < data.length; i++){
             if (object[i].username === username && object[i].password === password){
                 if (object[i].privilege === "admin") {
                     req.session.email = username;
@@ -611,6 +631,9 @@ router.post('/confirmadmin',function(req,res){
 
 router.get("/userprofile", function(req, res){
     if (req.session && req.session.email) {
+        if(req.session.viewedEmail){
+            delete req.session.viewedEmail;
+        }
         res.render("profile", {
             name: "USER: " + req.session.email
         });
@@ -701,10 +724,7 @@ router.post('/confirmSignup', function (req, res) {
 
         req.session.errors = errors;
         res.render('signup', errorMsgs);
-<<<<<<< HEAD
         return;
-=======
->>>>>>> 78d50e953130eff19dc9bca8376ab7fa0ffc63c0
     }
 
     // hash and salt password before storing
