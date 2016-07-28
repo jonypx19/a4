@@ -143,7 +143,13 @@ router.post('/contracts/cancelContract', function(req, res) {
         if (err) {
             console.log("Couldn't cancel contract");
             console.log(err);
-        } 
+        }else {
+            database.deleteContractChat(req.body.chatid, function(err, result) {
+                if (err) {
+                    conosole.log(err);
+                }
+            })
+        }
     });
 });
 
@@ -156,7 +162,7 @@ router.post('/contracts/completeContract', function(req, res) {
     });
 });
 
-router.post('/contracts/registerContract', function(req, res) {
+router.post('/contracts/registerContract', function(req, res, next) {
     var userid=req.session.userid;
 
 
@@ -203,10 +209,43 @@ router.post('/contracts/registerContract', function(req, res) {
     
 });
 
+router.get('/contracts/getChat', function(req, res) {
+    var chatid = req.query.id;
+
+    database.getContractChat(chatid, function (err, result) {
+        if (err) {
+            res.end(JSON.stringify({error:"Couldnt retrieve Chat"}));
+        } else {
+            for (var i = 0; i < result.length; i++) {
+                if (result[i].userid == req.session.userid) {
+                    result[i].owner = true;
+                } else {
+                    result[i].owner = false;
+                }
+            }
+
+            res.end(JSON.stringify(result));
+        }
+    });
+    
+});
+
+router.post('/contracts/sendChat', function(req, res) {
+    var chatid = req.body.id;
+
+    database.insertChatReply(chatid, req.sanitize(req.body.message), req.session.userid, function (err) {
+        if (err) {
+            res.end(JSON.stringify({ error: "message was not sent retry"}))
+        } else {
+            res.end(JSON.stringify({}));
+        }
+
+    }); 
+    
+});
+
 router.get('/contracts/listContracts', function(req, res) {
     var userid=req.session.userid;
-
-    console.log(req.session.username);
 
     database.getUserContracts(userid, function(err, data) {
         console.log(data);
@@ -384,6 +423,7 @@ router.post('/confirmuser',function(req,res){
     // then sets the users id in the session data
     
     database.checkUser(username, password, function(err, result, id){
+        console.log(result);
         if (result) {
             req.session.userid = id;
             req.session.username = username;
@@ -555,7 +595,8 @@ router.post('/confirmSignup', function (req, res) {
         }
 
         req.session.errors = errors;
-        res.render('/signup', errorMsgs);
+        res.render('signup', errorMsgs);
+        return;
     }
 
 

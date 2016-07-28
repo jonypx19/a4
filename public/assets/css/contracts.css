@@ -58,10 +58,93 @@ article.contract div.detail_info {
 	
 }
 
-article.contract button {
+article.contract .chat {
+	background-color: white;
+	border: 4px solid black;
+	display: block;
+	padding: 0;
+	width: 100%;
+	float: left;
+	clear: both;
+}
+
+article.contract div.messages {
+	overflow: auto;
+	border-right: 5px solid #0088bb;
+	width: 75%;
+	height: 25rem;
+	float: left;
+}
+
+article.contract .chat textarea {
+	overflow: auto;
+	margin-top: 2rem;
+	margin-left: 2.5%;
+	width: 20%;
+	color: black;
+	float: left;
+	resize: none;
+}
+
+article.contract .chat textarea:invalid {
+	box-shadow: 0 0 3pt 2pt red;
+}
+
+article.contract button.send_button {
+	margin: 0;
+	margin-top: 2rem;
+	margin-right: 2.5%;
+	width: 20%;
+	color: black;
+	float: right;
+}
+
+article.contract > button {
 	margin: 0;
 	margin-top: 2rem;
 	margin-right: 2rem;
 	color: black;
+	width: 15%;
 	float: right;
+	clear: right;
+}
+
+article.contract button.confirm:hover {
+	background-color: green;
+}
+
+article.contract button.cancel:hover {
+	background-color: red;
+}
+
+article.contract button.chat_button:hover {
+	background-color: #0088bb;
+}
+
+article.contract .chat .send_error {
+	margin-left: 5rem;
+	color: red;
+}
+
+article.contract .chat .messages p {
+	max-width: 50%;
+	padding: 5%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	border-radius: 15px;
+	border: 2px solid black;
+	background-color: blue;
+	margin-left: 5%;
+	float: left;
+	clear: both;
+	word-break: keep-all;
+    white-space: normal;
+}
+
+article.contract .chat .messages p.owner {
+	background-color: green;
+	float: right;
+	clear: both;
+	margin-left: 0;
+	margin-right: 5%;
 }

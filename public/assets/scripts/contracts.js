@@ -28,7 +28,7 @@ function getContracts() {
 					class: 'contract'
 				}).appendTo('section#client_contracts');
 
-				var button = $('<button>', {class: "confirm",text:"Confirm Completion"});
+				var button = $('<button>', {class: "confirm button signup",text:"Confirm Completion"});
 
 				createContractsList(json.washer, article, button);
 			}
@@ -37,9 +37,91 @@ function getContracts() {
 	});
 }
 
-function cancelContract(id) {
+function createChatForm(article, contract) {
+	var chat_block = $("<form>", {class: "chat hidden"}).appendTo(article);
+	chat_block.data('id', contract.chat_id);
+
+	$("<div>", {class: "messages"}).appendTo(chat_block);
+
+	$("<button>", {class: "send_button button signup", text: "Send"}).appendTo(chat_block);
+
+	$("<textarea>", {class: "send", name: "message", rows: 3, cols: 30, maxlength: 250, placeholder: "Send Message", required: "required"}).appendTo(chat_block);
+
+}
+
+function sendChat(id, message) {
 	var input = {
-		id: id
+		id: id,
+		message: message
+	};
+	console.log(input);
+	$.ajax({
+		type: "post",
+		url: "/contracts/sendChat",
+		"Content-Type": 'application/json',
+		dataType: 'json',
+		data: input,
+		success: function () {
+
+		}
+	});
+}
+
+function getChat(id, box) {
+	box.empty();
+	$.ajax({
+		type: "get",
+		url: "/contracts/getChat",
+		dataType: 'json',
+		data: {"id": id},
+		success: function (json) {
+	
+			for (var i = 0; i < json.length; i++) {
+				
+				if (json[i].owner) {
+					$('<p>', {class:"message owner", html:json[i].message}).appendTo(box);
+				} else {
+					$('<p>', {class:"message", html:json[i].message}).appendTo(box);
+				}
+			}
+
+			box.animate({
+				scrollTop: box.get(0).scrollHeight
+			}, 1000);
+		}
+	});
+}
+
+function updateChat(id, box) {
+	$.ajax({
+		type: "get",
+		url: "/contracts/getChat",
+		dataType: 'json',
+		data: {"id": id},
+		success: function (json) {
+			if (box.children().length < json.length) {
+				for (var i = box.children().length; i < json.length; i++) {
+					if (json[i].owner) {
+						$('<p>', {class:"message owner", html:json[i].message}).appendTo(box);
+					} else {
+						$('<p>', {class:"message", html:json[i].message}).appendTo(box);
+					}
+				}
+
+				box.animate({
+					scrollTop: box.get(0).scrollHeight
+				}, 1000);
+			}
+
+			
+		}
+	});
+}
+
+function cancelContract(id, chatid) {
+	var input = {
+		id: id,
+		chatid: chatid
 	};
 	$.ajax({
 		type: "post",
@@ -131,7 +213,19 @@ function createContractsList(contracts, article, button) {
 			var complete_button = button.appendTo(article);
 		}
 
-		var cancel_button = $('<button>', {class: "cancel", text:"Cancel"}).appendTo(article);
+		$('<button>', {class: "cancel button signup", text:"Cancel"}).appendTo(article);
+
+		
+
+		if (contracts[i].status == 'taken') {
+
+			$('<button>', {class: "chat_button button signup", text: "Chat"}).appendTo(article);
+
+		}
+
+		createChatForm(article, contracts[i]);
+
+		
 
 
 	}
@@ -145,8 +239,55 @@ function main() {
 	});
 
 	$(document).on('click', '.cancel', function() {
-		console.log("hello");
-		cancelContract($(this).parent().data('id'));
+		
+		cancelContract($(this).parent().data('id'), $(this).parent().children(".chat").data('id'));
 		$(this).parent().remove();
+	});
+
+	$(document).on('click', '.send_button', function(e) {
+
+		e.preventDefault();
+
+		if ($(this).parent().children(".send").is(":invalid")) {
+    		$('<span>', {class:"send_error", text: "Message Cannot Be Blank"}).insertAfter($(this).parent().children(".send"));
+		} else {
+		
+			sendChat($(this).parent().data('id'), $(this).parent().children(".send").val());
+
+			updateChat($(this).parent().data('id'), $(this).parent().children(".messages"));
+
+			$(this).parent().children(".send").val('');
+
+		}
+		
+	});
+
+	$(document).on('click', '.chat_button', function() {
+
+		$(this).parent().children(".chat").toggleClass('hidden');
+
+		var b = $(this).parent().children(".chat").children(".messages");
+		
+		getChat($(this).parent().children(".chat").data('id'), b);
+
+		setInterval(updateChat, 5000, $(this).parent().children(".chat").data('id'), b);
+
+		
+		if ($(this).parent().css('height') == '300px') {
+			$(this).parent().css({
+				height: "600px"
+			})
+			$("html body").animate({
+				scrollTop: $(this).parent().children(".chat").offset().top -350
+			}, 1000);
+		} else {
+			$(this).parent().css({
+				height: "300px"
+			})
+			$("html body").animate({
+				scrollTop: $(this).parent().children(".chat").offset().top -50
+			}, 1000);
+		}
+		
 	});
 }

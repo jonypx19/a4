@@ -98,11 +98,29 @@ Database.prototype.getUserVehicles = function(username, callback) {
 
 // Contract Queries
 
+Database.prototype.deleteContractChat = function(chatid, callback) {
+
+	this.con.query("DELETE FROM chat_reply WHERE chat_id=?",
+		[chatid],
+		function (err, result) {
+			if (err) {
+				console.log("couldn't delete chat messages");
+				callback(err, null);
+			} else {
+				callback(null, true);
+			}
+		});
+
+}
+
 Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
 
-	if (washer === 'delete') {
+	if (washer) {
+		if (washer === 'delete') {
+			washer = null;
+		}
 		this.con.query("UPDATE contract SET status=?, washerid=? WHERE id=?",
-		[status, null, contractid],
+		[status, washer, contractid],
 		function(err, result) {
 			if (err) {
 				console.log("couldn't update contract");
@@ -201,8 +219,36 @@ Database.prototype.findClientContracts = function(lat, lon, callback) {
 	});
 }
 
+Database.prototype.getContractChat = function(chatid, callback) {
+	this.con.query("SELECT * FROM chat_reply WHERE chat_id=? ORDER BY date ASC", 
+		[chatid],
+		function (err, result) {
+			if (err) {
+				console.log(err);
+				callback(err, null);
+				return;
+			}
+
+			callback(null, result);
+		});
+}
+
+Database.prototype.insertChatReply = function(chatid, message, userid, callback) {
+	this.con.query("INSERT INTO chat_reply (chat_id, message, userid) VALUES (?, ?, ?)",
+		[chatid, message, userid],
+		function (err, result) {
+			if (err) {
+				console.log(err);
+				callback(err, null);
+				return;
+			}
+
+			callback(null, true);
+		});
+}
+
 Database.prototype.getUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
 		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
 		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
 		WHERE ownerid=? or washerid=?", 
