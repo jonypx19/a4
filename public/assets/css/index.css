@@ -7,7 +7,7 @@ body {
 {
 
     .main_headline{
-    	font-size: 22px;
+    	font-size: 20px;
 	}
 
 	.carousel-caption {
@@ -27,7 +27,23 @@ body {
 	}
 
 	.carousel-caption {
-	    margin-bottom: 5%;
+	    margin-bottom: 2%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+}
+
+@media screen and (min-width: 480px) and (min-height: 400px)
+{
+
+    .main_headline{
+    	font-size: 38px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 15%;
 	}
 
 	.hyperlink {
@@ -39,7 +55,23 @@ body {
 {
 
     .main_headline{
-    	font-size: 30px;
+    	font-size: 50px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+}
+
+@media screen and (min-width: 500px) and (min-height: 700px)
+{
+
+    .main_headline{
+    	font-size: 36px;
 	}
 
 	.carousel-caption {
@@ -94,6 +126,23 @@ body {
 
 	.carousel-caption {
 	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+}
+
+@media screen and (min-width: 1280px)
+{
+
+    .main_headline{
+    	font-size: 52px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 38%;
 	}
 
 	.hyperlink {
