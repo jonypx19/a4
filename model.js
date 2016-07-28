@@ -33,14 +33,20 @@ Database.prototype.connect = function() {
 
 Database.prototype.checkUser = function(email, callback) {
 	// fullchee
-	this.con.query('SELECT id, password\
+	this.con.query('SELECT id, password, isadmin\
 		FROM users\
 		WHERE ? = email',[email], function(err, result) {
+
 			if (err) {
 				console.log('Failed to checkUser()');
 			}
 
-			callback(err, result[0]);  // at most 1 result, email is unique
+			if (result) {
+				callback(err, result[0]);  // at most 1 result, email is unique
+			}
+			else {
+				callback(err, null);  // at most 1 result, email is unique
+			}
 		});
 
 	// OLD VERSION had a second parameter called password

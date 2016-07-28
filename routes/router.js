@@ -1,7 +1,6 @@
 var express = require('express');
 var passport = require('passport');
 var mysql = require('mysql');
-var fs = require('fs');
 var upload = require('../upload');
 var router = express.Router();
 var user = require('../public/assets/scripts/users.js');
@@ -438,28 +437,27 @@ router.post('/confirmuser',function(req,res){
 
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, function(err, result){
-        
+    database.checkUser(username, function(err, result) {
         if (result) {
-        bcrypt.compare(password, result.password, function(err, passwordValid) {
-            if (passwordValid) {
+
+            // step 2: compare the hash with given password
+            if (bcrypt.compareSync(password, result.password)) {
                 req.session.userid = result.id;
+                req.session.username = username;
+                req.session.email = username;
+                delete req.session.password; //deleting password if saved
 
-                // SUCCESS
-
-                console.log(result);
-
-                // TODO (fullchee): how does the db know who's an admin?
-                if (result.id > 10) {  // user
-                    req.session.username = username;
+                if (! result.isadmin) {  // user
                     req.session.privilege = "user";
-                    req.session.email = username;
-                    delete req.session.password; //deleting password if saved
                     res.redirect("/userprofile");
                     return;
-                } 
+                }
+                else {
+                    req.session.privilege = 'admin';
+                    res.redirect('/adminprofile');
+                    return;
+                }
             }
-        });
     }
 
     res.render("userlogin",{
@@ -467,8 +465,6 @@ router.post('/confirmuser',function(req,res){
     });
     return;
     });
-
-    // step 2: compare the hash with the given password
 
 
     // OLD WAY, READ A JSON FILE
