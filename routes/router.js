@@ -636,7 +636,7 @@ router.post('/confirmSignup', function (req, res) {
         }
 
         req.session.errors = errors;
-        res.render('/signup', errorMsgs);
+        res.render('signup', errorMsgs);
     }
 
     // hash and salt password before storing
