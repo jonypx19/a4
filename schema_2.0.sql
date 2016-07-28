@@ -106,6 +106,7 @@ CREATE TABLE `users` (
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
+  `isadmin` BOOLEAN NOT NULL DEFAULT FALSE,
   `month` VARCHAR(255) NOT NULL,
   `day` int(11) NOT NULL,
   `year` int(11) NOT NULL,
@@ -119,7 +120,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'super admin','info@cardetailexchange.ca','$2a$10$ym4IYLE0OKUMJQCPhC.njenpg4XfmKtnXlrz23nQ/1IJPSrSQckoa','',0,0),(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq','',0,0),(12,'Terry Yan','ty@ty.ty','$2a$10$ym4IYLE0OKUMJQCPhC.njenpg4XfmKtnXlrz23nQ/1IJPSrSQckoa','',0,0);
+INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi', TRUE ,'January', 1, 2016),
+(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq', TRUE, 'January',1,2016),
+(12,'Terry Yan','ty@ty.ty','$2a$10$ym4IYLE0OKUMJQCPhC.njenpg4XfmKtnXlrz23nQ/1IJPSrSQckoa', TRUE, 'January',21,1999);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
