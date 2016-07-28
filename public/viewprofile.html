@@ -13,80 +13,111 @@
     <script src="/scripts/about.js" defer></script>
     <script src="/scripts/profile.js" defer></script>
     <script src="/scripts/getInformation.js" defer></script>
+    <script src="scripts/about.js" defer></script>
 
 </head>
-<body>
+    <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Car Detail Exchange</a>
-                <img src="images/logo.png" style="width:50px;height:50px;">
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="/">Car Detail Exchange</a>
+                    <img src="images/logo.png" style="width:50px;height:50px;">
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul id="navigation" class="nav navbar-nav">
+                        <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                        <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+                        <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
+                    </ul>
+                    <ul id="navigation" class="nav navbar-nav navbar-right">
+                        <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                    </ul>
+                </div>
             </div>
-            <ul id="navigation" class="nav navbar-nav">
-                <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
-                <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
-            </ul>
-            <ul id="navigation" class="nav navbar-nav navbar-right">
-                <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
-    <script>
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
+        </nav>
+        <script>
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+            }
 
-        function onLoad() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init();
-            });
-        }
-    </script>
-    <p>
-        This is <%-name%>'s profile! See information about <%-name%>.
-    </p>
-    <p>
-        These are the people they're following currently.
-    <ul>
-        <li>Nothing here yet!</li>
-    </ul>
-    </p>
-
-    <p>
-        Their average rating is : <%-rating%> stars.
-    </p>
-
-    <p>
-        These are their comments.
+            function onLoad() {
+                gapi.load('auth2', function() {
+                    gapi.auth2.init();
+                });
+            }
+        </script>
+        <p>
+            This is <%-name%>'s profile! See information about <%-name%>.
+        </p>
+        <p>
+            These are the people they're following currently.
         <ul>
             <li>Nothing here yet!</li>
         </ul>
-    </p>
+        </p>
 
-    <!-- rating will be send to server with AJAX-->
+        <p>
+            Their average rating is : <%-rating%> stars.
+        </p>
 
-    <!-- States:
-    Admin/User looking at own profile: doesn't see this, can't rate yourself
-    Another user: sees this, can only submit a rating and a comment -->
-    <form action="/submitComment/<%-name-%>" method="post">
-        <fieldset class="rating">
-            <legend>Rate this person:</legend>
-            <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
-            <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
-            <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 stars</label>
-            <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
-            <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
-        </fieldset>
+        <p>
+            These are their comments.
+            <ul>
+                <li>Nothing here yet!</li>
+            </ul>
+        </p>
 
-        <textarea name="comment" id="comment" name="comment" placeholder="Submit a comment here"></textarea>
-        <input id="submit" type="submit" value="Submit"/>
-    </form>
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
-</body>
+        <!-- rating will be send to server with AJAX-->
+
+        <!-- States:
+        Admin/User looking at own profile: doesn't see this, can't rate yourself
+        Another user: sees this, can only submit a rating and a comment -->
+        <form action="/submitComment/<%-name-%>" method="post">
+            <fieldset class="rating">
+                <legend>Rate this person:</legend>
+                <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
+            </fieldset>
+
+            <textarea name="comment" id="comment" name="comment" placeholder="Submit a comment here"></textarea>
+            <input id="submit" type="submit" value="Submit"/>
+        </form>
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
+
+        <!-- The "About" Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close">×</span>
+              <h2>About Us</h2>
+            </div>
+            <div class="modal-body">
+                <h2>Our Mission</h2>
+                    <p>Keep your car clean?</p>
+
+                <h2>Who we are</h2>
+                    <p>We're people passionate about keeping cars clean.</p>
+
+                <h2>Contact Us</h2>
+                    <p>Follow us on Twitter</p>
+            </div>
+          </div>
+        </div>
+    </body>
 </html>
