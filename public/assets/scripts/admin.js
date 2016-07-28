@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $.ajax({
-        url: "http://localhost:3000/users/listUsers",
+        url: "http://localhost:3000/user/listUsers",
         type:"GET",
         dataType:"json"
     }).done(function(data){
@@ -19,7 +19,7 @@ $(document).ready(function(){
                 userArray.push(user);
             }
         }
-
+        //append each one to a list and append to the main body.
         $list = $("<ul/>");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{

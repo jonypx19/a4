@@ -50,7 +50,7 @@
 		],
 		"comments":[
 			{
-				"from":"Billy",
+				"from":"User2",
 				"content": "Amazing.",
 				"rating": 1
 			},
@@ -62,7 +62,7 @@
 			{
 				"from":"George",
 				"content": "Perfect.",
-				"rating":3
+				"rating":5
 			}
 		]
 	},
