@@ -37,7 +37,8 @@
     "mocha": "",
     "chai": "",
     "compression": "",
-    "express-sanitizer": ""
+    "express-sanitizer": "",
+    "bcryptjs": ""
   },
 
   "scripts": {

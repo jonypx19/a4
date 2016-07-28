@@ -1,5 +1,8 @@
 CREATE DATABASE  IF NOT EXISTS `Detail_Wash` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `Detail_Wash`;
+
+-- USE `heroku_fb3dc2d4bdd13bf`;
+
 -- MySQL dump 10.13  Distrib 5.5.49, for debian-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: Detail_Wash
@@ -28,7 +31,7 @@ CREATE TABLE `contract` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
-  `washerid` int(11) DEFAULT NULL,
+  `washerid` int(11) NOT NULL,
   `vehicleid` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `full_vacuuming` tinyint(1) NOT NULL,
@@ -59,7 +62,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (2,'43.84519969999999','-79.5180752',NULL,4,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available');
+INSERT INTO `contract` VALUES (2,'43.84519969999999','-79.5180752',12,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +94,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
+INSERT INTO `review` VALUES (1, 12, 1, 2, "GREAT JOB", 4);
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,6 +110,7 @@ CREATE TABLE `users` (
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
+  `isadmin` BOOLEAN NOT NULL DEFAULT FALSE,
   `month` VARCHAR(255) NOT NULL,
   `day` int(11) NOT NULL,
   `year` int(11) NOT NULL,
@@ -119,7 +124,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'super admin','info@cardetailexchange.ca','$2a$10$ym4IYLE0OKUMJQCPhC.njenpg4XfmKtnXlrz23nQ/1IJPSrSQckoa','',0,0),(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq','',0,0),(12,'Terry Yan','ty@ty.ty','$2a$10$ym4IYLE0OKUMJQCPhC.njenpg4XfmKtnXlrz23nQ/1IJPSrSQckoa','',0,0);
+INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi', TRUE ,'January', 1, 2016),
+(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq', TRUE, 'January',1,2016),
+(12,'Terry Yan','ty@ty.ty','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi', TRUE, 'January',21,1999);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +157,8 @@ CREATE TABLE `vehicles` (
 
 LOCK TABLES `vehicles` WRITE;
 /*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
-INSERT INTO `vehicles` VALUES (1,'Mystery Machine','N/A',1969,'AAAA 111',11,'images/placeholder_car.jpg'),(4,'Nissan','GT-R',2014,'abshabs',11,'/images/bob_porsche-911-2.jpg');
+INSERT INTO `vehicles` VALUES (1,'aaaaaa','N/A',1969,'AAAA 111',1,'images/placeholder_car.jpg'),
+(4,'Nissan','GT-R',2014,'abshabs',11,'/images/bob_porsche-911-2.jpg');
 /*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

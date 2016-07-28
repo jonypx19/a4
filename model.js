@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var bcrypt = require('bcryptjs');
 
 var Database = function (host_name, username, pass, database_name) {
 	// set connection settings for database
@@ -30,21 +31,39 @@ Database.prototype.connect = function() {
 
 // User Queries
 
-Database.prototype.checkUser = function(email, password, callback) {
-	this.con.query("SELECT id FROM users WHERE email=? and password=?",
-		[email, password],
-		function (err, result) {
-			if (err) {
-				console.log(err);
-				callback(err, null, null);
-			} 
+Database.prototype.checkUser = function(email, callback) {
+	// fullchee
+	this.con.query('SELECT id, password, isadmin\
+		FROM users\
+		WHERE ? = email',[email], function(err, result) {
 
-			if (result.length == 1) {
-				callback(null, true, result[0].id);
-			} else {
-				callback(null, false, null);
+			if (err) {
+				console.log('Failed to checkUser()');
+			}
+
+			if (result) {
+				callback(err, result[0]);  // at most 1 result, email is unique
+			}
+			else {
+				callback(err, null);  // at most 1 result, email is unique
 			}
 		});
+
+	// OLD VERSION had a second parameter called password
+	// this.con.query("SELECT id FROM users WHERE email=? and password=?",
+	// 	[email, password],
+	// 	function (err, result) {
+	// 		if (err) {
+	// 			console.log(err);
+	// 			callback(err, null, null);
+	// 		} 
+
+	// 		if (result.length == 1) {
+	// 			callback(null, true, result[0].id);
+	// 		} else {
+	// 			callback(null, false, null);
+	// 		}
+	// 	});
 };
 
 // used after a user signs up
@@ -263,5 +282,27 @@ Database.prototype.getUserContracts = function(username, callback) {
 
 	});
 }
+
+
+// TODO: SQL syntax error (Fullchee)
+Database.prototype.insertReview = function(washer_email, rater_email, comment, rating) {
+	this.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
+			FROM users rater, users washer, vehicles v, contract c, \
+			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and rater.vehicleid = c.vehicleid and rater.id <> washer.id);\
+			', [rater_email, washer_email],
+		function (err, result) {
+			if (err) {
+				console.log('Could not insert review');
+				console.log(err);
+			}
+
+			console.log(result);
+
+		// 	this.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
+		// VALUES (washer_id.id, rater_vehicle.userid, ?, ?)', [comment, rating], function (err, result) {
+
+		// });
+		});
+};
 
 exports.Database = Database;
