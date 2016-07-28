@@ -47,7 +47,7 @@ var geocoder = node_geocoder({
 router.get('/', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/userprofile");
+            res.redirect("/user/" + req.session.email);
         else{
             res.redirect("/adminprofile");
         }
@@ -60,7 +60,7 @@ router.get('/', function(req, res) {
 router.get('/signup', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/userprofile");
+            res.redirect("/user/" + req.session.email);
         else{
             res.redirect("/adminprofile");
         }
@@ -347,6 +347,8 @@ router.get('/user/:email', function(req,res){
             res.redirect("/adminprofile");
         }
         else{
+
+            // TODO: (Fullchee) get the average rating from db
             console.log(req.params.email);
             res.render("viewprofile", {
                 rating:3,
@@ -392,7 +394,7 @@ router.get('/adminlogin', function(req, res){
     // res.send("Hi, you're an admin.")
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/userprofile");
+            res.redirect("/user/" + req.session.email);
         else{
             res.redirect("/adminprofile");
         }
@@ -407,7 +409,7 @@ router.get('/adminlogin', function(req, res){
 router.get('/userlogin', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/userprofile");
+            res.redirect("/user/" + req.session.email);
         else{
             res.redirect("/adminprofile");
         }
@@ -427,11 +429,24 @@ router.post('/confirmuser',function(req,res){
         username = req.body.name;
         req.session.email = username;
         req.session.privilege = "user";
-        //TODO: find the username from the db. If it doesn't exist, just put it in
+        
+        database.checkUser(username, function(err, result) {
+            // username doesn't exist: put it in
+            if (!result) {
+                // TODO (Fullchee), figure out how google sign in works
+                // database.insertUser();
+            }
+            res.render("userlogin",{
+                errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
+            });
+            return;
+
+        });
+
         //TODO: as a new one with privilege = user.(since this is verified as a google account).
-        res.redirect("/userprofile");
+        res.redirect("/user/" + req.session.email);
         return;
-    }
+    }  // end of google signin
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
@@ -449,10 +464,11 @@ router.post('/confirmuser',function(req,res){
 
                 if (! result.isadmin) {  // user
                     req.session.privilege = "user";
-                    res.redirect("/userprofile");
+                    res.redirect("/user/" + req.session.email);
                     return;
                 }
                 else {
+                    // do nothing, admins shouldn't login here
                     req.session.privilege = 'admin';
                     res.redirect('/adminprofile');
                     return;
