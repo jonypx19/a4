@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var expressSanitizer = require('express-sanitizer')
 var compression = require('compression');  // gzip middleware
 var morgan = require('morgan');
-
 var router = require('./routes/router.js');
 var user = require('./public/assets/scripts/users.js');
 var signupValidation = require('./helper/signupValidation.js');
@@ -54,7 +53,7 @@ app.use(expressValidator({
 
     isPassword: function(value) {
     	// could enforce more password requirements
-		if (value.length > 6) {
+		if (value.length >= 6) {
 			return true;
 		}
 		return false;

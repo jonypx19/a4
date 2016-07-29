@@ -21,6 +21,32 @@ USE `Detail_Wash`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `chat_reply`
+--
+
+DROP TABLE IF EXISTS `chat_reply`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `chat_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `message` longtext NOT NULL,
+  `chat_id` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_reply`
+--
+
+LOCK TABLES `chat_reply` WRITE;
+/*!40000 ALTER TABLE `chat_reply` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chat_reply` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `contract`
 --
 
@@ -28,10 +54,10 @@ DROP TABLE IF EXISTS `contract`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contract` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
-  `washerid` int(11) NOT NULL,
+  `washerid` int(11) DEFAULT NULL,
   `vehicleid` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `full_vacuuming` tinyint(1) NOT NULL,
@@ -48,12 +74,14 @@ CREATE TABLE `contract` (
   `city` varchar(45) NOT NULL,
   `postal_code` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
+  `chat_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `chat_content_UNIQUE` (`chat_id`),
   KEY `washerid` (`washerid`),
   KEY `vehicleid` (`vehicleid`),
   CONSTRAINT `contract_ibfk_1` FOREIGN KEY (`washerid`) REFERENCES `users` (`id`),
   CONSTRAINT `contract_ibfk_2` FOREIGN KEY (`vehicleid`) REFERENCES `vehicles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +90,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (2,'43.84519969999999','-79.5180752',12,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available');
+INSERT INTO `contract` VALUES (2,'43.84519969999999','-79.5180752',12,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',0);
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 

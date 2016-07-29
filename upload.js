@@ -4,7 +4,7 @@ var storage = multer.diskStorage({
 		callback(null, './public/assets/images');
 	},
 	filename: function(req, file, callback) {
-		callback(null, "bob_" + file.originalname);
+		callback(null, req.session.email + file.originalname);
 	}
 });
 

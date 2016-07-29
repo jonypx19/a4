@@ -17,9 +17,12 @@ function searchContracts() {
 		success: function(json) {
 			var contracts = json;
 			console.log(contracts);
+
+			$("article#results").empty();
 			$('<h2>', {text:"Search Results"}).appendTo('article#results');
 
 			for (var i = 0; i < contracts.length; i++) {
+
 				var article = $('<div>', {class:'contract'}).appendTo('article#results');
 
 				$('<img>', {

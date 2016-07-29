@@ -1,3 +1,18 @@
+form {
+	color: black;
+	background-color: white;
+}
+
+
+
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+h1, h2, h3, h4 {
+	color: white;
+}
+
 div.contract {
 	margin-top: 5%;
 	display: block;
