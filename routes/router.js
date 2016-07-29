@@ -536,7 +536,7 @@ router.post('/confirmuser',function(req,res){
     var username;
     var password;
     if (req.body.isGoogleSignIn){
-        //username = req.body.name;
+        console.log('--------------------------------------------');
         req.session.email = req.body.email;
         req.session.privilege = "user";
         req.session.name = req.body.name;
@@ -574,7 +574,7 @@ router.post('/confirmuser',function(req,res){
     //                 req.session.email = username;
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, 0, function(err, result) {
+    database.checkUser(username, false, function(err, result) {
         // result is one object, emails are unique
         if (result) {
 
@@ -650,7 +650,7 @@ router.post('/confirmadmin',function(req,res){
     var password = req.sanitize(req.body.password);
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, 1, function(err, result) {
+    database.checkUser(username, true, function(err, result) {
         // result is one object, emails are unique
         if (result) {
 

@@ -1,5 +1,6 @@
 /**
  * Created by George on 2016-07-26.
+ * Used in /userprofile to load reviews, ...
  */
 $(document).ready(function(){
     $.ajax({
