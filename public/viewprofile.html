@@ -4,73 +4,28 @@
     <meta charset="UTF-8">
     <title><%-name-%> Profile</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/profile.css">
-    <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
-    <script src="/scripts/jquery-3.0.0.min.js" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
-    <script src="/scripts/bootstrap.min.js" defer></script>
-    <script src="/scripts/about.js" defer></script>
-    <script src="/scripts/profile.js" defer></script>
-    <script src="/scripts/getInformation.js" defer></script>
-
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="../scripts/jquery-3.0.0.min.js" defer></script>
+    <link rel="stylesheet" href="css/login.css">
+    <script src="../scripts/bootstrap.min.js" defer></script>
+    <script src="../scripts/getInformation.js" defer></script>
+    <!--<script src="../scripts/getInformationOther.js" defer></script>
+    -->
 </head>
 <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Car Detail Exchange</a>
-                <img src="images/logo.png" style="width:50px;height:50px;">
-            </div>
-            <ul id="navigation" class="nav navbar-nav">
-                <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
-                <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
-            </ul>
-            <ul id="navigation" class="nav navbar-nav navbar-right">
-                <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
-    <script>
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
-
-        function onLoad() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init();
-            });
-        }
-    </script>
     <p>
         This is <%-name%>'s profile! See information about <%-name%>.
     </p>
-    <p>
-        These are the people they're following currently.
-    <ul>
-        <li>Nothing here yet!</li>
-    </ul>
-    </p>
 
-    <p>
-        Their average rating is : <%-rating%> stars.
-    </p>
-
-    <p>
-        These are their comments.
-        <ul>
-            <li>Nothing here yet!</li>
-        </ul>
-    </p>
-
-    <!-- rating will be send to server with AJAX-->
-
+    <div id="comments">
+        <p id="rating">
+            This is their average rating:
+        </p>
+        <p id="comment">
+            These are their comments:
+        </p>
+    </div>
     <!-- States:
     Admin/User looking at own profile: doesn't see this, can't rate yourself
     Another user: sees this, can only submit a rating and a comment -->
@@ -83,10 +38,8 @@
             <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
             <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
         </fieldset>
-
-        <textarea name="comment" id="comment" name="comment" placeholder="Submit a comment here"></textarea>
+        <input type="text" id="comment" name="comment" placeholder="Submit a comment here" required/>
         <input id="submit" type="submit" value="Submit"/>
     </form>
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 </body>
 </html>
