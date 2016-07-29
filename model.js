@@ -115,7 +115,7 @@ Database.prototype.getAllUsers = function(callback) {
 Database.prototype.getFollowers = function(id, callback) {
 	this.con.query("SELECT users.name AS name, users.email AS email \
 		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
-		[email]
+		[email],
 		function (err, result) {
 			if (err) {
 				console.log("can't get followers from db");
