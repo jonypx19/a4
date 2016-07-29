@@ -31,11 +31,12 @@ Database.prototype.connect = function() {
 
 // User Queries
 
-Database.prototype.checkUser = function(email, callback) {
+// used for /confirmuser and /confirmadmin
+Database.prototype.checkUser = function(email, isadmin, callback) {
 	// fullchee
-	this.con.query('SELECT id, password, isadmin\
+	this.con.query('SELECT id, password, isadmin, name\
 		FROM users\
-		WHERE ? = email',[email], function(err, result) {
+		WHERE ? = email and isadmin = ?',[email, isadmin], function(err, result) {
 
 			if (err) {
 				console.log('Failed to checkUser()');
