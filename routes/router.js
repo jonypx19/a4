@@ -47,7 +47,7 @@ var geocoder = node_geocoder({
 router.get('/', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/user/" + req.session.email);
+            res.redirect("/userprofile");
         else{
             res.redirect("/adminprofile");
         }
@@ -60,7 +60,7 @@ router.get('/', function(req, res) {
 router.get('/signup', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/user/" + req.session.email);
+            res.redirect("/userprofile");
         else{
             res.redirect("/adminprofile");
         }
@@ -438,6 +438,7 @@ router.get('/user/:email', function(req,res){
 
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
+    console.log('asldjflksjdfklsdlfj');
     if (req.session && req.session.username) {
         var rater = req.session.username; // current user
         var comment = req.body.comment;
@@ -467,7 +468,7 @@ router.get('/adminlogin', function(req, res){
     // res.send("Hi, you're an admin.")
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/user/" + req.session.email);
+            res.redirect("/userprofile");
         else{
             res.redirect("/adminprofile");
         }
@@ -482,7 +483,7 @@ router.get('/adminlogin', function(req, res){
 router.get('/userlogin', function(req, res) {
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
-            res.redirect("/user/" + req.session.email);
+            res.redirect("/userprofile");
         else{
             res.redirect("/adminprofile");
         }
@@ -517,7 +518,7 @@ router.post('/confirmuser',function(req,res){
         });
 
         //TODO: as a new one with privilege = user.(since this is verified as a google account).
-        res.redirect("/user/" + req.session.email);
+        res.redirect("/userprofile");
         return;
     }  // end of google signin
     var username = req.sanitize(req.body.user);  // prevent XSS
