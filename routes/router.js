@@ -90,10 +90,14 @@ router.get('/contracts/search', function(req, res) {
 
 router.post('/search/searchContracts', function(req, res) {
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country, function(err, res_geo) {
-        database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, function (err, result) {
-            res.end(JSON.stringify(result));
-            return;
-        });
+        if (err) {
+
+        } else {
+            database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, req.session.userid, function (err, result) {
+                res.end(JSON.stringify(result));
+                return;
+            });
+        }
     });
 });
 
@@ -137,9 +141,34 @@ router.post('/search/takeContract', function(req, res) {
 
         
     });
+
 });
 
-router.post('/contracts/registerContract', function(req, res) {
+router.post('/contracts/cancelContract', function(req, res) {
+    database.changeContractStatus(req.body.id, 'delete', 'available', function(err) {
+        if (err) {
+            console.log("Couldn't cancel contract");
+            console.log(err);
+        }else {
+            database.deleteContractChat(req.body.chatid, function(err, result) {
+                if (err) {
+                    conosole.log(err);
+                }
+            })
+        }
+    });
+});
+
+router.post('/contracts/completeContract', function(req, res) {
+    database.changeContractStatus(req.body.id, null, 'complete', function(err){
+        if (err) {
+            console.log("Couldn't confirm contract completion");
+            console.log(err);
+        }
+    });
+});
+
+router.post('/contracts/registerContract', function(req, res, next) {
     var userid=req.session.userid;
 
 
@@ -186,11 +215,48 @@ router.post('/contracts/registerContract', function(req, res) {
     
 });
 
+router.get('/contracts/getChat', function(req, res) {
+    var chatid = req.query.id;
+
+    database.getContractChat(chatid, function (err, result) {
+        if (err) {
+            res.end(JSON.stringify({error:"Couldnt retrieve Chat"}));
+        } else {
+            for (var i = 0; i < result.length; i++) {
+                if (result[i].userid == req.session.userid) {
+                    result[i].owner = true;
+                } else {
+                    result[i].owner = false;
+                }
+            }
+
+            res.end(JSON.stringify(result));
+        }
+    });
+    
+});
+
+router.post('/contracts/sendChat', function(req, res) {
+    var chatid = req.body.id;
+
+    database.insertChatReply(chatid, req.sanitize(req.body.message), req.session.userid, function (err) {
+        if (err) {
+            res.end(JSON.stringify({ error: "message was not sent retry"}))
+        } else {
+            res.end(JSON.stringify({}));
+        }
+
+    }); 
+    
+});
+
 router.get('/contracts/listContracts', function(req, res) {
     var userid=req.session.userid;
     console.log(req.session.email);
 
+
     database.getUserContracts(userid, function(err, data) {
+        console.log(data);
         var owner = [];
         var washer = [];
 
@@ -457,6 +523,7 @@ router.post('/confirmuser',function(req,res){
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
+
     //TODO: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
     // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
     //     var object = JSON.parse(data);
@@ -492,10 +559,12 @@ router.post('/confirmuser',function(req,res){
             }
         }
 
+
         res.render("userlogin",{
             errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
         });
         return;
+
     });
 
 
@@ -680,6 +749,7 @@ router.post('/confirmSignup', function (req, res) {
 
         req.session.errors = errors;
         res.render('signup', errorMsgs);
+        return;
     }
 
     // hash and salt password before storing
