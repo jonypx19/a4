@@ -17,10 +17,12 @@ function onSignIn(googleUser){
             url: "http://localhost:3000/confirmuser",
             type: "POST",
             contentType: "application/json",
-            dataType:"json",
+            dataType:"text",
             data: JSONObject
         //When done, go to to the userprofile.
-    }).done(function(){location.replace("http://localhost:3000/userprofile");});
+    }).done(function(data){
+        location.replace("http://localhost:3000/userprofile");
+    });
 
 
 }

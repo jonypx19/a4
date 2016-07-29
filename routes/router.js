@@ -537,27 +537,29 @@ router.post('/confirmuser',function(req,res){
     var password;
     if (req.body.isGoogleSignIn){
         console.log('--------------------------------------------');
-        username = req.body.name;
-        req.session.email = username;
+        req.session.email = req.body.email;
         req.session.privilege = "user";
-        
-        database.checkUser(username, false, function(err, result) {
+        req.session.name = req.body.name;
+        database.checkUser(username, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
                 // TODO (Fullchee), figure out how google sign in works
+                //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
             }
-            res.render("userlogin",{
-                errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
-            });
-            return;
+            res.send("Finished"); //Finished the call.
+            // res.render("userlogin",{
+            //     errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
+            // });
+            // return;
 
         });
-
-        //TODO: as a new one with privilege = user.(since this is verified as a google account).
-        res.redirect("/userprofile");
+        //
+        // //TODO: as a new one with privilege = user.(since this is verified as a google account).
+        // res.redirect("/userprofile");
         return;
     }  // end of google signin
+    req.body.user = req.body.user.toLowerCase();
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
@@ -581,7 +583,7 @@ router.post('/confirmuser',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
-                req.session.name = result.name
+                req.session.name = result.name;
                 delete req.session.password; //deleting password if saved
 
                 if (! result.isadmin) {  // user
@@ -643,6 +645,7 @@ router.post('/confirmadmin',function(req,res){
     };
 
     //TODO: Return a user. Needs to return an object that has attributes email and username and (maybe) password.
+    req.body.user = req.body.user.toLowerCase();
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
@@ -656,7 +659,7 @@ router.post('/confirmadmin',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
-                req.session.name = result.name
+                req.session.name = result.name;
                 delete req.session.password; //deleting password if saved
 
                 if (result.isadmin) {  // user
@@ -666,6 +669,9 @@ router.post('/confirmadmin',function(req,res){
                 }
                 else {
                     // do nothing, users shouldn't login here
+                    res.render("adminlogin",{
+                        errors: "<p class=\"incorrect\">You are a user. Please use the user login."
+                    });
                 }
             }
         }
@@ -709,11 +715,12 @@ router.post('/confirmadmin',function(req,res){
 
 router.get("/userprofile", function(req, res){
     if (req.session && req.session.email) {
+        //If we return to the main profile, we delete the session property for viewedEmail.
         if(req.session.viewedEmail){
             delete req.session.viewedEmail;
         }
         res.render("profile", {
-            name: "USER: " + req.session.email
+            name: "USER: " + req.session.name
         });
     }
     else{
@@ -725,8 +732,9 @@ router.post('/rateuser', function(req, res) {
     if (req.session && req.session.username) {
 
         req.body.rating = req.sanitize(req.body.rating);
+        req.body.content = req.sanitize(req.body.content);
 
-        // add the rating to the database
+        //TODO: ADD RATING AND THE CONTENT OF THE COMMENT TO THE DATABASE.
 
 
         
@@ -741,7 +749,7 @@ router.post('/rateuser', function(req, res) {
 router.get("/adminprofile", function(req,res){
     if (req.session && req.session.email) {
         res.render("adminprofile", {
-            name: "ADMIN: " + req.session.email
+            name: "ADMIN: " + req.session.name
         });
     }
     else{
@@ -810,6 +818,7 @@ router.post('/confirmSignup', function (req, res) {
 
     // sanitation
     req.body.name = req.sanitize(req.body.name);
+    req.body.email = req.body.email.toLowerCase();
     req.body.email = req.sanitize(req.body.email);
     req.body.password = req.sanitize(req.body.password);
     req.body.repeat_password = req.sanitize(req.body.repeat_password);
@@ -872,5 +881,6 @@ router.post('/confirmSignup', function (req, res) {
         });
     });
 });
+
 // export the routings, to be used in server.js
 exports.router = router;
