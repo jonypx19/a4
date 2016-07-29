@@ -206,8 +206,8 @@ Database.prototype.insertContract = function(contract) {
 		});
 }
 
-Database.prototype.findClientContracts = function(lat, lon, callback) {
-	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available'", function (err, result) {
+Database.prototype.findClientContracts = function(lat, lon, userid, callback) {
+	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available' and ownerid <> ?",[userid], function (err, result) {
 		if (err) {
 			console.log("could not select Contracts");
 			callback(err, null);

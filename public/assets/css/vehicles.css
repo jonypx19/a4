@@ -14,6 +14,19 @@ button {
 	cursor: pointer;
 }
 
+h1, h2, h3, h4 {
+	color: white;
+}
+
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+form {
+	color: black;
+	background-color: white;
+}
+
 /*Nav*/
 /*
 nav {
@@ -61,6 +74,7 @@ section#list_vehicles article {
 	border: 2px solid #00ace6;
 	padding: 1rem 1rem 1rem 1rem;
 	border-radius: 10px 50px;
+	background-color: white;
 
 }
 
@@ -132,5 +146,5 @@ section#register_vehicles article h1 {
 
 section#register_vehicles span {
 	color: black;
-	line-height: 2;
+	line-height: 3;
 }

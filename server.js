@@ -53,7 +53,7 @@ app.use(expressValidator({
 
     isPassword: function(value) {
     	// could enforce more password requirements
-		if (value.length > 6) {
+		if (value.length >= 6) {
 			return true;
 		}
 		return false;

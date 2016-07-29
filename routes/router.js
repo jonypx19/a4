@@ -90,10 +90,14 @@ router.get('/contracts/search', function(req, res) {
 
 router.post('/search/searchContracts', function(req, res) {
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country, function(err, res_geo) {
-        database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, function (err, result) {
-            res.end(JSON.stringify(result));
-            return;
-        });
+        if (err) {
+
+        } else {
+            database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, req.session.userid, function (err, result) {
+                res.end(JSON.stringify(result));
+                return;
+            });
+        }
     });
 });
 
@@ -519,9 +523,7 @@ router.post('/confirmuser',function(req,res){
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
-<<<<<<< HEAD
-// added a database method above instead of reading from json file
-=======
+
     //TODO: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
     // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
     //     var object = JSON.parse(data);
@@ -530,7 +532,6 @@ router.post('/confirmuser',function(req,res){
     //         if (object[i].email === username && object[i].password === password){
     //             if (object[i].privilege === "user") {
     //                 req.session.email = username;
->>>>>>> 25247d0055d36dd6357159a48bc481f9d0ed4d10
 
     // Step 1: fetch the password from that user in the db
     database.checkUser(username, function(err, result) {

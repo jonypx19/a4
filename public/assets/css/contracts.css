@@ -3,6 +3,24 @@
 section {
 	border-top: 4px solid #00ace6;
 }
+
+h1, h2, h3, h4 {
+	color: white;
+}
+
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+article.contract h1, h2, h3, h4 {
+	color: white;
+}
+
+form {
+	color: black;
+	background-color: white;
+}
+
 /*
 button {
 	margin-left: 15%;
@@ -133,7 +151,7 @@ article.contract .chat .messages p {
 	padding-bottom: 1%;
 	border-radius: 15px;
 	border: 2px solid black;
-	background-color: blue;
+	background-color: rgba(0,0,255,0.3);
 	margin-left: 5%;
 	float: left;
 	clear: both;
@@ -142,7 +160,7 @@ article.contract .chat .messages p {
 }
 
 article.contract .chat .messages p.owner {
-	background-color: green;
+	background-color: rgba(0,255,0,0.3);
 	float: right;
 	clear: both;
 	margin-left: 0;
