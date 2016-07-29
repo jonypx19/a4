@@ -31,11 +31,12 @@ Database.prototype.connect = function() {
 
 // User Queries
 
-Database.prototype.checkUser = function(email, callback) {
+// used for /confirmuser and /confirmadmin
+Database.prototype.checkUser = function(email, isadmin, callback) {
 	// fullchee
-	this.con.query('SELECT id, password, isadmin\
+	this.con.query('SELECT id, password, isadmin, name\
 		FROM users\
-		WHERE ? = email',[email], function(err, result) {
+		WHERE ? = email and isadmin = ?',[email, isadmin], function(err, result) {
 
 			if (err) {
 				console.log('Failed to checkUser()');
@@ -88,16 +89,28 @@ Database.prototype.insertUser = function(user, callback) {
 		});
 };
 
+Database.prototype.deleteUser = function(email) {
+	this.con.query('DELETE FROM users\
+		WHERE email = ?;', [email], 
+		function(err, result) {
+			if (err) {
+				console.log("model.js: Could not deleteUser()");
+			}
+
+			console.log('model.js: Deleted user with email: ' + email);
+		});
+};
+
 Database.prototype.getAllUsers = function(callback) {
-	this.con.query("SELECT * FROM users WHERE isadmin='false'", function(err, result) {
+	this.con.query("SELECT * FROM users WHERE isadmin=0", function(err, result) {
 		if (err) {
-			console.log("could not get all users");
+			console.log("model.js: could not getAllUsers()");
 			callback(err, null);
 		} else {
 			callback(null, result);
 		}
 	});
-}
+};
 
 Database.prototype.getFollowers = function(id, callback) {
 	this.con.query("SELECT users.name AS name, users.email AS email \
@@ -111,8 +124,9 @@ Database.prototype.getFollowers = function(id, callback) {
 				callback(null, result);
 			}
 		});
-}
-// Vehicles Queries
+};
+
+//------------------------ Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 	

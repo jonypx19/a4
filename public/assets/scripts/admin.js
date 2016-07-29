@@ -15,8 +15,8 @@ function getUsers(){
         //loop through all the users, then create an element for all of them.
         var userArray = [];
         for(var i =0 ; i < data.length; i++){
-            if (data[i].privilege == "user") {
-                var user = new User(data[i].username, data[i].email);
+            if (data[i].isadmin === 0) {
+                var user = new User(data[i].name, data[i].email);
                 userArray.push(user);
             }
         }
