@@ -754,11 +754,13 @@ router.get("/logout", function(req,res){
 });
 
 router.delete("/delete/:email",function(req,res){
+
     if (req.session && req.session.email && req.session.privilege=="admin"){
-        console.log(req.session.email);
+
+        var emailToDelete = req.url.split('/')[2];
 
         // Delete the user with email req.params.email
-        database.deleteUser(req.session.email)
+        database.deleteUser(emailToDelete);
 
 
         // --------------- Way that reads JSON        
@@ -773,7 +775,9 @@ router.delete("/delete/:email",function(req,res){
         //     //res.redirect("localhost:3000/user/listUsers");
         // });
 
-        res.render('/adminprofile');
+        res.render("adminprofile", {
+            name: "ADMIN: " + req.session.email
+        });
 
     }
 

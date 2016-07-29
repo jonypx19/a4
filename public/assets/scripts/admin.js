@@ -71,7 +71,11 @@ function deleteUser(email){
     $.ajax({
         url:"http://localhost:3000/delete/" + email,
         type:"DELETE",
-        dataType:"json"
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        console.log("Status: " + textStatus); 
+        console.log("Error: " + errorThrown); 
+    }    
+
     //}).done(function(data){
         // console.log(data);
         // var $paragraph = $("<p/>",{
