@@ -104,7 +104,7 @@ Database.prototype.deleteUser = function(email) {
 Database.prototype.getAllUsers = function(callback) {
 	this.con.query("SELECT * FROM users WHERE isadmin=0", function(err, result) {
 		if (err) {
-			console.log("could not get all users");
+			console.log("model.js: could not getAllUsers()");
 			callback(err, null);
 		} else {
 			callback(null, result);

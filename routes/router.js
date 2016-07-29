@@ -102,7 +102,6 @@ router.post('/search/searchContracts', function(req, res) {
 });
 
 router.get('/user/listUsers',function(req,res){
-    console.log(typeof user);
 
     //For cross domain
     //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
@@ -110,15 +109,17 @@ router.get('/user/listUsers',function(req,res){
     //TODO: Return an array of all users that have privilege=users.
     //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
-        res.writeHead(200, {"Content-Type":"text/plain"});
-
+        // res.writeHead(200, {"Content-Type":"application/json"});
+        
+        // result = JSON.stringify(result);
+        res.json(result);
         // result is an array of json objects
     });
     
-    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-        console.log(data);
-        res.end(data);
-    });
+    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+    //     console.log(data);
+    //     res.end(data);
+    // });
     // var usersArray =[];
     // var user1 = user("George", "1234", "user");
     // var user2 = user("Bob", "4321", "admin");
