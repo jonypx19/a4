@@ -109,11 +109,7 @@ router.get('/user/listUsers',function(req,res){
     //TODO: Return an array of all users that have privilege=users.
     //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
-        // res.writeHead(200, {"Content-Type":"application/json"});
-        
-        // result = JSON.stringify(result);
         res.json(result);
-        // result is an array of json objects
     });
     
     // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){

@@ -95,6 +95,6 @@ function deleteUser(email){
         // }
         // $("#payload").append($list);
     }).done(function(){
-        getUsers();
+        getUsers();  // update user list after deletion
     });
 };
