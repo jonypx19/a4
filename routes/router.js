@@ -111,14 +111,14 @@ router.get('/user/listUsers',function(req,res){
     //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
         res.writeHead(200, {"Content-Type":"text/plain"});
-
+        res.end(JSON.stringify(result));
         // result is an array of json objects
     });
-    
+    /*
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         console.log(data);
-        res.end(data);
-    });
+        
+    });*/
     // var usersArray =[];
     // var user1 = user("George", "1234", "user");
     // var user2 = user("Bob", "4321", "admin");
@@ -336,7 +336,7 @@ router.get("/getComments",function(req,res){
 
                 */
                 if (err) {
-                    res.send({error: "Could not Find Reviews"});
+                    res.send(JSON.stringify({error: "Could not Find Reviews"}));
                     return;
                 } else {
                     delete req.session.viewedEmail;
@@ -374,7 +374,7 @@ router.get("/getComments",function(req,res){
 
             database.getUserReviews(req.session.userid, function(err, result) {
                 if (err) {
-                    res.send({error: "Could not get User Reviews from db"});
+                    res.send(JSON.stringify({error: "Could not get User Reviews from db"}));
                 } else {
                     res.send(JSON.stringify(result));
                 }
@@ -412,9 +412,19 @@ router.get("/getComments",function(req,res){
 });
 
 router.get("/getFollowing",function(req,res){
-    if (req.session && req.session.email){
-        //TODO: Get all the followers of the user based on email.
+    if (req.session && req.session.email && req.session.userid){
+        //TODO: Get all the followers of the user based on email, doing it instead based on id.
         //TODO: Return as an array of objects (should have data full name and email). Check out users.json for reference.
+
+        database.getFollowers(req.session.userid, function(err, result) {
+            if (err) {
+                res.send(JSON.stringify({error: "Could not return Followers"}))
+            } else {
+                res.send(JSON.stringify(result))
+            }
+        });
+
+        /*
         fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
             var mainData = JSON.parse(data);
             console.log(mainData);
@@ -434,7 +444,7 @@ router.get("/getFollowing",function(req,res){
 
             }
             res.send(JSON.stringify(followerArray));
-        });
+        });*/
 
         //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
     }
