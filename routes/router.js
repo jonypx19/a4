@@ -102,7 +102,6 @@ router.post('/search/searchContracts', function(req, res) {
 });
 
 router.get('/user/listUsers',function(req,res){
-    console.log(typeof user);
 
     //For cross domain
     //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
@@ -110,15 +109,17 @@ router.get('/user/listUsers',function(req,res){
     //TODO: Return an array of all users that have privilege=users.
     //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
-        res.writeHead(200, {"Content-Type":"text/plain"});
-        res.end(JSON.stringify(result));
+        // res.writeHead(200, {"Content-Type":"application/json"});
+        
+        // result = JSON.stringify(result);
+        res.json(result);
         // result is an array of json objects
     });
-    /*
-    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-        console.log(data);
-        
-    });*/
+    
+    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+    //     console.log(data);
+    //     res.end(data);
+    // });
     // var usersArray =[];
     // var user1 = user("George", "1234", "user");
     // var user2 = user("Bob", "4321", "admin");
@@ -324,7 +325,6 @@ router.get("/getComments",function(req,res){
     if (req.session && req.session.email){
 
         if(req.session.viewedEmail){
-
             database.getUserReviews(req.session.viewedEmail, function (err, result) {
                 // result is an array of json objects in the form of:
                 /* 
@@ -505,9 +505,6 @@ router.post('/submitComment/:email', function(req,res){
 });
 
 router.get('/adminlogin', function(req, res){
-    //TODO: Password authenication
-    //TODO: Database query for user creation
-    // res.send("Hi, you're an admin.")
     if (req.session && req.session.email){
         if(req.session.privilege == "user")
             res.redirect("/userprofile");
@@ -546,7 +543,7 @@ router.post('/confirmuser',function(req,res){
         req.session.email = username;
         req.session.privilege = "user";
         
-        database.checkUser(username, function(err, result) {
+        database.checkUser(username, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
                 // TODO (Fullchee), figure out how google sign in works
@@ -567,7 +564,7 @@ router.post('/confirmuser',function(req,res){
     var password = req.sanitize(req.body.password);
 
 
-    //TODO: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
+    //: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
     // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
     //     var object = JSON.parse(data);
     //     console.log(object);
@@ -577,7 +574,8 @@ router.post('/confirmuser',function(req,res){
     //                 req.session.email = username;
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, function(err, result) {
+    database.checkUser(username, 0, function(err, result) {
+        // result is one object, emails are unique
         if (result) {
 
             // step 2: compare the hash with given password
@@ -585,7 +583,7 @@ router.post('/confirmuser',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
-                //TODO: FETCH THE FULL NAME FOR USERNAME.
+                req.session.name = result.name
                 delete req.session.password; //deleting password if saved
 
                 if (! result.isadmin) {  // user
@@ -647,31 +645,68 @@ router.post('/confirmadmin',function(req,res){
     };
 
     //TODO: Return a user. Needs to return an object that has attributes email and username and (maybe) password.
-    fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-        var object = JSON.parse(data);
-        console.log(object);
-        for(var i =0;i < data.length; i++){
-            if (object[i].email === username && object[i].password === password){
-                if (object[i].privilege === "admin") {
-                    req.session.email = username;
-                    req.session.privilege = "admin";
-                    delete req.session.password; //deleting password if saved.
+    var username = req.sanitize(req.body.user);  // prevent XSS
+    var password = req.sanitize(req.body.password);
+
+    // Step 1: fetch the password from that user in the db
+    database.checkUser(username, 1, function(err, result) {
+        // result is one object, emails are unique
+        if (result) {
+
+            // step 2: compare the hash with given password
+            if (bcrypt.compareSync(password, result.password)) {
+                req.session.userid = result.id;
+                req.session.username = username;
+                req.session.email = username;
+                req.session.name = result.name
+                delete req.session.password; //deleting password if saved
+
+                if (result.isadmin) {  // user
+                    req.session.privilege = 'admin';
                     res.redirect("/adminprofile");
                     return;
                 }
-                else{
-                    res.render("adminlogin",{
-                        errors: "<p class=\"incorrect\">You are a user. Please use the user login."
-                    });
-                    return;
+                else {
+                    // do nothing, users shouldn't login here
                 }
             }
         }
-        //looped through everything didn't find matching password/username
-        res.render("adminlogin", {
-            errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+
+
+        res.render("adminlogin",{
+            errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
         });
+        return;
+
     });
+
+
+
+    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
+    //     var object = JSON.parse(data);
+    //     console.log(object);
+    //     for(var i =0;i < data.length; i++){
+    //         if (object[i].email === username && object[i].password === password){
+    //             if (object[i].privilege === "admin") {
+    //                 req.session.email = username;
+    //                 req.session.privilege = "admin";
+    //                 delete req.session.password; //deleting password if saved.
+    //                 res.redirect("/adminprofile");
+    //                 return;
+    //             }
+    //             else{
+    //                 res.render("adminlogin",{
+    //                     errors: "<p class=\"incorrect\">You are a user. Please use the user login."
+    //                 });
+    //                 return;
+    //             }
+    //         }
+    //     }
+    //     //looped through everything didn't find matching password/username
+    //     res.render("adminlogin", {
+    //         errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
+    //     });
+    // });
 });
 
 router.get("/userprofile", function(req, res){
@@ -723,20 +758,31 @@ router.get("/logout", function(req,res){
 
 router.delete("/delete/:email",function(req,res){
     if (req.session && req.session.email && req.session.privilege=="admin"){
-        console.log(req.params.email);
+        console.log(req.session.email);
 
-        //TODO:Delete the user with email req.params.email from the database.
-        fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
-            var object = JSON.parse(data);
-            console.log(object);
-            var userToDelete = object.find(checkUsername, req.params.email);
-            delete object[object.indexOf(userToDelete)];
+        // Delete the user with email req.params.email
+        database.deleteUser(req.session.email)
 
-            //res.end(JSON.stringify(object));
-            res.end(JSON.stringify(object));
-            //res.redirect("localhost:3000/user/listUsers");
-        });
 
+        // --------------- Way that reads JSON        
+        // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
+        //     var object = JSON.parse(data);
+        //     console.log(object);
+        //     var userToDelete = object.find(checkUsername, req.params.email);
+        //     delete object[object.indexOf(userToDelete)];
+
+        //     //res.end(JSON.stringify(object));
+        //     res.end(JSON.stringify(object));
+        //     //res.redirect("localhost:3000/user/listUsers");
+        // });
+
+        res.render('/adminprofile');
+
+    }
+
+    // not authorized to delete the account
+    else {
+        res.redirect('/');
     }
 });
 
