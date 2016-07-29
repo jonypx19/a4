@@ -119,5 +119,15 @@
 		],
 		"comments":[
 		]
+	},
+	{
+		"username": "test",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "test@gmail.com",
+		"following":[
+		],
+		"comments":[
+		]
 	}
 ]
