@@ -16,7 +16,7 @@ $( '#submit' ).click(function() {
 		data: {
 			// rater determined in router.js as req.session.user
 			rating: this.value,
-			ratee: getUser(window.location.href);
+			ratee: getUser(window.location.href)
 		},
 		success: function ( data ) {
 			alert('Thank you for rating!');
