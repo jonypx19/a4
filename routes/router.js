@@ -559,11 +559,12 @@ router.post('/confirmuser',function(req,res){
             }
         }
 
-    res.render("userlogin",{
-        errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
-    });
 
-    return;
+        res.render("userlogin",{
+            errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
+        });
+        return;
+
     });
 
 
@@ -595,8 +596,8 @@ router.post('/confirmuser',function(req,res){
 });
 
 router.post('/confirmadmin',function(req,res){
-    var username = req.body.user;
-    var password = req.body.password;
+    var username = req.sanitize(req.body.user);  // prevent XSS
+    var password = req.sanitize(req.body.password);
     response = {
         username:req.body.user,
         password: req.body.password
@@ -607,7 +608,7 @@ router.post('/confirmadmin',function(req,res){
         var object = JSON.parse(data);
         console.log(object);
         for(var i =0;i < data.length; i++){
-            if (object[i].username === username && object[i].password === password){
+            if (object[i].email === username && object[i].password === password){
                 if (object[i].privilege === "admin") {
                     req.session.email = username;
                     req.session.privilege = "admin";
@@ -676,6 +677,29 @@ router.get("/logout", function(req,res){
     req.session.reset();
     res.redirect("/");
 });
+
+router.delete("/delete/:email",function(req,res){
+    if (req.session && req.session.email && req.session.privilege=="admin"){
+        console.log(req.params.email);
+
+        //TODO:Delete the user with email req.params.email from the database.
+        fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
+            var object = JSON.parse(data);
+            console.log(object);
+            var userToDelete = object.find(checkUsername, req.params.email);
+            delete object[object.indexOf(userToDelete)];
+
+            //res.end(JSON.stringify(object));
+            res.end(JSON.stringify(object));
+            //res.redirect("localhost:3000/user/listUsers");
+        });
+
+    }
+});
+
+function checkUsername(user){
+    return user.email == this;
+}
 
 router.post('/confirmSignup', function (req, res) {
 
