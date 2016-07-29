@@ -1,7 +1,7 @@
 /**
  * Created by George on 2016-07-24.
  */
-$(document).ready(function(){
+function getUsers(){
     $.ajax({
         url: "http://localhost:3000/user/listUsers",
         type:"GET",
@@ -11,6 +11,7 @@ $(document).ready(function(){
         var $paragraph = $("<p/>",{
             text:"These are the users currently in the system:"
         });
+        $("#payload").html($paragraph);
         //loop through all the users, then create an element for all of them.
         var userArray = [];
         for(var i =0 ; i < data.length; i++){
@@ -23,15 +24,77 @@ $(document).ready(function(){
         $list = $("<ul/>");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
-                html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].name+"\" onclick='deleteUser(\""+userArray[i].name+"\")'>DELETE USER"
+                html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
             });
             $list.append($item);
         }
         $("#payload").append($list);
     });
+}
+
+$(document).ready(function(){
+    // $.ajax({
+    //     url: "http://localhost:3000/user/listUsers",
+    //     type:"GET",
+    //     dataType:"json"
+    // }).done(function(data){
+    //     console.log(data);
+    //     var $paragraph = $("<p/>",{
+    //         text:"These are the users currently in the system:"
+    //     });
+    //     $("#payload").html($paragraph);
+    //     //loop through all the users, then create an element for all of them.
+    //     var userArray = [];
+    //     for(var i =0 ; i < data.length; i++){
+    //         if (data[i].privilege == "user") {
+    //             var user = new User(data[i].username, data[i].email);
+    //             userArray.push(user);
+    //         }
+    //     }
+    //     //append each one to a list and append to the main body.
+    //     $list = $("<ul/>");
+    //     for (var i = 0; i < userArray.length; i++){
+    //         $item = $("<li/>",{
+    //             html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
+    //         });
+    //         $list.append($item);
+    //     }
+    //     $("#payload").append($list);
+    // });
+    getUsers();
     
 });
 
-function deleteUser(name){
-    alert(name);
+function deleteUser(email){
+    alert(email);
+
+    $.ajax({
+        url:"http://localhost:3000/delete/" + email,
+        type:"DELETE",
+        dataType:"json"
+    //}).done(function(data){
+        // console.log(data);
+        // var $paragraph = $("<p/>",{
+        //     text:"These are the users currently in the system:"
+        // });
+        // $("#payload").html($paragraph);
+        // var userArray = [];
+        // for(var i =0 ; i < data.length; i++){
+        //     if (data[i] && data[i].privilege == "user") {
+        //         var user = new User(data[i].username, data[i].email);
+        //         userArray.push(user);
+        //     }
+        // }
+        // //append each one to a list and append to the main body.
+        // $list = $("<ul/>");
+        // for (var i = 0; i < userArray.length; i++){
+        //     $item = $("<li/>",{
+        //         html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
+        //     });
+        //     $list.append($item);
+        // }
+        // $("#payload").append($list);
+    }).done(function(){
+        getUsers();
+    });
 };
