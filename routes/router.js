@@ -108,7 +108,13 @@ router.get('/user/listUsers',function(req,res){
     //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
 
     //TODO: Return an array of all users that have privilege=users.
-    res.writeHead(200, {"Content-Type":"text/plain"});
+    //place everything u need to do in the database callback function
+    database.getAllUsers(function(err, result) {
+        res.writeHead(200, {"Content-Type":"text/plain"});
+
+        // result is an array of json objects
+    });
+    
     fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
         console.log(data);
         res.end(data);
@@ -318,9 +324,28 @@ router.get("/getComments",function(req,res){
     if (req.session && req.session.email){
 
         if(req.session.viewedEmail){
-            //Return based on email
-            //TODO: Get all the comments (should have rating, from, and content) on the user based on req.session.viewedEmail.
-            //TODO: Return as an array of objects
+
+            database.getUserReviews(req.session.viewedEmail, function (err, result) {
+                // result is an array of json objects in the form of:
+                /* 
+                {
+                    from: 'Bob'
+                    content: 'Great Job'
+                    rating: 5
+                }
+
+                */
+                if (err) {
+                    res.send({error: "Could not Find Reviews"});
+                    return;
+                } else {
+                    delete req.session.viewedEmail;
+                    res.send(JSON.stringify(result));
+                }
+                
+            });
+
+            /*
             fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
                 var mainData = JSON.parse(data);
                 console.log(mainData);
@@ -341,14 +366,21 @@ router.get("/getComments",function(req,res){
                     }
 
                 }
-                delete req.session.viewedEmail;
-                res.send(JSON.stringify(commentArray));
-            });
+                
+
+            });*/
         }
         else {
-            //TODO: Get all the comments (should have rating, from, and content) on the user based on current user.
-            //TODO: Return as an array of objects
-            fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
+
+            database.getUserReviews(req.session.userid, function(err, result) {
+                if (err) {
+                    res.send({error: "Could not get User Reviews from db"});
+                } else {
+                    res.send(JSON.stringify(result));
+                }
+            });
+
+            /*fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
                 var mainData = JSON.parse(data);
                 console.log(mainData);
                 var commentArray = [];
@@ -368,8 +400,8 @@ router.get("/getComments",function(req,res){
                     }
 
                 }
-                res.send(JSON.stringify(commentArray));
-            });
+                
+            });*/
         }
         //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
     }

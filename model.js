@@ -87,6 +87,17 @@ Database.prototype.insertUser = function(user, callback) {
 			}
 		});
 };
+
+Database.prototype.getAllUsers = function(callback) {
+	this.con.query("SELECT * FROM users WHERE isadmin='false'", function(err, result) {
+		if (err) {
+			console.log("could not get all users");
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
+}
 // Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
@@ -298,6 +309,20 @@ Database.prototype.getCompletedUserContracts = function(username, callback) {
 			callback(null, result);
 
 	});
+}
+
+Database.prototype.getUserReviews = function(email, callback) {
+	this.con.query("SELECT users.name AS from, review.content AS content, review.rating AS rating \
+		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
+		[email],
+		function (err, result) {
+			if (err) {
+				console.log("Unable to select Reviews from db");
+				callback(err, null);
+			} else {
+				callback(null, result);
+			}
+		});
 }
 
 
