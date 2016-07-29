@@ -112,6 +112,20 @@ Database.prototype.getAllUsers = function(callback) {
 	});
 };
 
+Database.prototype.getFollowers = function(id, callback) {
+	this.con.query("SELECT users.name AS name, users.email AS email \
+		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
+		[id],
+		function (err, result) {
+			if (err) {
+				console.log("can't get followers from db");
+				callback(err, null);
+			} else {
+				callback(null, result);
+			}
+		});
+};
+
 //------------------------ Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
@@ -326,7 +340,7 @@ Database.prototype.getCompletedUserContracts = function(username, callback) {
 }
 
 Database.prototype.getUserReviews = function(email, callback) {
-	this.con.query("SELECT users.name AS from, review.content AS content, review.rating AS rating \
+	this.con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
 		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
 		[email],
 		function (err, result) {
