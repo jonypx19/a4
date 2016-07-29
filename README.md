@@ -13,6 +13,7 @@ Assignment 4 Repository
 
 ##Sharing Economy Description:
 
+When you sign up with Google, the site doesn't collect your password so you can only login by signing in with Google
 
 
 ##TODOS:
