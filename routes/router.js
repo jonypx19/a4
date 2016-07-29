@@ -320,6 +320,8 @@ router.get("/getComments",function(req,res){
         if(req.session.viewedEmail){
             //Return based on email
             //TODO: Get all the comments (should have rating, from, and content) on the user based on req.session.viewedEmail.
+
+
             //TODO: Return as an array of objects
             fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
                 var mainData = JSON.parse(data);
@@ -681,20 +683,31 @@ router.get("/logout", function(req,res){
 
 router.delete("/delete/:email",function(req,res){
     if (req.session && req.session.email && req.session.privilege=="admin"){
-        console.log(req.params.email);
+        console.log(req.session.email);
 
-        //TODO:Delete the user with email req.params.email from the database.
-        fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
-            var object = JSON.parse(data);
-            console.log(object);
-            var userToDelete = object.find(checkUsername, req.params.email);
-            delete object[object.indexOf(userToDelete)];
+        // Delete the user with email req.params.email
+        database.deleteUser(req.session.email)
 
-            //res.end(JSON.stringify(object));
-            res.end(JSON.stringify(object));
-            //res.redirect("localhost:3000/user/listUsers");
-        });
 
+        // --------------- Way that reads JSON        
+        // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
+        //     var object = JSON.parse(data);
+        //     console.log(object);
+        //     var userToDelete = object.find(checkUsername, req.params.email);
+        //     delete object[object.indexOf(userToDelete)];
+
+        //     //res.end(JSON.stringify(object));
+        //     res.end(JSON.stringify(object));
+        //     //res.redirect("localhost:3000/user/listUsers");
+        // });
+
+        res.render('/adminprofile');
+
+    }
+
+    // not authorized to delete the account
+    else {
+        res.redirect('/');
     }
 });
 

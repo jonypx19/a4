@@ -87,7 +87,20 @@ Database.prototype.insertUser = function(user, callback) {
 			}
 		});
 };
-// Vehicles Queries
+
+Database.prototype.deleteUser = function(email) {
+	this.con.query('DELETE FROM users\
+		WHERE email = ?;', [email], 
+		function(err, result) {
+			if (err) {
+				console.log("model.js: Could not deleteUser()");
+			}
+
+			console.log('model.js: Deleted user with email: ' + email);
+		});
+};
+
+//------------------------ Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
 	
