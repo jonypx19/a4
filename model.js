@@ -207,7 +207,7 @@ Database.prototype.insertContract = function(contract) {
 }
 
 Database.prototype.findClientContracts = function(lat, lon, userid, callback) {
-	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available' and ownerid <> ?",[userid], function (err, result) {
+	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available' and ownerid<>?",[userid], function (err, result) {
 		if (err) {
 			console.log("could not select Contracts");
 			callback(err, null);
@@ -270,7 +270,24 @@ Database.prototype.getUserContracts = function(username, callback) {
 	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
 		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
 		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
-		WHERE ownerid=? or washerid=?", 
+		WHERE (ownerid=? or washerid=?) and status<>'complete'", 
+		[username, username], 
+		function(err, result) {
+			if (err) {
+				console.log(err.Error);
+				callback(err, null);
+			}
+
+			callback(null, result);
+
+	});
+}
+
+Database.prototype.getCompletedUserContracts = function(username, callback) {
+	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
+		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
+		WHERE (ownerid=? or washerid=?) and status='complete'", 
 		[username, username], 
 		function(err, result) {
 			if (err) {

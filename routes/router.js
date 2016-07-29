@@ -159,7 +159,7 @@ router.post('/contracts/cancelContract', function(req, res) {
     });
 });
 
-router.post('/contracts/completeContract', function(req, res) {
+router.post('/contracts/confirmContract', function(req, res) {
     database.changeContractStatus(req.body.id, null, 'complete', function(err){
         if (err) {
             console.log("Couldn't confirm contract completion");
