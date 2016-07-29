@@ -4,7 +4,6 @@ function getContracts() {
 	$.ajax({
 		method: 'Get',
 		url: "/contracts/listContracts",
-		data: {user: "bob"},
 		dataType: "json",
 		success: function(json) {
 			if (json.owner.length == 0) {
@@ -114,6 +113,22 @@ function updateChat(id, box) {
 			}
 
 			
+		}
+	});
+}
+
+function confirmContract(id) {
+	var input = {
+		id: id
+	}
+	$.ajax({
+		type: "post",
+		url: "/contracts/confirmContract",
+		"Content-Type": 'application/json',
+		dataType: 'json',
+		data: input,
+		success: function () {
+
 		}
 	});
 }
@@ -234,15 +249,28 @@ function createContractsList(contracts, article, button) {
 function main() {
 	getContracts();
 
+	/*link to search page for contracts*/
+
 	$('button#search_contracts').on('click', function() {
 		window.location.href = '/contracts/search';
 	});
+
+	/*cancel button action*/
 
 	$(document).on('click', '.cancel', function() {
 		
 		cancelContract($(this).parent().data('id'), $(this).parent().children(".chat").data('id'));
 		$(this).parent().remove();
 	});
+
+	/*confirm button action*/
+
+	$(document).on('click', '.confirm', function(e) {
+		confirmContract($(this).parent().data('id'));
+		$(this).parent().remove();
+	});
+
+	/*Chat send button action*/
 
 	$(document).on('click', '.send_button', function(e) {
 
@@ -261,6 +289,8 @@ function main() {
 		}
 		
 	});
+
+	/*Chat button - used to open chat window for specific contract*/
 
 	$(document).on('click', '.chat_button', function() {
 

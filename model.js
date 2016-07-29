@@ -87,6 +87,17 @@ Database.prototype.insertUser = function(user, callback) {
 			}
 		});
 };
+
+Database.prototype.getAllUsers = function(callback) {
+	this.con.query("SELECT * FROM users WHERE isadmin='false'", function(err, result) {
+		if (err) {
+			console.log("could not get all users");
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
+}
 // Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
@@ -207,7 +218,7 @@ Database.prototype.insertContract = function(contract) {
 }
 
 Database.prototype.findClientContracts = function(lat, lon, userid, callback) {
-	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available' and ownerid <> ?",[userid], function (err, result) {
+	this.con.query("SELECT * FROM (vehicles JOIN contract ON contract.vehicleid=vehicles.id) WHERE status='available' and ownerid<>?",[userid], function (err, result) {
 		if (err) {
 			console.log("could not select Contracts");
 			callback(err, null);
@@ -270,7 +281,7 @@ Database.prototype.getUserContracts = function(username, callback) {
 	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
 		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
 		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
-		WHERE ownerid=? or washerid=?", 
+		WHERE (ownerid=? or washerid=?) and status<>'complete'", 
 		[username, username], 
 		function(err, result) {
 			if (err) {
@@ -281,6 +292,37 @@ Database.prototype.getUserContracts = function(username, callback) {
 			callback(null, result);
 
 	});
+}
+
+Database.prototype.getCompletedUserContracts = function(username, callback) {
+	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
+		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
+		WHERE (ownerid=? or washerid=?) and status='complete'", 
+		[username, username], 
+		function(err, result) {
+			if (err) {
+				console.log(err.Error);
+				callback(err, null);
+			}
+
+			callback(null, result);
+
+	});
+}
+
+Database.prototype.getUserReviews = function(email, callback) {
+	this.con.query("SELECT users.name AS from, review.content AS content, review.rating AS rating \
+		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
+		[email],
+		function (err, result) {
+			if (err) {
+				console.log("Unable to select Reviews from db");
+				callback(err, null);
+			} else {
+				callback(null, result);
+			}
+		});
 }
 
 

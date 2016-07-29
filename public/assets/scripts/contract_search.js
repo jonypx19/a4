@@ -16,7 +16,6 @@ function searchContracts() {
 
 		success: function(json) {
 			var contracts = json;
-			console.log(contracts);
 
 			$("article#results").empty();
 			$('<h2>', {text:"Search Results"}).appendTo('article#results');
@@ -147,5 +146,8 @@ function takeContract(contractid) {
 function main() {
 	$('#submit_local').on('click', function() {
 		searchContracts();
+		$('html, body').animate({
+			scrollTop: $('#results').offset().top - 50
+		}, 1000);
 	});
 }
