@@ -374,6 +374,7 @@ router.get("/getComments",function(req,res){
 
             database.getUserReviews(req.session.userid, function(err, result) {
                 if (err) {
+                    console.log(err);
                     res.send(JSON.stringify({error: "Could not get User Reviews from db"}));
                 } else {
                     res.send(JSON.stringify(result));
