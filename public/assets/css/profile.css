@@ -16,6 +16,10 @@ legend {
     color: #000000;
 }
 
+#aboutBody{
+    color: #000000;
+}
+
 /* The Modal (background) */
 #myModal {
     display: none; /* Hidden by default */
