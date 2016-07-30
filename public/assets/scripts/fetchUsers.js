@@ -59,11 +59,13 @@ function addUser(email){
         "Content-Type": 'application/json',
         dataType: 'json',
         data: input,
-        success: function () {
-
+        success: function (json) {
+            $('span#err-message').remove();
+            $('<span>', {id:"err-message", text: json.error}).appendTo('.modal-body');
         },
 
-        done: function(){
+        done: function(json){
+            console.log(json);
             getUsers();
         }  
     });

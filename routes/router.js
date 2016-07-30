@@ -831,14 +831,9 @@ router.post('/addFollower', function(req, res) {
     if (req.session && req.session.email) {
         database.addFollower(req.body.email, req.session.userid, function (err){
             if (err) {
-                res.render('profile', {
-                    name: "USER: " + req.session.name,
-                    'error_email': 'You are already following this user'
-                });
+                res.end(JSON.stringify({error: "You already follow this user"}));
             }else {
-                res.render('profile', {
-                    name: "USER: " + req.session.name
-                });
+                res.end(JSON.stringify({error: "Successfully followed " + req.sanitize(req.body.email)}));
             }
         });
 
