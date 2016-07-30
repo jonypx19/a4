@@ -26,6 +26,7 @@ function getUsers(){
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
                 html:userArray[i].name + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
+                                    + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='viewProfile(\""+userArray[i].email+"\")'>View Profile"
             });
             $list.append($item);
         }
@@ -47,17 +48,33 @@ function getEmailFromCurrentURL() {
 function addUser(email){
 
     // Step 1: get the email of the person whom we want to follow
-    var leaderEmail = getEmailFromCurrentURL();
+    var leaderEmail = email;
+
+    var input = {
+        email: email
+    };
 
     $.ajax({
-        url:"http://localhost:3000/addFollower",
-        type:"POST",
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        console.log("Status: " + textStatus); 
-        console.log("Error: " + errorThrown); 
-    }    
+        type: "post",
+        url: "/addFollower",
+        "Content-Type": 'application/json',
+        dataType: 'json',
+        data: input,
+        success: function (json) {
+            $('span#err-message').remove();
+            $('<span>', {id:"err-message", text: json.error}).appendTo('.modal-body');
+        },
 
-    }).done(function(){
-        getUsers();  
+        done: function(json){
+            console.log(json);
+            getUsers();
+        }  
     });
+
 };
+
+function viewProfile(email) {
+  var win = window.open("http://localhost:3000/user/" + email, '_blank');
+  win.focus();
+}
+

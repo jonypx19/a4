@@ -103,6 +103,7 @@ Database.prototype.deleteUser = function(email) {
 		WHERE email = ?;', [email], 
 		function(err, result) {
 			if (err) {
+				console.log(err);
 				console.log("model.js: Could not deleteUser()");
 			}
 
@@ -145,8 +146,8 @@ Database.prototype.updateBio = function(bio, email, callback) {
 }
 
 Database.prototype.getFollowers = function(id, callback) {
-	this.con.query("SELECT users.name AS name, users.email AS email \
-		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
+	this.con.query("SELECT users.name AS username, users.email AS email \
+		FROM (users JOIN followers ON users.id=followers.followee_id) WHERE followers.follower_id=?", 
 		[id],
 		function (err, result) {
 			if (err) {
@@ -158,27 +159,39 @@ Database.prototype.getFollowers = function(id, callback) {
 		});
 };
 
-Database.prototype.addFollower = function(leaderEmail, followerEmail, callback) {
+Database.prototype.addFollower = function(leaderEmail, follower_id, callback) {
+	var con = this.con;
+	con.query('SELECT id FROM users WHERE email=?', [leaderEmail], function(err, res) {
+		var leader_id = res[0].id;
 
-	this.con.query('INSERT INTO followers (follower_id, followee_id)\
-		SELECT\
-			(SELECT id FROM users WHERE email = ?),\
-			(SELECT id FROM users WHERE email = ?);'
-		[followerEmail, leaderEmail],
-		function (err, result) {
-			if (err) {
-				console.log('Could not follow user');
+		con.query('SELECT id FROM followers WHERE follower_id=? and followee_id=?', [follower_id, leader_id], function(err, r) {
 
-				console.log('model.js: ' + err.code);
-
-				if (err.code === 'ER_DUP_ENTRY') {
-					callback(err);
-				}
+			if (r.length > 0) {
+				console.log('already a follower');
+				callback(true);
+				return;
 			}
-			else {
-				callback(null);
-			}
+
+			
+
+			con.query('INSERT INTO followers (follower_id, followee_id) VALUES (?, ?)',
+				[follower_id, leader_id],
+				function (err, result) {
+					if (err) {
+						console.log('Could not follow user');
+
+						console.log('model.js: ' + err.code);
+
+						if (err.code === 'ER_DUP_ENTRY') {
+							callback(err);
+						}
+					}
+					else {
+						callback(null);
+					}
+				});
 		});
+	});
 };
 
 //------------------------ Vehicles Queries
