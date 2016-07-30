@@ -156,8 +156,11 @@ Database.prototype.getFollowers = function(id, callback) {
 
 Database.prototype.addFollower = function(leaderEmail, followerEmail, callback) {
 
-	this.con.query('INSERT INTO followers (id, leaderEmail, followerEmail) VALUES (?)',
-		[user.id],
+	this.con.query('INSERT INTO followers (follower_id, followee_id)\
+		SELECT\
+			(SELECT id FROM users WHERE email = ?),\
+			(SELECT id FROM users WHERE email = ?);'
+		[followerEmail, leaderEmail],
 		function (err, result) {
 			if (err) {
 				console.log('Could not follow user');
