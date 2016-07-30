@@ -418,9 +418,18 @@ Database.prototype.getCompletedUserContracts = function(username, callback) {
 }
 
 Database.prototype.getUserReviews = function(email, callback) {
-	this.con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
-		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
-		[email],
+	var con = this.con;
+
+	con.query("SELECT id as l_id FROM users WHERE email=?", [email], function (err, res) {
+		if (err || !res[0]) {
+			callback(err, null);
+			return;
+		}
+
+		var sub_id = res[0].l_id;
+		con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
+		FROM (review JOIN users ON users.id=review.authorid) WHERE review.subjectid=?",
+		[sub_id],
 		function (err, result) {
 			if (err) {
 				console.log("Unable to select Reviews from db");
@@ -429,6 +438,8 @@ Database.prototype.getUserReviews = function(email, callback) {
 				callback(null, result);
 			}
 		});
+	});
+	
 }
 
 
