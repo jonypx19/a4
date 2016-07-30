@@ -734,20 +734,30 @@ router.post("/updateBio",function(req,res){
         var bio = req.body.bio;
         var email = req.session.email;
 
-        //TODO: REPLACE THE BIOGRAPHY OF THE USER WITH EMAIL email WITH bio.
+        database.updateBio(bio, email, function(err) {
+            if (err) {
+                console.log("could not update bio")
+            }
+        });
     }
 });
 
 router.get("/getBio",function(req,res){
     if (req.session && req.session.email){
-        if (req.session.viewedEmail){
-            //TODO: PICKUP BIOGRAPHY BASED ON viewedEmail (similar to viewProfile)
-            //TODO: SEND BACK AS TEXT.
-            res.send(req.session.viewedEmail);
+        if (req.session.viewedEmail){     
+            database.getBio(req.session.viewedEmail, function(err, result) {
+                res.send(req.session.viewedEmail);
+                return;
+            });
+            
+        } else {
+            database.getBio(req.session.email, function(err, result) {
+                res.send(req.session.email);
+                return;
+            });
         }
-        //TODO:PICKUP BIOGRAPHY BASED ON req.session.email (similar to profile)
-        //TODO: SEND BACK AS TEXT.
-        res.send(req.session.email);
+
+        
     }
 });
 
