@@ -10,17 +10,18 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 var bcrypt = require('bcryptjs');
 
+/*
 // // set connection to mysql database
-// var con = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'Ross',
-//     password: 'Detail&Wash',
-//     database: 'Detail_Wash'
-// });
+var con = mysql.createConnection({
+    host: 'localhost',
+    user: 'Ross',
+    password: 'Detail&Wash',
+    database: 'Detail_Wash'
+ });
 
-// // create Database connection
-// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-
+ // create Database connection
+ var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+*/
 
 
 // login credentials for Heroku ClearDB
@@ -530,45 +531,25 @@ router.get('/user/:email', function(req,res){
 
 router.post("/submitComment", function(req,res){
     if (req.session && req.session.email){
+
         var rater = req.session.email;
         var comment = req.body.content;
         var rating = req.body.rating;
         var washer = req.body.currentEmail;
-        res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
-        // database.insertReview(washer, rater, comment, rating, function(){
-        //     res.send("Finished");
-        // });
+
+        database.postReview(washer, rater, comment, rating, function(err){
+            if (err) {
+                console.log(err);
+            }
+            
+            res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
+        });
     }
     else{
         res.redirect("/userlogin");
         return;
     }
 })
-
-// TODO (Fullchee): 
-router.post('/submitComment/:email', function(req,res){
-
-    if (req.session && req.session.email) {
-        var rater = req.session.username; // current user
-        var comment = req.body.comment;
-        var rating = req.body.rating; //The rating given.
-        var washer = req.params.email;
-        //Do the posting here.
-        database.insertReview(washer, rater, comment, rating, function(){
-            res.redirect('/user/' + washer);
-        });
-
-    }
-    // need to login to make a review
-    else {
-        res.redirect("/userlogin");
-        return;
-    }
-
-    // refresh the page which should now have the new comment
-    // go back to that user's profile
-
-});
 
 router.get('/adminlogin', function(req, res){
     if (req.session && req.session.email){

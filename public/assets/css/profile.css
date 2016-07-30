@@ -137,3 +137,17 @@ form {
 .rating > label:hover ~ input:checked ~ label {
     color: #ea0;
 }
+
+
+.navbar-header img {
+    float: left;
+}
+
+textarea {
+    color: black;
+}
+
+input {
+    color: black;
+}
+

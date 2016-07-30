@@ -418,9 +418,18 @@ Database.prototype.getCompletedUserContracts = function(username, callback) {
 }
 
 Database.prototype.getUserReviews = function(email, callback) {
-	this.con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
-		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
-		[email],
+	var con = this.con;
+
+	con.query("SELECT id as l_id FROM users WHERE email=?", [email], function (err, res) {
+		if (err || !res[0]) {
+			callback(err, null);
+			return;
+		}
+
+		var sub_id = res[0].l_id;
+		con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
+		FROM (review JOIN users ON users.id=review.authorid) WHERE review.subjectid=?",
+		[sub_id],
 		function (err, result) {
 			if (err) {
 				console.log("Unable to select Reviews from db");
@@ -429,10 +438,39 @@ Database.prototype.getUserReviews = function(email, callback) {
 				callback(null, result);
 			}
 		});
+	});
+	
 }
 
 
 // TODO: SQL syntax error (Fullchee)
+
+Database.prototype.postReview = function(washer_email, rater_email, content, rating, callback) {
+	var con = this.con;
+	con.query("SELECT washer.id as washerid, rater.id as raterid \
+		FROM (users washer JOIN users rater) WHERE washer.email=? and rater.email=?", [washer_email, rater_email], function(err, res) {
+			console.log(res);
+			if (err) {
+				callback(err);
+				return;
+			}
+			
+			var washer_id = res[0].washerid;
+			var rater_id = res[0].raterid;
+
+			con.query("INSERT INTO review (subjectid, authorid, content, rating) VALUES (?, ?, ?, ?)",
+				[washer_id, rater_id, content, rating], 
+				function(err) {
+					if (err) {
+						callback(err);
+					} else {
+						callback(null);
+					}
+			});
+		});
+	
+}
+
 Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
 	var self = this;
 
