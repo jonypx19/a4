@@ -155,27 +155,28 @@ Database.prototype.getFollowers = function(id, callback) {
 		});
 };
 
-Database.prototype.addFollower = function(leaderEmail, followerEmail, callback) {
+Database.prototype.addFollower = function(leaderEmail, follower_id, callback) {
+	this.con.query('SELECT id FROM users WHERE email=?', [leaderEmail], function(err, res) {
 
-	this.con.query('INSERT INTO followers (follower_id, followee_id)\
-		SELECT\
-			(SELECT id FROM users WHERE email = ?),\
-			(SELECT id FROM users WHERE email = ?);'
-		[followerEmail, leaderEmail],
-		function (err, result) {
-			if (err) {
-				console.log('Could not follow user');
+		var leader_id = res[0].id;
 
-				console.log('model.js: ' + err.code);
+		this.con.query('INSERT INTO followers (follower_id, followee_id) VALUES (?, ?)',
+			[follower_id, leader_id],
+			function (err, result) {
+				if (err) {
+					console.log('Could not follow user');
 
-				if (err.code === 'ER_DUP_ENTRY') {
-					callback(err);
+					console.log('model.js: ' + err.code);
+
+					if (err.code === 'ER_DUP_ENTRY') {
+						callback(err);
+					}
 				}
-			}
-			else {
-				callback(null);
-			}
-		});
+				else {
+					callback(null);
+				}
+			});
+	});
 };
 
 //------------------------ Vehicles Queries
