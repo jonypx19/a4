@@ -25,7 +25,7 @@ function getUsers(){
         $list = $("<ul/>");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
-                html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
+                html:userArray[i].name + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
             });
             $list.append($item);
         }
@@ -50,7 +50,7 @@ function addUser(email){
     var leaderEmail = getEmailFromCurrentURL();
 
     $.ajax({
-        url:"http://localhost:3000/addFollower/" + leaderEmail,
+        url:"http://localhost:3000/addFollower",
         type:"POST",
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
         console.log("Status: " + textStatus); 
