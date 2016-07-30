@@ -55,7 +55,7 @@ body {
 /* Change the link color to #00ace6 (mid-blue) on hover */
 body > ul li a:hover {
     background-color: #00264d;
-}*/
+}
 
 .active {
     background-color: #00264d;

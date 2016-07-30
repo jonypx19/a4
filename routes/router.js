@@ -10,30 +10,35 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 var bcrypt = require('bcryptjs');
 
-// set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
-});
+// // set connection to mysql database
+// var con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'Ross',
+//     password: 'Detail&Wash',
+//     database: 'Detail_Wash'
+// });
 
-// create Database connection
-var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+// // create Database connection
+// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+
+
 
 // login credentials for Heroku ClearDB
-// var con = mysql.createConnection({
-//     host: 'us-cdbr-iron-east-04.cleardb.net',
-//     user: 'bf7055f108f91a',
-//     password: '8a5f2a1f',
-//     database: 'heroku_fb3dc2d4bdd13bf'
-// });
-// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+var db_config = {
+    host: 'us-cdbr-iron-east-04.cleardb.net',
+    user: 'bf7055f108f91a',
+    password: '8a5f2a1f',
+    database: 'heroku_fb3dc2d4bdd13bf'
+};
+
+var con = mysql.createConnection(db_config);
+var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
-
-
+setInterval(function () {
+    database.checkIn();
+}, 5000);
 
 
 var geocoder = node_geocoder({
@@ -522,6 +527,22 @@ router.get('/user/:email', function(req,res){
     }
 });
 
+router.post("/submitComment", function(req,res){
+    if (req.session && req.session.email){
+        var rater = req.session.email;
+        var comment = req.body.content;
+        var rating = req.body.rating;
+        var washer = req.body.currentEmail;
+        database.insertReview(washer, rater, comment, rating, function(){
+            res.send("Finished");
+        });
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+})
+
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
 
@@ -531,10 +552,8 @@ router.post('/submitComment/:email', function(req,res){
         var rating = req.body.rating; //The rating given.
         var washer = req.params.email;
 
-        
 
     }
-
     // need to login to make a review
     else {
         res.redirect("/userlogin");
