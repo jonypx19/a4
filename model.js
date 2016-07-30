@@ -406,7 +406,6 @@ Database.prototype.getUserReviews = function(email, callback) {
 // TODO: SQL syntax error (Fullchee)
 Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
 	var self = this;
-	var refresh = callback;
 
 	// check if there is already a review
 	self.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
@@ -417,6 +416,8 @@ Database.prototype.insertReview = function(washer_email, rater_email, comment, r
 		function (err, result) {
 			if (err) {
 				console.log('model.js: Could not insertReview()');
+				res.end();
+				return;
 			}
 
 			console.log('---------insertReview() result------------- ');
@@ -429,12 +430,15 @@ Database.prototype.insertReview = function(washer_email, rater_email, comment, r
 					WHERE contractid = ? and subjectid = ? and authorid = ?',
 					[comment, rating, result.contractid, result.washerid, result.raterid], 
 					function(err, result) {
-						if (err) {
-							console.log('model.js: Could not UPDATE in insertReview()');
-							console.log([err, result]);
-						}
+						// if (err) {
+						// 	console.log('model.js: Could not UPDATE in insertReview()');
+						// 	console.log([err, result]);
+						// 	res.end();
+						// 	return;
+						// }
 						console.log('Updated the comment');
-
+						res.end();
+						return;
 					});
 			} 
 			else {  // no review => insert it
@@ -443,18 +447,17 @@ Database.prototype.insertReview = function(washer_email, rater_email, comment, r
 					function (err, result) {
 						
 						// no contract exists => FOREIGN KEYS don't allow insertion
-						if (err) {
-							console.log('model.js: Could not insert in insertReview()');
-							console.log([err, result]);
-							// callback();
-							return;
+						// if (err) {
+						// 	console.log('model.js: Could not insert in insertReview()');
+						// 	console.log([err, result]);
+						// 	res.end("You need to have a contract with someone to review them.");
+						// 	return;
+						// }
 
-							console.log('You need to have a contract with someone to review them');
-						}
-
+						res.end('Successfuly inserted review');
+						return;
 					});
 			}
-			// refresh();
 		});
 };
 
