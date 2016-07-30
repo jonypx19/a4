@@ -12,6 +12,10 @@ legend {
     color: #ffffff;
 }
 
+form {
+    color: #000000;
+}
+
 .button {
     color: #000000;
 }
@@ -133,3 +137,17 @@ legend {
 .rating > label:hover ~ input:checked ~ label {
     color: #ea0;
 }
+
+
+.navbar-header img {
+    float: left;
+}
+
+textarea {
+    color: black;
+}
+
+input {
+    color: black;
+}
+

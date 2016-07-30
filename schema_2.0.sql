@@ -99,7 +99,7 @@ CREATE TABLE `followers` (
   `follower_id` int(11) DEFAULT NULL,
   `followee_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `followers` (
 
 LOCK TABLES `followers` WRITE;
 /*!40000 ALTER TABLE `followers` DISABLE KEYS */;
-INSERT INTO `followers` VALUES (1,13,12),(2,12,13);
+INSERT INTO `followers` VALUES (1,13,12),(2,12,13),(3,NULL,NULL),(4,NULL,NULL),(7,14,10),(8,14,13),(9,14,14);
 /*!40000 ALTER TABLE `followers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,9 +123,9 @@ CREATE TABLE `review` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subjectid` int(11) NOT NULL,
   `authorid` int(11) NOT NULL,
-  `contractid` int(11) NOT NULL,
   `content` text,
   `rating` int(11) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `subjectid` (`subjectid`),
   KEY `authorid` (`authorid`)
@@ -138,7 +138,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1,13,12,1,'GREAT JOB',4),(2,12,13,2,'Even better job GREAT JOB',4);
+INSERT INTO `review` VALUES (1,13,12,'GREAT JOB',4,'0000-00-00 00:00:00'),(2,12,13,'Even better job GREAT JOB',4,'0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +189,7 @@ CREATE TABLE `vehicles` (
   `year` int(11) NOT NULL,
   `license_plate` varchar(45) NOT NULL,
   `ownerid` int(11) NOT NULL,
-  `image` varchar(100) DEFAULT NULL,
+  `image` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ownerid` (`ownerid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
@@ -214,4 +214,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-30 12:58:25
+-- Dump completed on 2016-07-30 16:24:05
