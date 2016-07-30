@@ -429,6 +429,33 @@ Database.prototype.getUserReviews = function(email, callback) {
 
 
 // TODO: SQL syntax error (Fullchee)
+
+Database.prototype.postReview = function(washer_email, rater_email, content, rating, callback) {
+	var con = this.con;
+	con.query("SELECT washer.id as washerid, rater.id as raterid \
+		FROM (users washer JOIN users rater) rater WHERE washer.email=? and rater.email=?", [washer_email, rater_email], function(err, res) {
+
+			if (err) {
+				callback(err);
+				return;
+			}
+			
+			var washer_id = res[0].washerid;
+			var rater_id = res[0].raterid;
+
+			con.query("INSERT INTO subjectid, authorid, content, rating VALUES (?, ?, ?, ?)",
+				[washer_email, rater_email, content, rating], 
+				function(err) {
+					if (err) {
+						callback(err);
+					} else {
+						callback(null);
+					}
+			});
+		});
+	
+}
+
 Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
 	var self = this;
 
