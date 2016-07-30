@@ -42,7 +42,7 @@ button#search_contracts {
 
 article.contract {
 	margin-top: 5%;
-	height: 300px;
+	height: 450px;
 	background-color: #0059b3;
 	color: white;
 	overflow: auto;
@@ -65,14 +65,29 @@ article.contract p {
 
 article.contract p span {
 	display: block;
+	font-size: 12pt;
+}
+
+article.contract p span#status {
+	display: block;
 	font-size: 18pt;
+	margin-top: 30px;
+	margin-bottom: 30px;
 }
 
 article.contract div.detail_info {
-	font-size: 14pt;
+	font-size: 12pt;
 	margin-top: 5%;
 	margin-left: 5%;
 	float: left;
+	
+}
+
+article.contract p.car_local {
+	font-size: 12pt;
+	margin-top: 5%;
+	float: left;
+	clear: right;
 	
 }
 
@@ -122,9 +137,17 @@ article.contract > button {
 	margin-top: 2rem;
 	margin-right: 2rem;
 	color: black;
-	width: 15%;
-	float: right;
-	clear: right;
+	width: 25%;
+	float: left;
+
+}
+
+section#personal_contracts button.cancel {
+	clear: both;
+}
+
+article.contract button.confirm {
+	clear: both;
 }
 
 article.contract button.confirm:hover {

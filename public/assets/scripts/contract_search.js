@@ -52,6 +52,10 @@ function searchContracts() {
 					class: 'detail_info'
 				}).appendTo(article);
 
+				$('<span>', {
+					text: 'Price: $' + contracts[i].price + '.00'
+				}).appendTo(detail);
+
 				$('<h4>', {text: 'Exterior'}).appendTo(detail);
 
 				var list = $('<ul>').appendTo(detail);

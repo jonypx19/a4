@@ -208,7 +208,7 @@ router.post('/contracts/registerContract', function(req, res, next) {
             
             database.insertContract(req.body);
 
-            res.redirect('/vehicles');
+            res.redirect('/contracts');
 
         });
         
@@ -259,9 +259,10 @@ router.get('/contracts/listContracts', function(req, res) {
 
 
     database.getUserContracts(userid, function(err, data) {
-        console.log(data);
         var owner = [];
         var washer = [];
+
+        console.log(data);
 
         if (data != null) {
 
@@ -477,7 +478,7 @@ router.get('/user/:email', function(req,res){
 
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
-    console.log('asldjflksjdfklsdlfj');
+    
     if (req.session && req.session.username) {
         var rater = req.session.username; // current user
         var comment = req.body.comment;

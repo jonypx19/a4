@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `contract`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contract` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `latitude` varchar(100) NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `washerid` int(11) DEFAULT NULL,
@@ -100,9 +100,7 @@ CREATE TABLE `contract` (
   `city` varchar(45) NOT NULL,
   `postal_code` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
-  `chat_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `chat_content_UNIQUE` (`chat_id`),
   KEY `washerid` (`washerid`),
   KEY `vehicleid` (`vehicleid`),
   CONSTRAINT `contract_ibfk_1` FOREIGN KEY (`washerid`) REFERENCES `users` (`id`),
@@ -116,10 +114,8 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (1,'43.84519969999999','-79.5180752',13,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',1), (2,'43.84519969999999','-79.5180752',12,2,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',2);
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
-
 --
 -- Table structure for table `review`
 --
@@ -162,15 +158,25 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `isadmin` tinyint(1) NOT NULL DEFAULT '0',
+  `month` varchar(255) NOT NULL,
+=======
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL UNIQUE,
   `password` VARCHAR(255),
   `isadmin` BOOLEAN NOT NULL DEFAULT FALSE,
   `month` VARCHAR(255) NOT NULL,
+>>>>>>> be418797564a2ddc8b3d8eb91e2e2b2757bd1a5b
   `day` int(11) NOT NULL,
   `year` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `bio` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,12 +185,17 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+<<<<<<< HEAD
+INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi',1,'January',1,2016,''),(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq',1,'January',1,2016,''),(12,'Terry Yan','ty@ty.ty','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi',1,'January',21,1999,''),(13,'Ross Bevacqua','r.bevacqua94@gmail.com','$2a$10$VmiiHb0dluQYcbutufCsMebSLSGFggt9YoxEEDAfiBp./PtuPMw/2',0,'October',13,2004,''),(14,'George','George@gmail.com','$2a$10$5L9ipudplZctCFWWt.xfR.WMWujtwqX48e9IXQzxGb0xWHZ1MW6mu',0,'April',20,1995,'');
+=======
 INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi', TRUE ,'January', 1, 2016),
 (11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq', TRUE, 'January',1,2016),
 (12,'Terry Yan','t@t.t','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999),
 (13,'asdfasdf','b@b.b','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999);
+>>>>>>> be418797564a2ddc8b3d8eb91e2e2b2757bd1a5b
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 --
 -- Table structure for table `vehicles`
