@@ -208,7 +208,7 @@ router.post('/contracts/registerContract', function(req, res, next) {
             
             database.insertContract(req.body);
 
-            res.redirect('/vehicles');
+            res.redirect('/contracts');
 
         });
         
@@ -259,9 +259,10 @@ router.get('/contracts/listContracts', function(req, res) {
 
 
     database.getUserContracts(userid, function(err, data) {
-        console.log(data);
         var owner = [];
         var washer = [];
+
+        console.log(data);
 
         if (data != null) {
 
@@ -477,7 +478,12 @@ router.get('/user/:email', function(req,res){
 
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
+<<<<<<< HEAD
     if (req.session && req.session.username) {
+=======
+    console.log('asldjflksjdfklsdlfj');
+    if (req.session && req.session.email) {
+>>>>>>> 5a7106d32b1143b8c029f91bc0156bb252eb3062
         var rater = req.session.username; // current user
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
@@ -728,8 +734,40 @@ router.get("/userprofile", function(req, res){
     }
 });
 
+router.post("/updateBio",function(req,res){
+    if (req.session && req.session.email){
+        var bio = req.body.bio;
+        var email = req.session.email;
+
+        database.updateBio(bio, email, function(err) {
+            if (err) {
+                console.log("could not update bio")
+            }
+        });
+    }
+});
+
+router.get("/getBio",function(req,res){
+    if (req.session && req.session.email){
+        if (req.session.viewedEmail){     
+            database.getBio(req.session.viewedEmail, function(err, result) {
+                res.send(req.session.viewedEmail);
+                return;
+            });
+            
+        } else {
+            database.getBio(req.session.email, function(err, result) {
+                res.send(req.session.email);
+                return;
+            });
+        }
+
+        
+    }
+});
+
 router.post('/rateuser', function(req, res) {
-    if (req.session && req.session.username) {
+    if (req.session && req.session.email) {
 
         req.body.rating = req.sanitize(req.body.rating);
         req.body.content = req.sanitize(req.body.content);
@@ -737,7 +775,8 @@ router.post('/rateuser', function(req, res) {
         //TODO: ADD RATING AND THE CONTENT OF THE COMMENT TO THE DATABASE.
 
 
-        
+        //TODO: (GEORGE) ONCE UPDATED, RELOAD THE PAGE.
+        res.redirect("/userprofile");
     }
     else {
         console.log('User attempted to rate a user without a login');
@@ -880,6 +919,10 @@ router.post('/confirmSignup', function (req, res) {
             
         });
     });
+});
+
+router.get("/admin", function(req,res){
+    res.redirect("/adminlogin");
 });
 
 // export the routings, to be used in server.js

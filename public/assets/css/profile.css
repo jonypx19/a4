@@ -7,7 +7,7 @@ body {
 }
 
 /* The Modal (background) */
-.modal {
+#myModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -22,7 +22,7 @@ body {
 }
 
 /* Modal Content */
-.modal-content {
+#aboutModalContent {
     position: relative;
     background-color: #fefefe;
     margin: auto;

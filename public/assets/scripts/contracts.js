@@ -11,11 +11,8 @@ function getContracts() {
 					text: 'No Contracts Created'
 				}).appendTo('section#personal_contracts');
 			} else {
-				var article = $('<article>', {
-					class: 'contract'
-				}).appendTo('section#personal_contracts');
 
-				createContractsList(json.owner, article, null);
+				createContractsList(json.owner, 'section#personal_contracts', false, false);
 			}
 
 			if (json.washer.length == 0) {
@@ -23,13 +20,8 @@ function getContracts() {
 					text: 'No Contracts Selected'
 				}).appendTo('section#client_contracts');
 			} else {
-				var article = $('<article>', {
-					class: 'contract'
-				}).appendTo('section#client_contracts');
 
-				var button = $('<button>', {class: "confirm button signup",text:"Confirm Completion"});
-
-				createContractsList(json.washer, article, button);
+				createContractsList(json.washer, 'section#client_contracts', true, true);
 			}
  
 		}
@@ -38,7 +30,7 @@ function getContracts() {
 
 function createChatForm(article, contract) {
 	var chat_block = $("<form>", {class: "chat hidden"}).appendTo(article);
-	chat_block.data('id', contract.chat_id);
+	chat_block.data('id', contract.id);
 
 	$("<div>", {class: "messages"}).appendTo(chat_block);
 
@@ -99,6 +91,7 @@ function updateChat(id, box) {
 		data: {"id": id},
 		success: function (json) {
 			if (box.children().length < json.length) {
+				
 				for (var i = box.children().length; i < json.length; i++) {
 					if (json[i].owner) {
 						$('<p>', {class:"message owner", html:json[i].message}).appendTo(box);
@@ -151,8 +144,12 @@ function cancelContract(id, chatid) {
 }
 
 // helper function for listing contracts on html page
-function createContractsList(contracts, article, button) {
+function createContractsList(contracts, section, button, washer) {
 	for (var i = 0; i < contracts.length; i++) {
+
+		var article = $('<article>', {
+			class: 'contract'
+		}).appendTo(section);
 
 		$('<img>', {
 			src: contracts[i].image
@@ -161,6 +158,37 @@ function createContractsList(contracts, article, button) {
 		var car = $('<p>', {
 			class: 'car_info'
 		}).appendTo(article);
+
+		$('<span>', {
+			text: 'Price: $' + contracts[i].price + '.00'
+		}).appendTo(car);
+
+		$('<span>', {
+			id: "status",
+			text: 'Status: ' + contracts[i].status
+		}).appendTo(car);
+
+		if (!washer && contracts[i].washer_email && contracts[i].washer_name) {
+
+			$('<span>', {
+				text: 'Detailer: ' + contracts[i].washer_name
+			}).appendTo(car);
+
+			$('<span>', {
+				text: 'Detailer email: ' + contracts[i].washer_email
+			}).appendTo(car);
+		}
+
+		if (washer && contracts[i].owner_email && contracts[i].owner_name) {
+
+			$('<span>', {
+				text: 'Owner: ' + contracts[i].owner_name
+			}).appendTo(car);
+
+			$('<span>', {
+				text: 'Owner email: ' + contracts[i].owner_email
+			}).appendTo(car);
+		}
 
 		$('<span>', {
 			text: 'Manufacturer: ' + contracts[i].make
@@ -222,10 +250,26 @@ function createContractsList(contracts, article, button) {
 			$('<li>', {text: 'Vinyl and Plastic Restoration'}).appendTo(list);
 		}
 
+		var local = $('<p>', {
+			class: 'car_local'
+		}).appendTo(article);
+
+		$('<span>', {
+			text: 'City: ' + contracts[i].city
+		}).appendTo(local);
+
+		$('<span>', {
+			text: 'Address: ' + contracts[i].address
+		}).appendTo(local);
+
+		$('<span>', {
+			text: 'Postal/Zip Code: ' + contracts[i].postal_code
+		}).appendTo(local);
+
 		article.data('id', contracts[i].id);
 
-		if (button != null) {
-			var complete_button = button.appendTo(article);
+		if (button) {
+			$('<button>', {class: "confirm button signup",text:"Confirm Completion"}).appendTo(article);
 		}
 
 		$('<button>', {class: "cancel button signup", text:"Cancel"}).appendTo(article);
@@ -277,6 +321,7 @@ function main() {
 		e.preventDefault();
 
 		if ($(this).parent().children(".send").is(":invalid")) {
+			$('span.send_error').remove();
     		$('<span>', {class:"send_error", text: "Message Cannot Be Blank"}).insertAfter($(this).parent().children(".send"));
 		} else {
 		
@@ -303,19 +348,19 @@ function main() {
 		setInterval(updateChat, 5000, $(this).parent().children(".chat").data('id'), b);
 
 		
-		if ($(this).parent().css('height') == '300px') {
+		if ($(this).parent().css('height') == '450px') {
 			$(this).parent().css({
-				height: "600px"
+				height: "700px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top -350
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		} else {
 			$(this).parent().css({
-				height: "300px"
+				height: "450px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top -50
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		}
 		

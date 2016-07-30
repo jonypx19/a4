@@ -2,126 +2,142 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/profile.css">
-    <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
-    <script src="/scripts/jquery-3.0.0.min.js" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
-    <script src="/scripts/bootstrap.min.js" defer></script>
-    <script src="/scripts/about.js" defer></script>
-    <script src="/scripts/profile.js" defer></script>
-    <script src="/scripts/getInformation.js" defer></script>
-    <script src="scripts/about.js" defer></script>
-</head>
-<body>
-    <script>
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>User Profile</title>
 
-        function onLoad() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init();
-            });
-        }
-    </script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/profile.css">
+        <meta name="google-signin-client_id" content="776046105873-f53jto4em6m6spl89q5o3kqlo4nrjvsa.apps.googleusercontent.com"/>
+        <script src="/scripts/jquery-3.0.0.min.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+        <script src="/scripts/bootstrap.min.js" defer></script>
+        <script src="/scripts/about.js" defer></script>
+        <script src="/scripts/getInformation.js" defer></script>
+        <script src="/scripts/userObject.js" defer></script>
+        <script src="/scripts/profile.js" defer></script>
+        <script src="/scripts/fetchUsers.js" defer></script>
+    </head>
+    <body>
+        <script>
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+            }
 
-        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>                        
-                    </button>
-                    <a class="navbar-brand" href="/">Car Detail Exchange</a>
-                    <img src="images/logo.png" style="width:50px;height:50px;">
+            function onLoad() {
+                gapi.load('auth2', function() {
+                    gapi.auth2.init();
+                });
+            }
+        </script>
+
+            <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>                        
+                        </button>
+                        <a class="navbar-brand" href="/">Car Detail Exchange</a>
+                        <img src="images/logo.png" style="width:50px;height:50px;">
+                    </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul id="navigation" class="nav navbar-nav">
+                        <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                        <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+                        <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
+                    </ul>
+                    <ul id="navigation" class="nav navbar-nav navbar-right">
+                        <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                    </ul>
                 </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul id="navigation" class="nav navbar-nav">
-                    <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                    <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
-                    <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
-                </ul>
-                <ul id="navigation" class="nav navbar-nav navbar-right">
-                    <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-                </ul>
+            </div>
+        </nav>
+
+        <!-- The "About" Modal -->
+            <div id="myModal" class="modal">
+
+              <!-- Modal content -->
+              <div id="aboutModalContent" class="modal-content">
+                <div class="modal-header">
+                  <span class="close">×</span>
+                  <h2>About Us</h2>
+                </div>
+                <div class="modal-body">
+                    <h2>Our Mission</h2>
+                        <p>Keep your car clean?</p>
+
+                    <h2>Who we are</h2>
+                        <p>We're people passionate about keeping cars clean.</p>
+
+                    <h2>Contact Us</h2>
+                        <p>Follow us on Twitter</p>
+                </div>
             </div>
         </div>
-    </nav>
 
-    <!-- The "About" Modal -->
-        <div id="myModal" class="modal">
+        <!-- Add Users Modal -->
+        <div class="modal fade" id="usersModal" role="dialog">
+            <div class="modal-dialog"> 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Users</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="usersList">
 
-          <!-- Modal content -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <span class="close">×</span>
-              <h2>About Us</h2>
-            </div>
-            <div class="modal-body">
-                <h2>Our Mission</h2>
-                    <p>Keep your car clean?</p>
-
-                <h2>Who we are</h2>
-                    <p>We're people passionate about keeping cars clean.</p>
-
-                <h2>Contact Us</h2>
-                    <p>Follow us on Twitter</p>
+                        </div>
+                    </div>
+                </div>   
             </div>
         </div>
-    </div>
 
 
-    <p>
-        Welcome <%- name %>! This is your user profile. See information about yourself.
-    </p>
-    <div id="following">
-        <button type="button" onclick="alert(&quot;Go to add users page&quot;);" name="AddUsers">Add Users!</button>
-        <p id="users">
-            These are the people you're following currently.
+        <p>
+            Welcome <%- name %>! This is your user profile. See information about yourself.
         </p>
-    </div>
+        <div id="following">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#usersModal" name="AddUsers">Add Users!</button>
+            <p id="users">
+                These are the people you're following currently.
+            </p>
+        </div>
 
-    <div id="comments">
-        <p id="rating">
-            This is your average rating:
-        </p>
-        <p id="comment">
-            These are your comments:
-        </p>
-    </div>
+        <div id="comments">
+            <p id="rating">
+                This is your average rating:
+            </p>
+            <p id="comment">
+                These are your comments:
+            </p>
+        </div>
 
-    <!-- rating will be send to server with AJAX-->
+        <!-- rating will be send to server with AJAX-->
 
-    <!-- States:
-    Admin/User looking at own profile: doesn't see this, can't rate yourself
-    Another user: sees this, can only send one rating -->
-    <form action="/rateuser" method="post">
-        <fieldset class="rating">
-            <legend>Rate this person:</legend>
-            <input type="radio" id="star5" name="rating" value="5" ><label for="star5">5 stars</label>
-            <input type="radio" id="star4" name="rating" value="4" ><label for="star4">4 stars</label>
-            <input type="radio" id="star3" name="rating" value="3" ><label for="star3">3 stars</label>
-            <input type="radio" id="star2" name="rating" value="2" ><label for="star2">2 stars</label>
-            <input type="radio" id="star1" name="rating" value="1" ><label for="star1">1 star</label>
-        </fieldset>
+        <!-- States:
+        Admin/User looking at own profile: doesn't see this, can't rate yourself
+        Another user: sees this, can only send one rating -->
+        <form action="/rateuser" method="post">
+            <fieldset class="rating">
+                <legend>Rate this person:</legend>
+                <input type="radio" id="star5" name="rating" value="5" ><label for="star5">5 stars</label>
+                <input type="radio" id="star4" name="rating" value="4" ><label for="star4">4 stars</label>
+                <input type="radio" id="star3" name="rating" value="3" ><label for="star3">3 stars</label>
+                <input type="radio" id="star2" name="rating" value="2" ><label for="star2">2 stars</label>
+                <input type="radio" id="star1" name="rating" value="1" ><label for="star1">1 star</label>
+            </fieldset>
 
-        <input type="submit" name="rate" value="Rate">
-    </form>
+            <input type="submit" name="rate" value="Rate">
+        </form>
 
-    <form action="/logout" method="get">
-        <input type="submit" onclick="signOut();" id="logout" name="logout" value="Logout">
-    </form>
-
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
-    
-</body>
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+        
+    </body>
 </html>

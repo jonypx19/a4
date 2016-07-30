@@ -67,6 +67,7 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
 
@@ -116,6 +117,29 @@ Database.prototype.getAllUsers = function(callback) {
 	});
 };
 
+Database.prototype.getBio = function(email, callback) {
+	this.con.query("SELECT bio FROM users WHERE email=?", [email], function(err, result) {
+		if (err) {
+			console.log('could not get bio from db');
+			callback(err, null);
+
+		} else {
+			callback(null, result);
+		}
+	});	
+}
+
+Database.prototype.updateBio = function(bio, email, callback) {
+	this.con.query("UPDATE users SET bio=? WHERE email=?", [bio, email], function(err) {
+		if (err) {
+			console.log("could not update bio in db");
+			callback(err);
+		} else {
+			callback(null);
+		}
+	});
+}
+
 Database.prototype.getFollowers = function(id, callback) {
 	this.con.query("SELECT users.name AS name, users.email AS email \
 		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
@@ -126,6 +150,26 @@ Database.prototype.getFollowers = function(id, callback) {
 				callback(err, null);
 			} else {
 				callback(null, result);
+			}
+		});
+};
+
+Database.prototype.addFollower = function(callback) {
+
+	this.con.query('INSERT INTO followers (id) VALUES (?)',
+		[user.id],
+		function (err, result) {
+			if (err) {
+				console.log('Could not follow user');
+
+				console.log('model.js: ' + err.code);
+
+				if (err.code === 'ER_DUP_ENTRY') {
+					callback(err);
+				}
+			}
+			else {
+				callback(null);
 			}
 		});
 };
@@ -310,14 +354,15 @@ Database.prototype.insertChatReply = function(chatid, message, userid, callback)
 }
 
 Database.prototype.getUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
-		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
-		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
+	this.con.query("SELECT contract.id as id, washerid, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, vehicles.year, owner.name as owner_name, owner.email as owner_email, \
+		washer.name as washer_name, washer.email as washer_email, city, address, postal_code \
+		FROM ((contract JOIN vehicles JOIN users owner ON contract.vehicleid=vehicles.id and owner.id=ownerid) LEFT OUTER JOIN users washer ON washer.id=washerid)\
 		WHERE (ownerid=? or washerid=?) and status<>'complete'", 
 		[username, username], 
 		function(err, result) {
 			if (err) {
-				console.log(err.Error);
+				console.log(err);
 				callback(err, null);
 			}
 
