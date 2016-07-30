@@ -195,6 +195,14 @@ Database.prototype.deleteContractChat = function(chatid, callback) {
 
 }
 
+Database.prototype.deleteContract = function(contractid) {
+	this.con.query("DELETE FROM contract WHERE id=?", [contractid], function(err) {
+		if (err) {
+			console.log("could not delete contract");
+		}
+	});
+}
+
 Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
 
 	if (washer) {

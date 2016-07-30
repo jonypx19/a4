@@ -19,6 +19,11 @@ function searchContracts() {
 
 			$("article#results").empty();
 			$('<h2>', {text:"Search Results"}).appendTo('article#results');
+			
+			if (contracts.length == 0) {
+
+				$('<h2>', {text:"No available Contracts"}).appendTo('article#results');
+			}
 
 			for (var i = 0; i < contracts.length; i++) {
 

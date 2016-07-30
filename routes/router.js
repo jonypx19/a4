@@ -147,6 +147,18 @@ router.post('/search/takeContract', function(req, res) {
 
 });
 
+router.post('/contracts/deleteContract', function(req, res) {
+    database.deleteContractChat(req.body.id, function(err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            database.deleteContract(req.body.id);
+        }
+    })
+    
+});
+
+
 router.post('/contracts/cancelContract', function(req, res) {
     database.changeContractStatus(req.body.id, 'delete', 'available', function(err) {
         if (err) {

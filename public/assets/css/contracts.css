@@ -146,12 +146,20 @@ section#personal_contracts button.cancel {
 	clear: both;
 }
 
+section#personal_contracts button.delete {
+	clear: both;
+}
+
 article.contract button.confirm {
 	clear: both;
 }
 
 article.contract button.confirm:hover {
 	background-color: green;
+}
+
+article.contract button.delete:hover {
+	background-color: red;
 }
 
 article.contract button.cancel:hover {
