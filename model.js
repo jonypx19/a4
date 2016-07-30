@@ -17,6 +17,10 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
+Database.prototype.checkIn = function() {
+	this.con.query('SELECT 1');
+}
+
 Database.prototype.connect = function() {
 	//establish connection to mysql database
 
