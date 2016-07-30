@@ -12,6 +12,10 @@ legend {
     color: #ffffff;
 }
 
+form {
+    color: #000000;
+}
+
 .button {
     color: #000000;
 }
@@ -134,6 +138,8 @@ legend {
     color: #ea0;
 }
 
+
 .navbar-header img {
     float: left;
 }
+
