@@ -272,29 +272,42 @@ router.get('/contracts/listContracts', function(req, res) {
 
 
     database.getUserContracts(userid, function(err, data) {
-        var owner = [];
-        var washer = [];
-
-        console.log(data);
-
-        if (data != null) {
-
-            for (var i=0; i < data.length; i++) {
-
-                if (data[i].ownerid == userid) {
-                    owner.push(data[i]);
-                } else if (data[i].washerid == userid) {
-                    washer.push(data[i]);
-                }
-            }
+        if (err) {
+            console.log(err);
+            return;
         }
 
-        var json = {};
-        json.owner = owner;
-        json.washer = washer;
+        database.getCompletedUserContracts(userid, function(err, comp_data) {
+            var owner = [];
+            var washer = [];
 
-        var result = JSON.stringify(json);
-        res.end(result);
+            if (data != null) {
+
+                for (var i=0; i < data.length; i++) {
+
+                    if (data[i].ownerid == userid) {
+                        owner.push(data[i]);
+                    } else if (data[i].washerid == userid) {
+                        washer.push(data[i]);
+                    }
+                }
+            }
+
+           
+
+            var json = {};
+
+            if (comp_data != null) {
+                json.comp = comp_data;
+            }
+            
+            json.owner = owner;
+            json.washer = washer;
+
+            var result = JSON.stringify(json);
+            res.end(result);
+        });
+        
     });
 });
 
