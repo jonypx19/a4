@@ -426,10 +426,19 @@ router.get('/user/:email', function(req,res){
             //TODO: GET THE USER FROM THE DB THAT HAS EMAIL req.session.viewedEmail. PUT IT AS AN OBJECT.
             console.log(req.params.email);
             req.session.viewedEmail=req.params.email.toLowerCase();
-            res.render("viewprofile", {
-                name:req.session.viewedEmail
+            Database.checkUser_2(req.session.viewedEmail, function(err, result) {
+
+                if (err) {
+                    res.redirect('/userprofile');
+                    return;
+                }
+
+                res.render("viewprofile", {
+                    name:req.session.viewedEmail
+                });
+                return;
             });
-            return;
+            
         }
     }
     else{

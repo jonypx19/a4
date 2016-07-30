@@ -10,7 +10,7 @@ function getUsers(){
     }).done(function(data){
         console.log(data);
         var $paragraph = $("<p/>",{
-            text:"Scroll through the list of active users and follow them!"
+            text:"Scroll through the list of active car enthusiasts and follow them!"
         });
         $("#usersList").html($paragraph);
         //loop through all the users, then create an element for all of them.
@@ -22,15 +22,19 @@ function getUsers(){
             }
         }
         //append each one to a list and append to the main body.
-        $list = $("<ul/>");
+        $list = $("<span class=\"badge\" >");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
-                html:userArray[i].name + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
-                                    + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='viewProfile(\""+userArray[i].email+"\")'>View Profile"
+                html:userArray[i].name + "<p> >" + "<button class=\"btn btn-success\" type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
+                                    + "<button class=\"btn btn-primary\" type=\"button\" id=\""+userArray[i].email+"\" onclick='viewProfile(\""+userArray[i].email+"\")'>View Profile"
             });
             $list.append($item);
         }
         $("#usersList").append($list);
+
+
+
+
     });
 }
 
