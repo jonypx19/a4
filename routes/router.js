@@ -208,7 +208,7 @@ router.post('/contracts/registerContract', function(req, res, next) {
             
             database.insertContract(req.body);
 
-            res.redirect('/vehicles');
+            res.redirect('/contracts');
 
         });
         
@@ -259,9 +259,10 @@ router.get('/contracts/listContracts', function(req, res) {
 
 
     database.getUserContracts(userid, function(err, data) {
-        console.log(data);
         var owner = [];
         var washer = [];
+
+        console.log(data);
 
         if (data != null) {
 
