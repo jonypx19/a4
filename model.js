@@ -71,6 +71,16 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+Database.prototype.checkUser_2 = function(email, callback) {
+	this.con.query("SELECT name, email FROM users WHERE email=? LIMIT 1", [email], function(err, result) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
+}
+
 
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
@@ -418,9 +428,18 @@ Database.prototype.getCompletedUserContracts = function(username, callback) {
 }
 
 Database.prototype.getUserReviews = function(email, callback) {
-	this.con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
-		FROM (review JOIN users ON users.id=review.subjectid) WHERE users.email=?",
-		[email],
+	var con = this.con;
+
+	con.query("SELECT id as l_id FROM users WHERE email=?", [email], function (err, res) {
+		if (err || !res[0]) {
+			callback(err, null);
+			return;
+		}
+
+		var sub_id = res[0].l_id;
+		con.query("SELECT users.name AS 'from', review.content AS content, review.rating AS rating \
+		FROM (review JOIN users ON users.id=review.authorid) WHERE review.subjectid=?",
+		[sub_id],
 		function (err, result) {
 			if (err) {
 				console.log("Unable to select Reviews from db");
@@ -429,65 +448,37 @@ Database.prototype.getUserReviews = function(email, callback) {
 				callback(null, result);
 			}
 		});
+	});
+	
 }
 
 
 // TODO: SQL syntax error (Fullchee)
-Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
-	var self = this;
 
-	// check if there is already a review
-	self.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
-			FROM users rater, users washer, vehicles v, contract c\
-			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and v.id = c.vehicleid and rater.id <> washer.id\
-			LIMIT 1;',
-			[rater_email, washer_email],
-		function (err, result) {
+Database.prototype.postReview = function(washer_email, rater_email, content, rating, callback) {
+	var con = this.con;
+	con.query("SELECT washer.id as washerid, rater.id as raterid \
+		FROM (users washer JOIN users rater) WHERE washer.email=? and rater.email=?", [washer_email, rater_email], function(err, res) {
+			console.log(res);
 			if (err) {
-				console.log('model.js: Could not insertReview()');
-				res.end();
+				callback(err);
 				return;
 			}
+			
+			var washer_id = res[0].washerid;
+			var rater_id = res[0].raterid;
 
-			console.log('---------insertReview() result------------- ');
-			console.log(result);
-
-			// if there is a review, then update it
-			if (result && result.length > 0) {
-				self.con.query('UPDATE review\
-					SET content = ?, rating = ?\
-					WHERE contractid = ? and subjectid = ? and authorid = ?',
-					[comment, rating, result.contractid, result.washerid, result.raterid], 
-					function(err, result) {
-						// if (err) {
-						// 	console.log('model.js: Could not UPDATE in insertReview()');
-						// 	console.log([err, result]);
-						// 	res.end();
-						// 	return;
-						// }
-						console.log('Updated the comment');
-						res.end();
-						return;
-					});
-			} 
-			else {  // no review => insert it
-				self.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
-					VALUES (?, ?, ?, ?, ?)', [result.washerid, result.raterid, result.contractid, comment, rating], 
-					function (err, result) {
-						
-						// no contract exists => FOREIGN KEYS don't allow insertion
-						// if (err) {
-						// 	console.log('model.js: Could not insert in insertReview()');
-						// 	console.log([err, result]);
-						// 	res.end("You need to have a contract with someone to review them.");
-						// 	return;
-						// }
-
-						res.end('Successfuly inserted review');
-						return;
-					});
-			}
+			con.query("INSERT INTO review (subjectid, authorid, content, rating) VALUES (?, ?, ?, ?)",
+				[washer_id, rater_id, content, rating], 
+				function(err) {
+					if (err) {
+						callback(err);
+					} else {
+						callback(null);
+					}
+			});
 		});
-};
+	
+}
 
 exports.Database = Database;

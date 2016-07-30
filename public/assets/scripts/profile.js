@@ -1,30 +1,41 @@
-var getUser = function(url) {
-	var parser = document.createElement('a');
-	parser.href = url;
+var getUser = function() {
+	var currentEmail = $('meta[name=viewedProfile]').attr("content");
+	return currentEmail;
+};
+$(document).ready(function(){
+	$( '#submit' ).click(function() {
+		event.preventDefault();
+		var selectedValue = $('input[name=rating]:checked').val();
+		var text = $("#commentText").val();
+		var currentEmail = getUser();
+		console.log(currentEmail);
+		console.log(selectedValue);
+		console.log(text);
+		if (selectedValue != undefined && text != ""){
+			var send = new Object();
+			send.currentEmail = currentEmail;
+			send.rating = selectedValue;
+			send.content = text;
 
-	var path = parser.pathname;
+			var sendData= JSON.stringify(send);
 
-	return path.split('/')[2];
-}
-
-$( '#submit' ).click(function() {
-	event.preventDefault();
-
-	$.ajax({
-		url: '/rateuser',
-		type: 'post',
-		data: {
-			// rater determined in router.js as req.session.user
-			rating: this.value,
-			ratee: getUser(window.location.href)
-		},
-		success: function ( data ) {
-			alert('Thank you for rating!');
-		},
-
-		fail: function (xhr, status, errorThrown) {
-			alert('Error thrown');
+			$.ajax({
+				url:'http://localhost:3000/submitComment',
+				type:"POST",
+				contentType: "application/json",
+				dataType:"text",
+				data:sendData
+			}).done(function(data){
+				alert(data);
+				location.replace("http://localhost:3000/user/" + currentEmail);
+			});
 		}
-	});
+		else{
+			alert("Please have both a rating and a comment before you can submit your review");
+		}
 
+
+
+
+	});
 });

@@ -49,14 +49,14 @@ $(document).ready(function(){
             averageRating = 0;
             $bullet=$("<li/>");
             $comment=$("<p/>",{
-                html:"You have no comments right now."
+                html:"No comments right now."
             });
             $bullet.append($comment);
             $comments.append($bullet);
             $("#comments").append($comments);
 
             //If no ratings
-            $("#rating").text("You don't have any ratings right now");
+            $("#rating").text("No ratings right now");
         }
         else{
             //If there exists, then show them as a list.
@@ -77,6 +77,22 @@ $(document).ready(function(){
             averageRating = averageRating/data.length;
             $("#rating").append(" "+averageRating.toFixed(2));
         }
+    });
+
+    $.ajax({
+        url:"http://localhost:3000/getBio",
+        type:"GET",
+        dataType:"text"
+    }).done(function(data){
+        $bio = $("<p/>");
+        if (data.length == 0){
+            //If no bio, put a placeholder
+            $bio.html("<strong>No bio yet...</strong>")
+        }
+        else{
+            $bio.html("<strong>"+ data+"</strong>");
+        }
+        $("#biography").append($bio);
     });
 
 });

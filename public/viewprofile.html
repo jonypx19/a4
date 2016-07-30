@@ -6,6 +6,8 @@
 
     <meta charset="UTF-8">
     <title>User Profile</title>
+
+    <meta name="viewedProfile" content="<%-name%>"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/profile.css">
     <script src="/scripts/jquery-3.0.0.min.js" defer></script>
@@ -26,7 +28,7 @@
                       <span class="icon-bar"></span>                        
                     </button>
                     <a class="navbar-brand" href="/">Car Detail Exchange</a>
-                    <img src="images/logo.png" style="width:50px;height:50px;">
+                    <img src="../images/logo.png" style="width:50px;height:50px;">
                 </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul id="navigation" class="nav navbar-nav">
@@ -35,17 +37,19 @@
                     <li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
                     <li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li>
                 </ul>
-                <ul id="navigation" class="nav navbar-nav navbar-right">
-                    <li><a href="/logout" onclick="signOut()"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-                </ul>
             </div>
         </div>
     </nav>
     <section>
         <h2><%-name%>'s Profile!</h2>
     </section>
-    <p>
-    </p>
+    <div>
+        <p id="biography">
+            This is their biography:
+
+        </p>
+    </div>
+
 
     <div id="comments">
         <p id="rating">
@@ -58,7 +62,8 @@
     <!-- States:
     Admin/User looking at own profile: doesn't see this, can't rate yourself
     Another user: sees this, can only submit a rating and a comment -->
-    <form action="/submitComment/<%-name-%>" method="post">
+    <!--<form action="/submitComment/<%-name-%>" method="post">-->
+    <form action="/submitComment" id="form" method="post">
         <fieldset class="rating">
             <legend>Review this person:</legend>
             <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
@@ -67,8 +72,8 @@
             <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
             <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
         </fieldset>
-        <textarea name="comments" id="comments"></textarea>
-        <input id="submit" type="submit" value="Review"/>
+        <textarea name="comments" placeholder="Write your reviews here." id="commentText"></textarea>
+        <input type="button" id="submit" value="Review"/>
     </form>
 </body>
 </html>
