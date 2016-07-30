@@ -100,6 +100,14 @@ section#list_vehicles article img {
 	border-radius: 50px;
 }
 
+section#contract_form img {
+	width: 20%;
+	margin-left: 4%;
+	margin-right: 4%;
+	float: left;
+	border-radius: 50px;
+}
+
 /*Contract form styles*/
 
 section#contract_form {

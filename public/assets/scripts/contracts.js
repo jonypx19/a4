@@ -326,6 +326,7 @@ function main() {
 	$(document).on('click', '.cancel', function() {
 		
 		cancelContract($(this).parent().data('id'), $(this).parent().children(".chat").data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Succefully Dropped a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 
@@ -334,6 +335,7 @@ function main() {
 	$(document).on('click', '.delete', function() {
 		
 		deleteContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Canceled a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 
@@ -341,6 +343,7 @@ function main() {
 
 	$(document).on('click', '.confirm', function(e) {
 		confirmContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_good", text:"You Have Succefully Confirmed Completion of a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 

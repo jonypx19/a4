@@ -186,6 +186,11 @@ router.post('/contracts/confirmContract', function(req, res) {
 router.post('/contracts/registerContract', function(req, res, next) {
     var userid=req.session.userid;
 
+    req.body.address = req.sanitize(req.body.address);
+    req.body.city = req.sanitize(req.body.city);
+    req.body.province = req.sanitize(req.body.province);
+    req.body.country = req.sanitize(req.body.country);
+    req.body.postal_code = req.sanitize(req.body.postal_code);
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
 
@@ -305,6 +310,13 @@ router.post('/vehicles/registerVehicle', function(req, res) {
             res.end("Error uploading file.");
             return;
         }
+
+        // sanitize input
+
+        req.body.manu = req.sanitize(req.body.manu);
+        req.body.make = req.sanitize(req.body.make);
+        req.body.plate = req.sanitize(req.body.plate);
+        req.body.year = req.sanitize(req.body.year);
 
 
         // inserts form data for vehicle into database

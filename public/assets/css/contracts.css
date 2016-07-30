@@ -142,6 +142,16 @@ article.contract > button {
 
 }
 
+.alert_good {
+	background-color: green;
+	color: white;
+}
+
+.alert_bad {
+	background-color: red;
+	color: white;
+}
+
 section#personal_contracts button.cancel {
 	clear: both;
 }
