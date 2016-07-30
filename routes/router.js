@@ -379,7 +379,7 @@ router.get("/getComments",function(req,res){
         }
         else {
             //If they're viewing their own profile, get their comments.
-            database.getUserReviews(req.session.userid, function(err, result) {
+            database.getUserReviews(req.session.email, function(err, result) {
                 if (err) {
                     console.log(err);
                     res.send(JSON.stringify({error: "Could not get User Reviews from db"}));
@@ -510,10 +510,18 @@ router.post('/confirmuser',function(req,res){
         database.checkUser(username, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
+                var user = new Object();
+                user.email = req.body.email.toLowerCase();
+                user.name = req.body.name;
                 // TODO (Fullchee), figure out how google sign in works
                 //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
-            }
+                database.insertUser(user,function(err){
+                    if(err){
+                        console.log("Error inserting in user");
+                    }
+                });
+            }//end of Google sign in.
             res.send("Finished"); //Finished the call.
 
         });
