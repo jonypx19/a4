@@ -500,18 +500,19 @@ router.get("/getFollowing",function(req,res){
 
 router.get('/user/:email', function(req,res){
     //If there does not exist a currently logged in user, redirect to login page. If there's an admin, do the same.
-    //TODO: Search the db based on the email. Find that user. Get their name, comments, and ratings. Return it as an object here. Check out the users.json for reference.
+    //TODO: Search the db based on the email. Find that user. Get their name, comments. Return it as an object here. Check out the users.json for reference.
+    req.session.viewedEmail=req.session.viewedEmail;
     if(req.session && req.session.email){
         if (req.session.privilege == "admin"){
             res.redirect("/adminprofile");
         }
         else{
 
-            // TODO: (Fullchee) get the average rating from db
+            //TODO: GET THE USER FROM THE DB THAT HAS EMAIL req.session.viewedEmail. PUT IT AS AN OBJECT.
             console.log(req.params.email);
-            req.session.viewedEmail=req.params.email;
+            req.session.viewedEmail=req.params.email.toLowerCase();
             res.render("viewprofile", {
-                name:req.params.email
+                name:req.session.viewedEmail
             });
             return;
         }
@@ -528,9 +529,10 @@ router.post("/submitComment", function(req,res){
         var comment = req.body.content;
         var rating = req.body.rating;
         var washer = req.body.currentEmail;
-        database.insertReview(washer, rater, comment, rating, function(){
-            res.send("Finished");
-        });
+        res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
+        // database.insertReview(washer, rater, comment, rating, function(){
+        //     res.send("Finished");
+        // });
     }
     else{
         res.redirect("/userlogin");
