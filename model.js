@@ -71,6 +71,10 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
 
+	if (! user.password) {
+		user.password = null;
+	}
+
 	// id is auto incremented
 	this.con.query('INSERT INTO users (name, email, password, month, day, year) VALUES (?, ?, ?, ?, ?, ?)',
 		[user.name, user.email, user.password, user.month, user.day, user.year],
@@ -146,6 +150,26 @@ Database.prototype.getFollowers = function(id, callback) {
 				callback(err, null);
 			} else {
 				callback(null, result);
+			}
+		});
+};
+
+Database.prototype.addFollower = function(callback) {
+
+	this.con.query('INSERT INTO followers (id) VALUES (?)',
+		[user.id],
+		function (err, result) {
+			if (err) {
+				console.log('Could not follow user');
+
+				console.log('model.js: ' + err.code);
+
+				if (err.code === 'ER_DUP_ENTRY') {
+					callback(err);
+				}
+			}
+			else {
+				callback(null);
 			}
 		});
 };
@@ -388,23 +412,57 @@ Database.prototype.getUserReviews = function(email, callback) {
 
 
 // TODO: SQL syntax error (Fullchee)
-Database.prototype.insertReview = function(washer_email, rater_email, comment, rating) {
-	this.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
-			FROM users rater, users washer, vehicles v, contract c, \
-			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and rater.vehicleid = c.vehicleid and rater.id <> washer.id);\
-			', [rater_email, washer_email],
+Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
+	var self = this;
+	var refresh = callback;
+
+	// check if there is already a review
+	self.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
+			FROM users rater, users washer, vehicles v, contract c\
+			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and v.id = c.vehicleid and rater.id <> washer.id\
+			LIMIT 1;',
+			[rater_email, washer_email],
 		function (err, result) {
 			if (err) {
-				console.log('Could not insert review');
-				console.log(err);
+				console.log('model.js: Could not insertReview()');
 			}
 
+			console.log('---------insertReview() result------------- ');
 			console.log(result);
 
-		// 	this.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
-		// VALUES (washer_id.id, rater_vehicle.userid, ?, ?)', [comment, rating], function (err, result) {
+			// if there is a review, then update it
+			if (result && result.length > 0) {
+				self.con.query('UPDATE review\
+					SET content = ?, rating = ?\
+					WHERE contractid = ? and subjectid = ? and authorid = ?',
+					[comment, rating, result.contractid, result.washerid, result.raterid], 
+					function(err, result) {
+						if (err) {
+							console.log('model.js: Could not UPDATE in insertReview()');
+							console.log([err, result]);
+						}
+						console.log('Updated the comment');
 
-		// });
+					});
+			} 
+			else {  // no review => insert it
+				self.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
+					VALUES (?, ?, ?, ?, ?)', [result.washerid, result.raterid, result.contractid, comment, rating], 
+					function (err, result) {
+						
+						// no contract exists => FOREIGN KEYS don't allow insertion
+						if (err) {
+							console.log('model.js: Could not insert in insertReview()');
+							console.log([err, result]);
+							// callback();
+							return;
+
+							console.log('You need to have a contract with someone to review them');
+						}
+
+					});
+			}
+			// refresh();
 		});
 };
 
