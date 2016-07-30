@@ -1,0 +1,14 @@
+body {
+    background: rgba(4, 40, 68, 0.85);
+}
+
+.adminGreeting {
+	text-align: center;
+	font-size: 20px;
+	color: #ffffff;
+}
+
+.well {
+	margin-left: 25%;
+	width: 45%;
+}
