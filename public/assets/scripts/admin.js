@@ -24,7 +24,7 @@ function getUsers(){
         $list = $("<ul/ class=\"list-group\">");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
-                html:userArray[i].name + "<p> >" + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
+                html:userArray[i].name + "<p> >" + "<button class=\"btn btn-danger\" type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
             });
             $list.append($item);
         }
