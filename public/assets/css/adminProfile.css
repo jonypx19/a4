@@ -6,6 +6,11 @@ p{
 	color: black;
 }
 
+h2 {
+	color: black;
+}
+
+
 li{
 	color:black;
 }
@@ -16,7 +21,11 @@ li{
 	color: #ffffff;
 }
 
+.list-group {
+	font-size: 20px;
+}
+
 .well {
-	margin-left: 25%;
-	width: 45%;
+	margin-left: 26%;
+	width: 43%;
 }

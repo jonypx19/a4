@@ -116,30 +116,11 @@ router.post('/search/searchContracts', function(req, res) {
     });
 });
 
+// Returns a list of all users that have user priviledge that are in the system.
 router.get('/user/listUsers',function(req,res){
-
-    //For cross domain
-    //response.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
-
-    //TODO: Return an array of all users that have privilege=users.
-    //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
         res.json(result);
     });
-    
-    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-    //     console.log(data);
-    //     res.end(data);
-    // });
-    // var usersArray =[];
-    // var user1 = user("George", "1234", "user");
-    // var user2 = user("Bob", "4321", "admin");
-    // var user3 = user("Billy", "asdf", "user");
-    // console.log(user1);
-    // usersArray.push(user1);
-    // usersArray.push(user2);
-    // usersArray.push(user3);
-    // res.end(JSON.stringify(usersArray));
 });
 
 router.post('/search/takeContract', function(req, res) {
@@ -370,10 +351,12 @@ router.get('/vehicles/listVehicles', function(req, res) {
     
 });
 
+//Gets all the comments on the current user's profile
 router.get("/getComments",function(req,res){
     if (req.session && req.session.email){
-
+        //If there is a user logged in, then get everything.
         if(req.session.viewedEmail){
+            //If we're viewing another person's profile, get their comments.
             database.getUserReviews(req.session.viewedEmail, function (err, result) {
                 // result is an array of json objects in the form of:
                 /* 
@@ -393,34 +376,9 @@ router.get("/getComments",function(req,res){
                 }
                 
             });
-
-            /*
-            fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
-                var mainData = JSON.parse(data);
-                console.log(mainData);
-                var commentArray = [];
-                for (var i = 0; i < mainData.length; i++) {
-                    if (mainData[i].email == req.session.viewedEmail) {
-                        for (var j = 0; j < mainData[i].comments.length; j++) {
-                            var commentObject = new Object();
-                            commentObject.from = mainData[i].comments[j].from;
-                            commentObject.content = mainData[i].comments[j].content;
-                            commentObject.rating = mainData[i].comments[j].rating;
-                            //console.log(mainData[i].comments[j].from);
-                            //console.log(mainData[i].comments[j].content);
-                            //console.log(mainData[i].comments[j].rating);
-                            commentArray.push(commentObject);
-                        }
-                        break;
-                    }
-
-                }
-                
-
-            });*/
         }
         else {
-
+            //If they're viewing their own profile, get their comments.
             database.getUserReviews(req.session.email, function(err, result) {
                 if (err) {
                     console.log(err);
@@ -429,31 +387,7 @@ router.get("/getComments",function(req,res){
                     res.send(JSON.stringify(result));
                 }
             });
-
-            /*fs.readFile(__dirname + "/users.json", 'utf8', function (err, data) {
-                var mainData = JSON.parse(data);
-                console.log(mainData);
-                var commentArray = [];
-                for (var i = 0; i < mainData.length; i++) {
-                    if (mainData[i].email == req.session.email) {
-                        for (var j = 0; j < mainData[i].comments.length; j++) {
-                            var commentObject = new Object();
-                            commentObject.from = mainData[i].comments[j].from;
-                            commentObject.content = mainData[i].comments[j].content;
-                            commentObject.rating = mainData[i].comments[j].rating;
-                            //console.log(mainData[i].comments[j].from);
-                            //console.log(mainData[i].comments[j].content);
-                            //console.log(mainData[i].comments[j].rating);
-                            commentArray.push(commentObject);
-                        }
-                        break;
-                    }
-
-                }
-                
-            });*/
         }
-        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
     }
     else{
         //If there isn't a user logged in, redirect to login page
@@ -461,11 +395,12 @@ router.get("/getComments",function(req,res){
     }
 });
 
+//Gets all the followers of the current logged in user.
 router.get("/getFollowing",function(req,res){
     if (req.session && req.session.email && req.session.userid){
+        //If there is a user logged in, then continue.
         //TODO: Get all the followers of the user based on email, doing it instead based on id.
         //TODO: Return as an array of objects (should have data full name and email). Check out users.json for reference.
-
         database.getFollowers(req.session.userid, function(err, result) {
             if (err) {
                 res.send(JSON.stringify({error: "Could not return Followers"}))
@@ -473,30 +408,6 @@ router.get("/getFollowing",function(req,res){
                 res.send(JSON.stringify(result))
             }
         });
-
-        /*
-        fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-            var mainData = JSON.parse(data);
-            console.log(mainData);
-            var followerArray = [];
-            for(var i =0;i < mainData.length; i++){
-                if (mainData[i].email == req.session.email){
-                    for (var j = 0; j < mainData[i].following.length; j++){
-                        var followerObject = new Object();
-                        followerObject.username = mainData[i].following[j].username;
-                        followerObject.email = mainData[i].following[j].email;
-                        //console.log(mainData[i].comments[j].username);
-                        //console.log(mainData[i].comments[j].email);
-                        followerArray.push(followerObject);
-                    }
-                    break;
-                }
-
-            }
-            res.send(JSON.stringify(followerArray));
-        });*/
-
-        //Placeholder right now will be a JSON file with this stuff. You can check it out for an idea of the JSON object to return
     }
     else{
         //If there isn't a user logged in, redirect to login page.
@@ -507,13 +418,11 @@ router.get("/getFollowing",function(req,res){
 router.get('/user/:email', function(req,res){
     //If there does not exist a currently logged in user, redirect to login page. If there's an admin, do the same.
     //TODO: Search the db based on the email. Find that user. Get their name, comments. Return it as an object here. Check out the users.json for reference.
-    req.session.viewedEmail=req.session.viewedEmail;
     if(req.session && req.session.email){
         if (req.session.privilege == "admin"){
             res.redirect("/adminprofile");
         }
         else{
-
             //TODO: GET THE USER FROM THE DB THAT HAS EMAIL req.session.viewedEmail. PUT IT AS AN OBJECT.
             console.log(req.params.email);
             req.session.viewedEmail=req.params.email.toLowerCase();
@@ -533,12 +442,14 @@ router.get('/user/:email', function(req,res){
         }
     }
     else{
+        //If no user logged in go to the login page.
         res.redirect("/userlogin");
         return;
     }
 });
 
 router.post("/submitComment", function(req,res){
+    //Submits a review to that person's profile.
     if (req.session && req.session.email){
 
         var rater = req.session.email;
@@ -558,10 +469,12 @@ router.post("/submitComment", function(req,res){
         res.redirect("/userlogin");
         return;
     }
-})
+});
 
 router.get('/adminlogin', function(req, res){
+    //Gets the login for admins.
     if (req.session && req.session.email){
+        //If they're already logged on, then redirect to their profile
         if(req.session.privilege == "user")
             res.redirect("/userprofile");
         else{
@@ -569,14 +482,17 @@ router.get('/adminlogin', function(req, res){
         }
     }
     else {
+        //Otherwise, render the admin login.
         res.render('../public/adminlogin', {
             errors: ''
         });
     }
 });
 
+//Render the login for users.
 router.get('/userlogin', function(req, res) {
     if (req.session && req.session.email){
+        //If they're already logged on, then redirect to their profile
         if(req.session.privilege == "user")
             res.redirect("/userprofile");
         else{
@@ -590,47 +506,45 @@ router.get('/userlogin', function(req, res) {
     }
 });
 
+//Confirms a signin.
 router.post('/confirmuser',function(req,res){
     //res.writeHead(200, {"Content-Type":"text/plain", "Access-Control-Allow-Origin":"*"});
-    var username;
-    var password;
+    //If there's a google sign in detected, then do the following.
     if (req.body.isGoogleSignIn){
         console.log('--------------------------------------------');
         req.session.email = req.body.email;
         req.session.privilege = "user";
         req.session.name = req.body.name;
+        //Check if the user exists in the system. If it does, then go to their profile. Otherwise, we create a new profile.
         database.checkUser(username, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
+                var user = new Object();
+                user.email = req.body.email.toLowerCase();
+                user.name = req.body.name;
+                user.password = null;
+                user.month = null;
+                user.day = null;
+                user.year = null;
                 // TODO (Fullchee), figure out how google sign in works
                 //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
-            }
+                database.insertUser(user,function(err){
+                    if(err){
+                        console.log("Error inserting in user");
+                    }
+                });
+            }//end of Google sign in.
             res.send("Finished"); //Finished the call.
-            // res.render("userlogin",{
-            //     errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
-            // });
-            // return;
 
         });
-        //
-        // //TODO: as a new one with privilege = user.(since this is verified as a google account).
-        // res.redirect("/userprofile");
         return;
-    }  // end of google signin
+    }
+
+    //Otherwise it's a regular login.
     req.body.user = req.body.user.toLowerCase();
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
-
-
-    //: Return a user based on username(which is email right now). Needs to return an object with email and full name and (maybe) password.
-    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-    //     var object = JSON.parse(data);
-    //     console.log(object);
-    //     for(var i =0;i < data.length; i++){
-    //         if (object[i].email === username && object[i].password === password){
-    //             if (object[i].privilege === "user") {
-    //                 req.session.email = username;
 
     // Step 1: fetch the password from that user in the db
     database.checkUser(username, false, function(err, result) {
@@ -652,8 +566,12 @@ router.post('/confirmuser',function(req,res){
                 }
                 else {
                     // do nothing, admins shouldn't login here
-                    req.session.privilege = 'admin';
-                    res.redirect('/adminprofile');
+                    //If a person tries to login with an admin account in the regular place, render the user login.
+                    //Reset the session since this is an incorrect login.
+                    req.session.reset();
+                    res.render("userlogin",{
+                        errors: "<p class=\"incorrect\">You are an admin. Please use the admin login."
+                    });
                     return;
                 }
             }
@@ -663,45 +581,12 @@ router.post('/confirmuser',function(req,res){
         res.render("userlogin",{
             errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
         });
-        return;
 
     });
-
-
-    // OLD WAY, READ A JSON FILE
-    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-    //     var object = JSON.parse(data);
-    //     console.log(object);
-    //     for(var i =0;i < 3; i++){
-    //         if (object[i].username === username && object[i].password === password){
-    //             if (object[i].privilege === "user") {
-    //                 req.session.username = username;
-    //                 req.session.privilege = "user";
-    //                 delete req.session.password; //deleting password if saved.
-    //                 res.redirect("/userprofile");
-    //                 return;
-    //             }
-    //             else{
-    //                 res.render("userlogin",{
-    //                     errors: "<p class=\"incorrect\">You are an admin. Please use the admin login."
-    //                 });
-    //                 return;
-    //             }
-    //         }
-    //     }
-    //     res.render("userlogin", {
-    //         errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
-    //     });
-    // });
 });
 
 router.post('/confirmadmin',function(req,res){
-    var username = req.sanitize(req.body.user);  // prevent XSS
-    var password = req.sanitize(req.body.password);
-    response = {
-        username:req.body.user,
-        password: req.body.password
-    };
+    //Verifies an admin login.
 
     //TODO: Return a user. Needs to return an object that has attributes email and username and (maybe) password.
     req.body.user = req.body.user.toLowerCase();
@@ -721,13 +606,15 @@ router.post('/confirmadmin',function(req,res){
                 req.session.name = result.name;
                 delete req.session.password; //deleting password if saved
 
-                if (result.isadmin) {  // user
+                if (result.isadmin) {  // admin
                     req.session.privilege = 'admin';
                     res.redirect("/adminprofile");
                     return;
                 }
                 else {
                     // do nothing, users shouldn't login here
+                    //Reset the session since this is an incorrect login.
+                    req.session.reset();
                     res.render("adminlogin",{
                         errors: "<p class=\"incorrect\">You are a user. Please use the user login."
                     });
@@ -742,52 +629,30 @@ router.post('/confirmadmin',function(req,res){
         return;
 
     });
-
-
-
-    // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
-    //     var object = JSON.parse(data);
-    //     console.log(object);
-    //     for(var i =0;i < data.length; i++){
-    //         if (object[i].email === username && object[i].password === password){
-    //             if (object[i].privilege === "admin") {
-    //                 req.session.email = username;
-    //                 req.session.privilege = "admin";
-    //                 delete req.session.password; //deleting password if saved.
-    //                 res.redirect("/adminprofile");
-    //                 return;
-    //             }
-    //             else{
-    //                 res.render("adminlogin",{
-    //                     errors: "<p class=\"incorrect\">You are a user. Please use the user login."
-    //                 });
-    //                 return;
-    //             }
-    //         }
-    //     }
-    //     //looped through everything didn't find matching password/username
-    //     res.render("adminlogin", {
-    //         errors:"<p class = \"incorrect\">Incorrect username/password.</p>"
-    //     });
-    // });
 });
 
+//Gets the current user profile.
 router.get("/userprofile", function(req, res){
     if (req.session && req.session.email) {
         //If we return to the main profile, we delete the session property for viewedEmail.
         if(req.session.viewedEmail){
             delete req.session.viewedEmail;
         }
+        //Render the current user's profile.
         res.render("profile", {
             name: "USER: " + req.session.name
         });
     }
     else{
+        //If there's no one logged in redirect to userlogin.
         res.redirect("/userlogin");
     }
 });
 
+
+//Updates the biography of the current user.
 router.post("/updateBio",function(req,res){
+    //Modify the current user's biography.
     if (req.session && req.session.email){
         var bio = req.body.bio;
         var email = req.session.email;
@@ -798,10 +663,16 @@ router.post("/updateBio",function(req,res){
             }
         });
     }
+    else{
+        //If there's no user logged in redirect to userlogin.
+        res.redirect("/userlogin");
+    }
 });
 
 router.get("/getBio",function(req,res){
+    //Get the current user's biography.
     if (req.session && req.session.email){
+        //If we're viewing someone else's profile, get their biography.
         if (req.session.viewedEmail){     
             database.getBio(req.session.viewedEmail, function(err, result) {
                 if (result){
@@ -815,6 +686,7 @@ router.get("/getBio",function(req,res){
             });
             
         } else {
+            //Otherwise get the current user's profile.
             database.getBio(req.session.email, function(err, result) {
                 if (result){
                     res.send(result[0].bio);
@@ -826,31 +698,15 @@ router.get("/getBio",function(req,res){
                 }
             });
         }
-
-        
     }
-});
-
-router.post('/rateuser', function(req, res) {
-    if (req.session && req.session.email) {
-
-        req.body.rating = req.sanitize(req.body.rating);
-        req.body.content = req.sanitize(req.body.content);
-
-        //TODO: ADD RATING AND THE CONTENT OF THE COMMENT TO THE DATABASE.
-
-
-        //TODO: (GEORGE) ONCE UPDATED, RELOAD THE PAGE.
-        res.redirect("/userprofile");
+    else{
+        //If there's no user logged in redirect to userlogin.
+        res.redirect("/userlogin");
     }
-    else {
-        console.log('User attempted to rate a user without a login');
-    }
-
-    return;
 });
 
 router.post('/addFollower', function(req, res) {
+    //Adds a follower to the database for the current user.
     if (req.session && req.session.email) {
         database.addFollower(req.body.email, req.session.userid, function (err){
             if (err) {
@@ -859,47 +715,40 @@ router.post('/addFollower', function(req, res) {
                 res.end(JSON.stringify({error: "Successfully followed " + req.sanitize(req.body.email)}));
             }
         });
-
+    }
+    else{
+        //If there's no user logged in redirect to userlogin.
+        res.redirect("/userlogin");
     }
 });
 
 router.get("/adminprofile", function(req,res){
+    //Renders the admin profile if ther's a user logged in.
     if (req.session && req.session.email) {
         res.render("adminprofile", {
             name: "ADMIN: " + req.session.name
         });
     }
     else{
+        //Redirect to admin login.
         res.redirect("/adminlogin");
     }
 });
 
 router.get("/logout", function(req,res){
+    //Resets the session and redirects to the main page.
     req.session.reset();
     res.redirect("/");
 });
 
 router.delete("/delete/:email",function(req,res){
-
+    //Makes sure you are an admin when you are trying to split it.
     if (req.session && req.session.email && req.session.privilege=="admin"){
 
-        var emailToDelete = req.url.split('/')[2];
+        var emailToDelete = req.params.email.toLowerCase();
 
         // Delete the user with email req.params.email
         database.deleteUser(emailToDelete);
-
-
-        // --------------- Way that reads JSON        
-        // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data) {
-        //     var object = JSON.parse(data);
-        //     console.log(object);
-        //     var userToDelete = object.find(checkUsername, req.params.email);
-        //     delete object[object.indexOf(userToDelete)];
-
-        //     //res.end(JSON.stringify(object));
-        //     res.end(JSON.stringify(object));
-        //     //res.redirect("localhost:3000/user/listUsers");
-        // });
 
         res.render("adminprofile", {
             name: "ADMIN: " + req.session.email
@@ -913,10 +762,7 @@ router.delete("/delete/:email",function(req,res){
     }
 });
 
-function checkUsername(user){
-    return user.email == this;
-}
-
+//Confirms the signup is proper.
 router.post('/confirmSignup', function (req, res) {
 
     // validation
