@@ -54,7 +54,7 @@ function addUser(email){
 
     $.ajax({
         url:"http://localhost:3000/addFollower/" + leaderEmail + followerEmail,
-        type:"DELETE",
+        type:"POST",
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
         console.log("Status: " + textStatus); 
         console.log("Error: " + errorThrown); 
