@@ -3,38 +3,38 @@
  * Used in /userprofile to load reviews, ...
  */
 $(document).ready(function(){
-    $.ajax({
-        url: "http://localhost:3000/getFollowing",
-        type:"GET",
-        dataType:"json"
-    }).done(function(data) {
-        //Gets all the people that the current person is following.
-        console.log(data);
-        $userlist=$("<ul/>");
-        if(data.length == 0){
-            //If none exist, then place a placeholder.
-            $user=$("<li/>",{
-                text:"You aren't following anyone right now."
-            });
-            $userlist.append($user);
-        }
-        else{
-            //If there are followers, craft a link and place them into the page.
-            for (var i = 0; i < data.length; i++){
-                var user=data[i].username;
-                var email=data[i].email;
-
-                $user=$("<li/>",{
-                    html:"<a href=\"http://localhost:3000/user/"+data[i].email+"\">"+data[i].username+"</a>"
-                });
-                $userlist.append($user);
-            }
-        }
-        //If #following exists, append them. Otherwise, do nothing.
-        if($("#following").length!==0){
-            $("#following").append($userlist);
-        }
-    });
+    // $.ajax({
+    //     url: "http://localhost:3000/getFollowing",
+    //     type:"GET",
+    //     dataType:"json"
+    // }).done(function(data) {
+    //     //Gets all the people that the current person is following.
+    //     console.log(data);
+    //     $userlist=$("<ul/>");
+    //     if(data.length == 0){
+    //         //If none exist, then place a placeholder.
+    //         $user=$("<li/>",{
+    //             text:"You aren't following anyone right now."
+    //         });
+    //         $userlist.append($user);
+    //     }
+    //     else{
+    //         //If there are followers, craft a link and place them into the page.
+    //         for (var i = 0; i < data.length; i++){
+    //             var user=data[i].username;
+    //             var email=data[i].email;
+    //
+    //             $user=$("<li/>",{
+    //                 html:"<a href=\"http://localhost:3000/user/"+data[i].email+"\">"+data[i].username+"</a>"
+    //             });
+    //             $userlist.append($user);
+    //         }
+    //     }
+    //     //If #following exists, append them. Otherwise, do nothing.
+    //     if($("#following").length!==0){
+    //         $("#following").append($userlist);
+    //     }
+    // });
     $.ajax({
         url: "http://localhost:3000/getComments",
         type:"GET",
@@ -77,6 +77,22 @@ $(document).ready(function(){
             averageRating = averageRating/data.length;
             $("#rating").append(" "+averageRating.toFixed(2));
         }
+    });
+
+    $.ajax({
+        url:"http://localhost:3000/getBio",
+        type:"GET",
+        dataType:"text"
+    }).done(function(data){
+        $bio = $("<p/>");
+        if (data.length == 0){
+            //If no bio, put a placeholder
+            $bio.html("<strong>No bio yet...</strong>")
+        }
+        else{
+            $bio.html("<strong>"+ data+"</strong>");
+        }
+        $("#biography").append($bio);
     });
 
 });
