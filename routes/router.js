@@ -490,12 +490,8 @@ router.get('/user/:email', function(req,res){
 
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
-<<<<<<< HEAD
-    if (req.session && req.session.username) {
-=======
-    console.log('asldjflksjdfklsdlfj');
+
     if (req.session && req.session.email) {
->>>>>>> 5a7106d32b1143b8c029f91bc0156bb252eb3062
         var rater = req.session.username; // current user
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
