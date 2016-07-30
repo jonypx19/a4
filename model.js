@@ -383,9 +383,10 @@ Database.prototype.getUserContracts = function(username, callback) {
 }
 
 Database.prototype.getCompletedUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
-		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
-		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
+	this.con.query("SELECT contract.id as id, washerid, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, vehicles.year, owner.name as owner_name, owner.email as owner_email, \
+		washer.name as washer_name, washer.email as washer_email, city, address, postal_code \
+		FROM ((contract JOIN vehicles JOIN users owner ON contract.vehicleid=vehicles.id and owner.id=ownerid) LEFT OUTER JOIN users washer ON washer.id=washerid)\
 		WHERE (ownerid=? or washerid=?) and status='complete'", 
 		[username, username], 
 		function(err, result) {
