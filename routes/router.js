@@ -816,7 +816,7 @@ router.post('/rateuser', function(req, res) {
 
 router.post('/addFollower', function(req, res) {
     if (req.session && req.session.email) {
-        database.insertFollower(req.body, function (err){
+        database.addFollower(req.body, function (err){
             if (err) {
                 res.render('/', {
                     'errors': {
