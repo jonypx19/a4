@@ -72,10 +72,6 @@ router.get('/signup', function(req, res) {
     }
 });
 
-router.get('/about', function(req,res){
-    res.render('aboutus.html');
-});
-
 router.get('/vehicles', function(req, res){
 	res.render('vehicles.html');
 });
@@ -778,6 +774,23 @@ router.post('/rateuser', function(req, res) {
     }
 
     return;
+});
+
+router.post('/addFollower', function(req, res) {
+    if (req.session && req.session.email) {
+        database.insertFollower(req.body, function (err){
+            if (err) {
+                res.render('/', {
+                    'errors': {
+                    'error_email': 'You are already following this user'
+                }
+
+                });
+            }else {
+                res.redirect('/');
+            }
+        });
+    }
 });
 
 router.get("/adminprofile", function(req,res){
