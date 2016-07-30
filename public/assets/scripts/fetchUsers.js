@@ -50,7 +50,7 @@ function addUser(email){
     var leaderEmail = getEmailFromCurrentURL();
 
     $.ajax({
-        url:"http://localhost:3000/addFollower",
+        url:"http://localhost:3000/addFollower/" + leaderEmail,
         type:"POST",
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
         console.log("Status: " + textStatus); 
