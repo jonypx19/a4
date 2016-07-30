@@ -21,19 +21,24 @@ var bcrypt = require('bcryptjs');
 // // create Database connection
 // var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
 
+
+
 // login credentials for Heroku ClearDB
-var con = mysql.createConnection({
+var db_config = {
     host: 'us-cdbr-iron-east-04.cleardb.net',
     user: 'bf7055f108f91a',
     password: '8a5f2a1f',
     database: 'heroku_fb3dc2d4bdd13bf'
-});
+};
+
+var con = mysql.createConnection(db_config);
 var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
-
-
+setInterval(function () {
+    database.checkIn();
+}, 5000);
 
 
 var geocoder = node_geocoder({
