@@ -527,6 +527,22 @@ router.get('/user/:email', function(req,res){
     }
 });
 
+router.post("/submitComment", function(req,res){
+    if (req.session && req.session.email){
+        var rater = req.session.email;
+        var comment = req.body.content;
+        var rating = req.body.rating;
+        var washer = req.body.currentEmail;
+        database.insertReview(washer, rater, comment, rating, function(){
+            res.send("Finished");
+        });
+    }
+    else{
+        res.redirect("/userlogin");
+        return;
+    }
+})
+
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
 
@@ -535,14 +551,12 @@ router.post('/submitComment/:email', function(req,res){
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
         var washer = req.params.email;
-
         //Do the posting here.
         database.insertReview(washer, rater, comment, rating, function(){
             res.redirect('/user/' + washer);
         });
 
     }
-
     // need to login to make a review
     else {
         res.redirect("/userlogin");
