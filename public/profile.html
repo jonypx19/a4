@@ -98,58 +98,54 @@
                 </div>   
             </div>
         </div>
-    <p>
-        Welcome <%- name %>! This is your user profile. See information about yourself.
-    </p>
-    <div>
-        <p id="biography">
-            This is your biography.
+        <p>
+            Welcome <%- name %>! This is your user profile. See information about yourself.
         </p>
-        <form action="/updateBio" method="post">
-            <input type="text" placeholder="Update your biography" name="bio"/>
-            <input type="submit" id="submit" name="submit" value="Update!"/>
-        </form>
-    </div>
-    <div id="following">
-        <button id="followUsers" type="button" onclick="alert(&quot;Go to add users page&quot;);" name="followUsers">Follow Users!</button>
-        <p id="users">
-            These are the people you're following currently.
-        </p>
+        <div>
+            <p id="biography">
+                This is your biography.
+            </p>
+            <form action="/updateBio" method="post">
+                <input type="text" placeholder="Update your biography" name="bio"/>
+                <input type="submit" id="submit" name="submit" value="Update!"/>
+            </form>
+        </div>
+        <div id="following">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#usersModal" name="AddUsers">Follow Users!</button>
+            <p id="users">
+                These are the people you're following currently.
+            </p>
 
-    </div>
+        </div>
 
-    <div id="comments">
-        <p id="rating">
-            This is your average rating:
-        </p>
-        <p id="comment">
-            These are your comments:
-        </p>
-    </div>
+        <div id="comments">
+            <p id="rating">
+                This is your average rating:
+            </p>
+            <p id="comment">
+                These are your comments:
+            </p>
+        </div>
 
-    <!-- rating will be send to server with AJAX-->
+        <!-- rating will be send to server with AJAX-->
 
-    <!-- States:
-    Admin/User looking at own profile: doesn't see this, can't rate yourself
-    Another user: sees this, can only send one rating -->
-    <!--<form action="/rateuser" method="post">-->
-        <!--<fieldset class="rating">-->
-            <!--<legend>Rate this person:</legend>-->
-            <!--<input type="radio" id="star5" name="rating" value="5" ><label for="star5">5 stars</label>-->
-            <!--<input type="radio" id="star4" name="rating" value="4" ><label for="star4">4 stars</label>-->
-            <!--<input type="radio" id="star3" name="rating" value="3" ><label for="star3">3 stars</label>-->
-            <!--<input type="radio" id="star2" name="rating" value="2" ><label for="star2">2 stars</label>-->
-            <!--<input type="radio" id="star1" name="rating" value="1" ><label for="star1">1 star</label>-->
-        <!--</fieldset>-->
+        <!-- States:
+        Admin/User looking at own profile: doesn't see this, can't rate yourself
+        Another user: sees this, can only send one rating -->
+        <!--<form action="/rateuser" method="post">-->
+            <!--<fieldset class="rating">-->
+                <!--<legend>Rate this person:</legend>-->
+                <!--<input type="radio" id="star5" name="rating" value="5" ><label for="star5">5 stars</label>-->
+                <!--<input type="radio" id="star4" name="rating" value="4" ><label for="star4">4 stars</label>-->
+                <!--<input type="radio" id="star3" name="rating" value="3" ><label for="star3">3 stars</label>-->
+                <!--<input type="radio" id="star2" name="rating" value="2" ><label for="star2">2 stars</label>-->
+                <!--<input type="radio" id="star1" name="rating" value="1" ><label for="star1">1 star</label>-->
+            <!--</fieldset>-->
 
-        <!--<input type="submit" name="rate" value="Rate">-->
-    <!--</form>-->
+            <!--<input type="submit" name="rate" value="Rate">-->
+        <!--</form>-->
 
-    <form action="/logout" method="get">
-        <input type="submit" onclick="signOut();" id="logout" name="logout" value="Logout">
-    </form>
-
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
-    
-</body>
+        <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+        
+    </body>
 </html>
