@@ -829,18 +829,19 @@ router.post('/rateuser', function(req, res) {
 
 router.post('/addFollower', function(req, res) {
     if (req.session && req.session.email) {
-        database.addFollower(req.body.email, req.session.email, function (err){
+        database.addFollower(req.body.email, req.session.userid, function (err){
             if (err) {
-                res.render('/', {
-                    'errors': {
+                res.render('profile', {
+                    name: "USER: " + req.session.name,
                     'error_email': 'You are already following this user'
-                }
-
                 });
             }else {
-                res.redirect('/');
+                res.render('profile', {
+                    name: "USER: " + req.session.name
+                });
             }
         });
+
     }
 });
 

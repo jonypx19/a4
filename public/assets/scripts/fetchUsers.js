@@ -47,17 +47,25 @@ function getEmailFromCurrentURL() {
 function addUser(email){
 
     // Step 1: get the email of the person whom we want to follow
-    var leaderEmail = getEmailFromCurrentURL();
+    var leaderEmail = email;
+
+    var input = {
+        email: email
+    };
 
     $.ajax({
-        url:"http://localhost:3000/addFollower/" + leaderEmail,
-        type:"POST",
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        console.log("Status: " + textStatus); 
-        console.log("Error: " + errorThrown); 
-    }    
+        type: "post",
+        url: "/addFollower",
+        "Content-Type": 'application/json',
+        dataType: 'json',
+        data: input,
+        success: function () {
 
-    }).done(function(){
-        getUsers();  
+        },
+
+        done: function(){
+            getUsers();
+        }  
     });
+
 };

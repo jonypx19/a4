@@ -156,26 +156,37 @@ Database.prototype.getFollowers = function(id, callback) {
 };
 
 Database.prototype.addFollower = function(leaderEmail, follower_id, callback) {
-	this.con.query('SELECT id FROM users WHERE email=?', [leaderEmail], function(err, res) {
-
+	var con = this.con;
+	con.query('SELECT id FROM users WHERE email=?', [leaderEmail], function(err, res) {
 		var leader_id = res[0].id;
 
-		this.con.query('INSERT INTO followers (follower_id, followee_id) VALUES (?, ?)',
-			[follower_id, leader_id],
-			function (err, result) {
-				if (err) {
-					console.log('Could not follow user');
+		con.query('SELECT id FROM followers WHERE follower_id=? and followee_id=?', [follower_id, leader_id], function(err, r) {
 
-					console.log('model.js: ' + err.code);
+			if (r.length > 0) {
+				console.log('already a follower');
+				callback(true);
+				return;
+			}
 
-					if (err.code === 'ER_DUP_ENTRY') {
-						callback(err);
+			
+
+			con.query('INSERT INTO followers (follower_id, followee_id) VALUES (?, ?)',
+				[follower_id, leader_id],
+				function (err, result) {
+					if (err) {
+						console.log('Could not follow user');
+
+						console.log('model.js: ' + err.code);
+
+						if (err.code === 'ER_DUP_ENTRY') {
+							callback(err);
+						}
 					}
-				}
-				else {
-					callback(null);
-				}
-			});
+					else {
+						callback(null);
+					}
+				});
+		});
 	});
 };
 
