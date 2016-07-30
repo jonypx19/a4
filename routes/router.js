@@ -513,6 +513,10 @@ router.post('/confirmuser',function(req,res){
                 var user = new Object();
                 user.email = req.body.email.toLowerCase();
                 user.name = req.body.name;
+                user.password = null;
+                user.month = null;
+                user.day = null;
+                user.year = null;
                 // TODO (Fullchee), figure out how google sign in works
                 //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
