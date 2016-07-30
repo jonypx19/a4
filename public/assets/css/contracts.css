@@ -34,9 +34,20 @@ button {
 */
 
 button#search_contracts {
-	display: block;
+	display: inline-block;
 	margin: auto;
 	margin-top: 2rem;
+	margin-left: 5rem;
+	margin-right: 17%;
+	margin-bottom: 2rem;
+}
+
+button#completed {
+	display: inline-block;
+	margin: auto;
+	margin-top: 2rem;
+	margin-right: 5rem;
+	margin-left: 17%;
 	margin-bottom: 2rem;
 }
 
@@ -142,7 +153,21 @@ article.contract > button {
 
 }
 
+.alert_good {
+	background-color: green;
+	color: white;
+}
+
+.alert_bad {
+	background-color: red;
+	color: white;
+}
+
 section#personal_contracts button.cancel {
+	clear: both;
+}
+
+section#personal_contracts button.delete {
 	clear: both;
 }
 
@@ -152,6 +177,10 @@ article.contract button.confirm {
 
 article.contract button.confirm:hover {
 	background-color: green;
+}
+
+article.contract button.delete:hover {
+	background-color: red;
 }
 
 article.contract button.cancel:hover {

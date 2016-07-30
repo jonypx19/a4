@@ -3,10 +3,24 @@ body {
     margin-left: 0;
     padding-top: 6%;
     padding-left: 0;
+    color: #ffffff;
     font-family: 'Rockwell', sans-serif;
+    background: rgba(4, 40, 68, 0.85);
+}
+
+legend {
+    color: #ffffff;
+}
+
+.button {
+    color: #000000;
+}
+
+#aboutBody{
+    color: #000000;
 }
 /* The Modal (background) */
-.modal {
+#myModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -20,8 +34,12 @@ body {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content */
 .modal-content {
+    background: rgba(4, 40, 68, 0.85);
+}
+
+/* Modal Content */
+#aboutModalContent {
     position: relative;
     background-color: #fefefe;
     margin: auto;

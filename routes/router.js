@@ -72,20 +72,29 @@ router.get('/signup', function(req, res) {
     }
 });
 
-router.get('/about', function(req,res){
-    res.render('aboutus.html');
-});
-
 router.get('/vehicles', function(req, res){
-	res.render('vehicles.html');
+    if (req.session.userid) {
+        res.render('vehicles.html');
+    } else {
+        res.redirect('/');
+    }
+	
 });
 
 router.get('/contracts', function(req, res) {
-    res.render('contracts.html');
+    if (req.session.userid) {
+        res.render('contracts.html');
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.get('/contracts/search', function(req, res) {
-    res.render('contract_search.html')
+    if (req.session.userid) {
+        res.render('contract_search.html');
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.post('/search/searchContracts', function(req, res) {
@@ -147,6 +156,18 @@ router.post('/search/takeContract', function(req, res) {
 
 });
 
+router.post('/contracts/deleteContract', function(req, res) {
+    database.deleteContractChat(req.body.id, function(err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            database.deleteContract(req.body.id);
+        }
+    })
+    
+});
+
+
 router.post('/contracts/cancelContract', function(req, res) {
     database.changeContractStatus(req.body.id, 'delete', 'available', function(err) {
         if (err) {
@@ -174,6 +195,11 @@ router.post('/contracts/confirmContract', function(req, res) {
 router.post('/contracts/registerContract', function(req, res, next) {
     var userid=req.session.userid;
 
+    req.body.address = req.sanitize(req.body.address);
+    req.body.city = req.sanitize(req.body.city);
+    req.body.province = req.sanitize(req.body.province);
+    req.body.country = req.sanitize(req.body.country);
+    req.body.postal_code = req.sanitize(req.body.postal_code);
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
 
@@ -259,29 +285,42 @@ router.get('/contracts/listContracts', function(req, res) {
 
 
     database.getUserContracts(userid, function(err, data) {
-        var owner = [];
-        var washer = [];
-
-        console.log(data);
-
-        if (data != null) {
-
-            for (var i=0; i < data.length; i++) {
-
-                if (data[i].ownerid == userid) {
-                    owner.push(data[i]);
-                } else if (data[i].washerid == userid) {
-                    washer.push(data[i]);
-                }
-            }
+        if (err) {
+            console.log(err);
+            return;
         }
 
-        var json = {};
-        json.owner = owner;
-        json.washer = washer;
+        database.getCompletedUserContracts(userid, function(err, comp_data) {
+            var owner = [];
+            var washer = [];
 
-        var result = JSON.stringify(json);
-        res.end(result);
+            if (data != null) {
+
+                for (var i=0; i < data.length; i++) {
+
+                    if (data[i].ownerid == userid) {
+                        owner.push(data[i]);
+                    } else if (data[i].washerid == userid) {
+                        washer.push(data[i]);
+                    }
+                }
+            }
+
+           
+
+            var json = {};
+
+            if (comp_data != null) {
+                json.comp = comp_data;
+            }
+            
+            json.owner = owner;
+            json.washer = washer;
+
+            var result = JSON.stringify(json);
+            res.end(result);
+        });
+        
     });
 });
 
@@ -293,6 +332,13 @@ router.post('/vehicles/registerVehicle', function(req, res) {
             res.end("Error uploading file.");
             return;
         }
+
+        // sanitize input
+
+        req.body.manu = req.sanitize(req.body.manu);
+        req.body.make = req.sanitize(req.body.make);
+        req.body.plate = req.sanitize(req.body.plate);
+        req.body.year = req.sanitize(req.body.year);
 
 
         // inserts form data for vehicle into database
@@ -478,14 +524,16 @@ router.get('/user/:email', function(req,res){
 
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
-    console.log('asldjflksjdfklsdlfj');
+
     if (req.session && req.session.email) {
         var rater = req.session.username; // current user
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
         var washer = req.params.email;
         //Do the posting here.
-        database.insertReview(washer, rater, comment, rating);
+        database.insertReview(washer, rater, comment, rating, function(){
+            res.redirect('/user/' + washer);
+        });
 
     }
     // need to login to make a review
@@ -496,7 +544,6 @@ router.post('/submitComment/:email', function(req,res){
 
     // refresh the page which should now have the new comment
     // go back to that user's profile
-    res.render('/user/' + washer);
 
 });
 
@@ -732,20 +779,30 @@ router.post("/updateBio",function(req,res){
         var bio = req.body.bio;
         var email = req.session.email;
 
-        //TODO: REPLACE THE BIOGRAPHY OF THE USER WITH EMAIL email WITH bio.
+        database.updateBio(bio, email, function(err) {
+            if (err) {
+                console.log("could not update bio")
+            }
+        });
     }
 });
 
 router.get("/getBio",function(req,res){
     if (req.session && req.session.email){
-        if (req.session.viewedEmail){
-            //TODO: PICKUP BIOGRAPHY BASED ON viewedEmail (similar to viewProfile)
-            //TODO: SEND BACK AS TEXT.
-            res.send(req.session.viewedEmail);
+        if (req.session.viewedEmail){     
+            database.getBio(req.session.viewedEmail, function(err, result) {
+                res.send(req.session.viewedEmail);
+                return;
+            });
+            
+        } else {
+            database.getBio(req.session.email, function(err, result) {
+                res.send(req.session.email);
+                return;
+            });
         }
-        //TODO:PICKUP BIOGRAPHY BASED ON req.session.email (similar to profile)
-        //TODO: SEND BACK AS TEXT.
-        res.send(req.session.email);
+
+        
     }
 });
 
@@ -766,6 +823,19 @@ router.post('/rateuser', function(req, res) {
     }
 
     return;
+});
+
+router.post('/addFollower', function(req, res) {
+    if (req.session && req.session.email) {
+        database.addFollower(req.body.email, req.session.userid, function (err){
+            if (err) {
+                res.end(JSON.stringify({error: "You already follow this user"}));
+            }else {
+                res.end(JSON.stringify({error: "Successfully followed " + req.sanitize(req.body.email)}));
+            }
+        });
+
+    }
 });
 
 router.get("/adminprofile", function(req,res){

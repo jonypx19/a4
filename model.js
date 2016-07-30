@@ -67,8 +67,13 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
+
+	if (! user.password) {
+		user.password = null;
+	}
 
 	// id is auto incremented
 	this.con.query('INSERT INTO users (name, email, password, month, day, year) VALUES (?, ?, ?, ?, ?, ?)',
@@ -94,6 +99,7 @@ Database.prototype.deleteUser = function(email) {
 		WHERE email = ?;', [email], 
 		function(err, result) {
 			if (err) {
+				console.log(err);
 				console.log("model.js: Could not deleteUser()");
 			}
 
@@ -112,6 +118,29 @@ Database.prototype.getAllUsers = function(callback) {
 	});
 };
 
+Database.prototype.getBio = function(email, callback) {
+	this.con.query("SELECT bio FROM users WHERE email=?", [email], function(err, result) {
+		if (err) {
+			console.log('could not get bio from db');
+			callback(err, null);
+
+		} else {
+			callback(null, result);
+		}
+	});	
+}
+
+Database.prototype.updateBio = function(bio, email, callback) {
+	this.con.query("UPDATE users SET bio=? WHERE email=?", [bio, email], function(err) {
+		if (err) {
+			console.log("could not update bio in db");
+			callback(err);
+		} else {
+			callback(null);
+		}
+	});
+}
+
 Database.prototype.getFollowers = function(id, callback) {
 	this.con.query("SELECT users.name AS name, users.email AS email \
 		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
@@ -124,6 +153,41 @@ Database.prototype.getFollowers = function(id, callback) {
 				callback(null, result);
 			}
 		});
+};
+
+Database.prototype.addFollower = function(leaderEmail, follower_id, callback) {
+	var con = this.con;
+	con.query('SELECT id FROM users WHERE email=?', [leaderEmail], function(err, res) {
+		var leader_id = res[0].id;
+
+		con.query('SELECT id FROM followers WHERE follower_id=? and followee_id=?', [follower_id, leader_id], function(err, r) {
+
+			if (r.length > 0) {
+				console.log('already a follower');
+				callback(true);
+				return;
+			}
+
+			
+
+			con.query('INSERT INTO followers (follower_id, followee_id) VALUES (?, ?)',
+				[follower_id, leader_id],
+				function (err, result) {
+					if (err) {
+						console.log('Could not follow user');
+
+						console.log('model.js: ' + err.code);
+
+						if (err.code === 'ER_DUP_ENTRY') {
+							callback(err);
+						}
+					}
+					else {
+						callback(null);
+					}
+				});
+		});
+	});
 };
 
 //------------------------ Vehicles Queries
@@ -169,6 +233,14 @@ Database.prototype.deleteContractChat = function(chatid, callback) {
 			}
 		});
 
+}
+
+Database.prototype.deleteContract = function(contractid) {
+	this.con.query("DELETE FROM contract WHERE id=?", [contractid], function(err) {
+		if (err) {
+			console.log("could not delete contract");
+		}
+	});
 }
 
 Database.prototype.changeContractStatus = function(contractid, washer, status, callback) {
@@ -324,9 +396,10 @@ Database.prototype.getUserContracts = function(username, callback) {
 }
 
 Database.prototype.getCompletedUserContracts = function(username, callback) {
-	this.con.query("SELECT contract.id, washerid, chat_id, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
-		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, year \
-		FROM (contract JOIN vehicles ON contract.vehicleid=vehicles.id) \
+	this.con.query("SELECT contract.id as id, washerid, status, vehicleid, ownerid, price, full_vacuuming, floor_mats, vinyl_and_plastic, \
+		centre_console, button_cleaning, hand_wash, clean_tires, hand_wax, image, make, model, license_plate, vehicles.year, owner.name as owner_name, owner.email as owner_email, \
+		washer.name as washer_name, washer.email as washer_email, city, address, postal_code \
+		FROM ((contract JOIN vehicles JOIN users owner ON contract.vehicleid=vehicles.id and owner.id=ownerid) LEFT OUTER JOIN users washer ON washer.id=washerid)\
 		WHERE (ownerid=? or washerid=?) and status='complete'", 
 		[username, username], 
 		function(err, result) {
@@ -356,23 +429,60 @@ Database.prototype.getUserReviews = function(email, callback) {
 
 
 // TODO: SQL syntax error (Fullchee)
-Database.prototype.insertReview = function(washer_email, rater_email, comment, rating) {
-	this.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
-			FROM users rater, users washer, vehicles v, contract c, \
-			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and rater.vehicleid = c.vehicleid and rater.id <> washer.id);\
-			', [rater_email, washer_email],
+Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
+	var self = this;
+
+	// check if there is already a review
+	self.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
+			FROM users rater, users washer, vehicles v, contract c\
+			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and v.id = c.vehicleid and rater.id <> washer.id\
+			LIMIT 1;',
+			[rater_email, washer_email],
 		function (err, result) {
 			if (err) {
-				console.log('Could not insert review');
-				console.log(err);
+				console.log('model.js: Could not insertReview()');
+				res.end();
+				return;
 			}
 
+			console.log('---------insertReview() result------------- ');
 			console.log(result);
 
-		// 	this.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
-		// VALUES (washer_id.id, rater_vehicle.userid, ?, ?)', [comment, rating], function (err, result) {
+			// if there is a review, then update it
+			if (result && result.length > 0) {
+				self.con.query('UPDATE review\
+					SET content = ?, rating = ?\
+					WHERE contractid = ? and subjectid = ? and authorid = ?',
+					[comment, rating, result.contractid, result.washerid, result.raterid], 
+					function(err, result) {
+						// if (err) {
+						// 	console.log('model.js: Could not UPDATE in insertReview()');
+						// 	console.log([err, result]);
+						// 	res.end();
+						// 	return;
+						// }
+						console.log('Updated the comment');
+						res.end();
+						return;
+					});
+			} 
+			else {  // no review => insert it
+				self.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
+					VALUES (?, ?, ?, ?, ?)', [result.washerid, result.raterid, result.contractid, comment, rating], 
+					function (err, result) {
+						
+						// no contract exists => FOREIGN KEYS don't allow insertion
+						// if (err) {
+						// 	console.log('model.js: Could not insert in insertReview()');
+						// 	console.log([err, result]);
+						// 	res.end("You need to have a contract with someone to review them.");
+						// 	return;
+						// }
 
-		// });
+						res.end('Successfuly inserted review');
+						return;
+					});
+			}
 		});
 };
 

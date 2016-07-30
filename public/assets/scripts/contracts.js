@@ -23,6 +23,17 @@ function getContracts() {
 
 				createContractsList(json.washer, 'section#client_contracts', true, true);
 			}
+
+			if (json.comp.length == 0) {
+				$('<h3>', {
+					text: 'No Completed Contracts'
+				}).appendTo('section#complete_contracts');
+				
+			} else {
+
+				createCompleteList(json.comp, 'section#complete_contracts', false);
+
+			}
  
 		}
 	});
@@ -126,6 +137,22 @@ function confirmContract(id) {
 	});
 }
 
+function deleteContract(id) {
+	var input = {
+		id: id,
+	};
+	$.ajax({
+		type: "post",
+		url: "/contracts/deleteContract",
+		"Content-Type": 'application/json',
+		dataType: 'json',
+		data: input,
+		success: function () {
+
+		}
+	});
+}
+
 function cancelContract(id, chatid) {
 	var input = {
 		id: id,
@@ -141,6 +168,143 @@ function cancelContract(id, chatid) {
 
 		}
 	});
+}
+
+// helper function for listing contracts on html page
+function createCompleteList(contracts, section, button) {
+	for (var i = 0; i < contracts.length; i++) {
+
+		var article = $('<article>', {
+			class: 'contract'
+		}).appendTo(section);
+
+		$('<img>', {
+			src: contracts[i].image
+		}).appendTo(article);
+
+		var car = $('<p>', {
+			class: 'car_info'
+		}).appendTo(article);
+
+		$('<span>', {
+			text: 'Price: $' + contracts[i].price + '.00'
+		}).appendTo(car);
+
+		$('<span>', {
+			id: "status",
+			text: 'Status: ' + contracts[i].status
+		}).appendTo(car);
+
+		if (contracts[i].washer_email && contracts[i].washer_name) {
+
+			$('<span>', {
+				text: 'Detailer: ' + contracts[i].washer_name
+			}).appendTo(car);
+
+			$('<span>', {
+				text: 'Detailer email: ' + contracts[i].washer_email
+			}).appendTo(car);
+		}
+
+		if (contracts[i].owner_email && contracts[i].owner_name) {
+
+			$('<span>', {
+				text: 'Owner: ' + contracts[i].owner_name
+			}).appendTo(car);
+
+			$('<span>', {
+				text: 'Owner email: ' + contracts[i].owner_email
+			}).appendTo(car);
+		}
+
+		$('<span>', {
+			text: 'Manufacturer: ' + contracts[i].make
+		}).appendTo(car);
+
+		$('<span>', {
+			text: 'Model: ' + contracts[i].model
+		}).appendTo(car);
+
+		$('<span>', {
+			text: 'Year: ' + contracts[i].year
+		}).appendTo(car);
+
+		$('<span>', {
+			text: 'License Plate #: ' + contracts[i].license_plate
+		}).appendTo(car);
+
+		var detail = $('<div>', {
+			class: 'detail_info'
+		}).appendTo(article);
+
+		$('<h4>', {text: 'Exterior'}).appendTo(detail);
+
+		var list = $('<ul>').appendTo(detail);
+
+		if (contracts[i].hand_wash) {
+			$('<li>', {text: 'Hand Wash'}).appendTo(list);
+		}
+
+		if (contracts[i].clean_tires) {
+			$('<li>', {text: 'Clean Tires'}).appendTo(list);
+		}
+
+		if (contracts[i].hand_wax) {
+			$('<li>', {text: 'Hand Wax'}).appendTo(list);
+		}
+
+		$('<h4>', {text: 'Interior'}).appendTo(detail);
+
+		list = $('<ul>').appendTo(detail);
+
+		if (contracts[i].full_vacuuming) {
+			$('<li>', {text: 'Full Interior Vacuuming'}).appendTo(list);
+		}
+
+		if (contracts[i].floor_mats) {
+			$('<li>', {text: 'Floor Mats'}).appendTo(list);
+		}
+
+		if (contracts[i].centre_console) {
+			$('<li>', {text: 'Centre Console Cleaning'}).appendTo(list);
+		}
+
+		if (contracts[i].button_cleaning) {
+			$('<li>', {text: 'Button Cleaning'}).appendTo(list);
+		}
+
+		if (contracts[i].vinyl_and_plastic) {
+			$('<li>', {text: 'Vinyl and Plastic Restoration'}).appendTo(list);
+		}
+
+		var local = $('<p>', {
+			class: 'car_local'
+		}).appendTo(article);
+
+		$('<span>', {
+			text: 'City: ' + contracts[i].city
+		}).appendTo(local);
+
+		$('<span>', {
+			text: 'Address: ' + contracts[i].address
+		}).appendTo(local);
+
+		$('<span>', {
+			text: 'Postal/Zip Code: ' + contracts[i].postal_code
+		}).appendTo(local);
+
+		article.data('id', contracts[i].id);
+
+		if (button) {
+			$('<button>', {class: "confirm button signup",text:"Confirm Completion"}).appendTo(article);
+		}
+
+		if (contracts[i].status != 'complete') {
+			$('<button>', {class: "cancel button signup", text:"Drop"}).appendTo(article);
+			$('<button>', {class: "delete button signup", text:"Cancel"}).appendTo(article);
+		}
+
+	}
 }
 
 // helper function for listing contracts on html page
@@ -272,17 +436,24 @@ function createContractsList(contracts, section, button, washer) {
 			$('<button>', {class: "confirm button signup",text:"Confirm Completion"}).appendTo(article);
 		}
 
-		$('<button>', {class: "cancel button signup", text:"Cancel"}).appendTo(article);
+		if (washer && contracts[i].status != 'complete') {
+			$('<button>', {class: "cancel button signup", text:"Drop"}).appendTo(article);
+		} else if (!washer && contracts[i].status != 'complete') {
+			$('<button>', {class: "delete button signup", text:"Cancel"}).appendTo(article);
+		}
+
+		
 
 		
 
 		if (contracts[i].status == 'taken') {
 
 			$('<button>', {class: "chat_button button signup", text: "Chat"}).appendTo(article);
+			createChatForm(article, contracts[i]);
 
 		}
 
-		createChatForm(article, contracts[i]);
+		
 
 		
 
@@ -299,11 +470,21 @@ function main() {
 		window.location.href = '/contracts/search';
 	});
 
-	/*cancel button action*/
+	/*Drop button action*/
 
 	$(document).on('click', '.cancel', function() {
 		
 		cancelContract($(this).parent().data('id'), $(this).parent().children(".chat").data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Succefully Dropped a Contract"}).insertAfter($(this).parent());
+		$(this).parent().remove();
+	});
+
+	/*Cancel button action*/
+
+	$(document).on('click', '.delete', function() {
+		
+		deleteContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Canceled a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 
@@ -311,7 +492,17 @@ function main() {
 
 	$(document).on('click', '.confirm', function(e) {
 		confirmContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_good", text:"You Have Succefully Confirmed Completion of a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
+	});
+
+	/*Completed Contracts button*/
+	$(document).on('click', '#completed', function(e) {
+		$('#complete_contracts').toggleClass('hidden');
+		$("html body").animate({
+			scrollTop: $(this).parent().children("#complete_contracts").offset().top - 50
+		}, 1000);
+		
 	});
 
 	/*Chat send button action*/
@@ -321,6 +512,7 @@ function main() {
 		e.preventDefault();
 
 		if ($(this).parent().children(".send").is(":invalid")) {
+			$('span.send_error').remove();
     		$('<span>', {class:"send_error", text: "Message Cannot Be Blank"}).insertAfter($(this).parent().children(".send"));
 		} else {
 		
@@ -352,14 +544,14 @@ function main() {
 				height: "700px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		} else {
 			$(this).parent().css({
 				height: "450px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top -50
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		}
 		
