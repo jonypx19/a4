@@ -67,6 +67,7 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
 
@@ -111,6 +112,29 @@ Database.prototype.getAllUsers = function(callback) {
 		}
 	});
 };
+
+Database.prototype.getBio = function(email, callback) {
+	this.con.query("SELECT bio FROM users WHERE email=?", [email], function(err, result) {
+		if (err) {
+			console.log('could not get bio from db');
+			callback(err, null);
+
+		} else {
+			callback(null, result);
+		}
+	});	
+}
+
+Database.prototype.updateBio = function(bio, email, callback) {
+	this.con.query("UPDATE users SET bio=? WHERE email=?", [bio, email], function(err) {
+		if (err) {
+			console.log("could not update bio in db");
+			callback(err);
+		} else {
+			callback(null);
+		}
+	});
+}
 
 Database.prototype.getFollowers = function(id, callback) {
 	this.con.query("SELECT users.name AS name, users.email AS email \

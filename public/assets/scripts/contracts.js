@@ -321,6 +321,7 @@ function main() {
 		e.preventDefault();
 
 		if ($(this).parent().children(".send").is(":invalid")) {
+			$('span.send_error').remove();
     		$('<span>', {class:"send_error", text: "Message Cannot Be Blank"}).insertAfter($(this).parent().children(".send"));
 		} else {
 		
@@ -352,14 +353,14 @@ function main() {
 				height: "700px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		} else {
 			$(this).parent().css({
 				height: "450px"
 			})
 			$("html body").animate({
-				scrollTop: $(this).parent().children(".chat").offset().top -50
+				scrollTop: $(this).parent().children(".chat").offset().top - 50
 			}, 1000);
 		}
 		
