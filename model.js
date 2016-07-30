@@ -99,6 +99,7 @@ Database.prototype.deleteUser = function(email) {
 		WHERE email = ?;', [email], 
 		function(err, result) {
 			if (err) {
+				console.log(err);
 				console.log("model.js: Could not deleteUser()");
 			}
 

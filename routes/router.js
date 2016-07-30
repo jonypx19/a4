@@ -73,15 +73,28 @@ router.get('/signup', function(req, res) {
 });
 
 router.get('/vehicles', function(req, res){
-	res.render('vehicles.html');
+    if (req.session.userid) {
+        res.render('vehicles.html');
+    } else {
+        res.redirect('/');
+    }
+	
 });
 
 router.get('/contracts', function(req, res) {
-    res.render('contracts.html');
+    if (req.session.userid) {
+        res.render('contracts.html');
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.get('/contracts/search', function(req, res) {
-    res.render('contract_search.html')
+    if (req.session.userid) {
+        res.render('contract_search.html');
+    } else {
+        res.redirect('/');
+    }
 });
 
 router.post('/search/searchContracts', function(req, res) {
