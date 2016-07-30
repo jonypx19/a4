@@ -484,12 +484,10 @@ router.post('/submitComment/:email', function(req,res){
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
         var washer = req.params.email;
-
         //Do the posting here.
         database.insertReview(washer, rater, comment, rating);
 
     }
-
     // need to login to make a review
     else {
         res.redirect("/userlogin");
