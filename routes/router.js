@@ -814,14 +814,26 @@ router.get("/getBio",function(req,res){
     if (req.session && req.session.email){
         if (req.session.viewedEmail){     
             database.getBio(req.session.viewedEmail, function(err, result) {
-                res.send(req.session.viewedEmail);
-                return;
+                if (result){
+                    res.send(result[0].bio);
+                    return;
+                }
+                else{
+                    res.send("No bio yet...");
+                    return;
+                }
             });
             
         } else {
             database.getBio(req.session.email, function(err, result) {
-                res.send(req.session.email);
-                return;
+                if (result){
+                    res.send(result[0].bio);
+                    return;
+                }
+                else{
+                    res.send("No bio yet...");
+                    return;
+                }
             });
         }
 
