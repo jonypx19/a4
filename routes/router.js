@@ -109,11 +109,7 @@ router.get('/user/listUsers',function(req,res){
     //TODO: Return an array of all users that have privilege=users.
     //place everything u need to do in the database callback function
     database.getAllUsers(function(err, result) {
-        // res.writeHead(200, {"Content-Type":"application/json"});
-        
-        // result = JSON.stringify(result);
         res.json(result);
-        // result is an array of json objects
     });
     
     // fs.readFile(__dirname + "/users.json", 'utf8', function(err,data){
@@ -541,27 +537,30 @@ router.post('/confirmuser',function(req,res){
     var username;
     var password;
     if (req.body.isGoogleSignIn){
-        username = req.body.name;
-        req.session.email = username;
+        console.log('--------------------------------------------');
+        req.session.email = req.body.email;
         req.session.privilege = "user";
-        
+        req.session.name = req.body.name;
         database.checkUser(username, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
                 // TODO (Fullchee), figure out how google sign in works
+                //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
             }
-            res.render("userlogin",{
-                errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
-            });
-            return;
+            res.send("Finished"); //Finished the call.
+            // res.render("userlogin",{
+            //     errors: "<p class=\"incorrect\">Incorrect email and/or password</p>"
+            // });
+            // return;
 
         });
-
-        //TODO: as a new one with privilege = user.(since this is verified as a google account).
-        res.redirect("/userprofile");
+        //
+        // //TODO: as a new one with privilege = user.(since this is verified as a google account).
+        // res.redirect("/userprofile");
         return;
     }  // end of google signin
+    req.body.user = req.body.user.toLowerCase();
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
@@ -576,7 +575,7 @@ router.post('/confirmuser',function(req,res){
     //                 req.session.email = username;
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, 0, function(err, result) {
+    database.checkUser(username, false, function(err, result) {
         // result is one object, emails are unique
         if (result) {
 
@@ -585,7 +584,7 @@ router.post('/confirmuser',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
-                req.session.name = result.name
+                req.session.name = result.name;
                 delete req.session.password; //deleting password if saved
 
                 if (! result.isadmin) {  // user
@@ -647,11 +646,12 @@ router.post('/confirmadmin',function(req,res){
     };
 
     //TODO: Return a user. Needs to return an object that has attributes email and username and (maybe) password.
+    req.body.user = req.body.user.toLowerCase();
     var username = req.sanitize(req.body.user);  // prevent XSS
     var password = req.sanitize(req.body.password);
 
     // Step 1: fetch the password from that user in the db
-    database.checkUser(username, 1, function(err, result) {
+    database.checkUser(username, true, function(err, result) {
         // result is one object, emails are unique
         if (result) {
 
@@ -660,7 +660,7 @@ router.post('/confirmadmin',function(req,res){
                 req.session.userid = result.id;
                 req.session.username = username;
                 req.session.email = username;
-                req.session.name = result.name
+                req.session.name = result.name;
                 delete req.session.password; //deleting password if saved
 
                 if (result.isadmin) {  // user
@@ -670,6 +670,9 @@ router.post('/confirmadmin',function(req,res){
                 }
                 else {
                     // do nothing, users shouldn't login here
+                    res.render("adminlogin",{
+                        errors: "<p class=\"incorrect\">You are a user. Please use the user login."
+                    });
                 }
             }
         }
@@ -713,11 +716,12 @@ router.post('/confirmadmin',function(req,res){
 
 router.get("/userprofile", function(req, res){
     if (req.session && req.session.email) {
+        //If we return to the main profile, we delete the session property for viewedEmail.
         if(req.session.viewedEmail){
             delete req.session.viewedEmail;
         }
         res.render("profile", {
-            name: "USER: " + req.session.email
+            name: "USER: " + req.session.name
         });
     }
     else{
@@ -729,8 +733,9 @@ router.post('/rateuser', function(req, res) {
     if (req.session && req.session.username) {
 
         req.body.rating = req.sanitize(req.body.rating);
+        req.body.content = req.sanitize(req.body.content);
 
-        // add the rating to the database
+        //TODO: ADD RATING AND THE CONTENT OF THE COMMENT TO THE DATABASE.
 
 
         
@@ -745,7 +750,7 @@ router.post('/rateuser', function(req, res) {
 router.get("/adminprofile", function(req,res){
     if (req.session && req.session.email) {
         res.render("adminprofile", {
-            name: "ADMIN: " + req.session.email
+            name: "ADMIN: " + req.session.name
         });
     }
     else{
@@ -759,11 +764,13 @@ router.get("/logout", function(req,res){
 });
 
 router.delete("/delete/:email",function(req,res){
+
     if (req.session && req.session.email && req.session.privilege=="admin"){
-        console.log(req.session.email);
+
+        var emailToDelete = req.url.split('/')[2];
 
         // Delete the user with email req.params.email
-        database.deleteUser(req.session.email)
+        database.deleteUser(emailToDelete);
 
 
         // --------------- Way that reads JSON        
@@ -778,7 +785,9 @@ router.delete("/delete/:email",function(req,res){
         //     //res.redirect("localhost:3000/user/listUsers");
         // });
 
-        res.render('/adminprofile');
+        res.render("adminprofile", {
+            name: "ADMIN: " + req.session.email
+        });
 
     }
 
@@ -810,6 +819,7 @@ router.post('/confirmSignup', function (req, res) {
 
     // sanitation
     req.body.name = req.sanitize(req.body.name);
+    req.body.email = req.body.email.toLowerCase();
     req.body.email = req.sanitize(req.body.email);
     req.body.password = req.sanitize(req.body.password);
     req.body.repeat_password = req.sanitize(req.body.repeat_password);
@@ -872,5 +882,6 @@ router.post('/confirmSignup', function (req, res) {
         });
     });
 });
+
 // export the routings, to be used in server.js
 exports.router = router;

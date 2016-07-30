@@ -41,6 +41,7 @@ CREATE TABLE `followers` (
 
 LOCK TABLES `followers` WRITE;
 /*!40000 ALTER TABLE `followers` DISABLE KEYS */;
+INSERT INTO `followers` VALUES (1, 13, 12), (2, 12, 13);
 /*!40000 ALTER TABLE `followers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -113,7 +114,6 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (4,'43.8368386','-79.5143801',14,5,30,1,1,0,0,0,0,0,0,'Canada','48 Greenock Dr','ON','Vaughan','L6A 1P2','taken'),(5,'43.84519969999999','-79.5180752',14,6,75,0,1,1,0,0,1,1,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','taken');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 --
@@ -144,7 +144,8 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1, 12, 1, 2, "GREAT JOB", 4);
+INSERT INTO `review` VALUES (1, 13, 12, 1, "GREAT JOB", 4),
+(2, 12, 13, 2, "Even better job GREAT JOB", 4);
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,11 +158,19 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
   `month` varchar(255) NOT NULL,
+=======
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `password` VARCHAR(255),
+  `isadmin` BOOLEAN NOT NULL DEFAULT FALSE,
+  `month` VARCHAR(255) NOT NULL,
+>>>>>>> be418797564a2ddc8b3d8eb91e2e2b2757bd1a5b
   `day` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `bio` text,
@@ -176,7 +185,14 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi',1,'January',1,2016,''),(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq',1,'January',1,2016,''),(12,'Terry Yan','ty@ty.ty','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi',1,'January',21,1999,''),(13,'Ross Bevacqua','r.bevacqua94@gmail.com','$2a$10$VmiiHb0dluQYcbutufCsMebSLSGFggt9YoxEEDAfiBp./PtuPMw/2',0,'October',13,2004,''),(14,'George','George@gmail.com','$2a$10$5L9ipudplZctCFWWt.xfR.WMWujtwqX48e9IXQzxGb0xWHZ1MW6mu',0,'April',20,1995,'');
+=======
+INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10$FqBcOeM5bSTW4EreRt1oQuyINue/.hU2l4ljHvXGKaZXL1czlbWEi', TRUE ,'January', 1, 2016),
+(11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq', TRUE, 'January',1,2016),
+(12,'Terry Yan','t@t.t','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999),
+(13,'asdfasdf','b@b.b','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999);
+>>>>>>> be418797564a2ddc8b3d8eb91e2e2b2757bd1a5b
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -208,8 +224,8 @@ CREATE TABLE `vehicles` (
 
 LOCK TABLES `vehicles` WRITE;
 /*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
-INSERT INTO `vehicles` VALUES (1,'aaaaaa','N/A',1969,'AAAA 111',1,'images/placeholder_car.jpg'),
-(4,'Nissan','GT-R',2014,'abshabs',11,'/images/bob_porsche-911-2.jpg');
+INSERT INTO `vehicles` VALUES (12,'aaaaaa','N/A',1969,'AAAA 111',12,'images/placeholder_car.jpg'),
+(2,'Nissan','GT-R',2014,'abshabs',13,'/images/bob_porsche-911-2.jpg');
 /*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
