@@ -154,9 +154,9 @@ Database.prototype.getFollowers = function(id, callback) {
 		});
 };
 
-Database.prototype.addFollower = function(callback) {
+Database.prototype.addFollower = function(leaderEmail, followerEmail, callback) {
 
-	this.con.query('INSERT INTO followers (id) VALUES (?)',
+	this.con.query('INSERT INTO followers (id, leaderEmail, followerEmail) VALUES (?)',
 		[user.id],
 		function (err, result) {
 			if (err) {
