@@ -49,12 +49,9 @@ function addUser(email){
     // Step 1: get the email of the person whom we want to follow
     var leaderEmail = getEmailFromCurrentURL();
 
-    // Step 2: get the email of the current user
-    var followerEmail = req.session.email;
-
     $.ajax({
-        url:"http://localhost:3000/addFollower/" + leaderEmail + followerEmail,
-        type:"DELETE",
+        url:"http://localhost:3000/addFollower/" + leaderEmail,
+        type:"POST",
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
         console.log("Status: " + textStatus); 
         console.log("Error: " + errorThrown); 
