@@ -150,6 +150,26 @@ Database.prototype.getFollowers = function(id, callback) {
 		});
 };
 
+Database.prototype.addFollower = function(callback) {
+
+	this.con.query('INSERT INTO followers (id) VALUES (?)',
+		[user.id],
+		function (err, result) {
+			if (err) {
+				console.log('Could not follow user');
+
+				console.log('model.js: ' + err.code);
+
+				if (err.code === 'ER_DUP_ENTRY') {
+					callback(err);
+				}
+			}
+			else {
+				callback(null);
+			}
+		});
+};
+
 //------------------------ Vehicles Queries
 
 Database.prototype.insertVehicle = function(username, vehicle, image_data) {
