@@ -21,10 +21,10 @@ function getUsers(){
             }
         }
         //append each one to a list and append to the main body.
-        $list = $("<ul/>");
+        $list = $("<ul/ class=\"list-group\">");
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
-                html:userArray[i].name + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
+                html:userArray[i].name + "<p> >" + "<button type=\"button\" id=\""+userArray[i].email+"\" onclick='deleteUser(\""+userArray[i].email+"\")'>DELETE USER"
             });
             $list.append($item);
         }

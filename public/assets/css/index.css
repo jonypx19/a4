@@ -18,6 +18,12 @@ body {
 	    margin-bottom: 0px;
 	    position: fixed;
 	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
+	}
 }
 
 @media screen and (min-width: 480px) and (min-height: 320px)
@@ -33,6 +39,12 @@ body {
 
 	.hyperlink {
 	    margin-bottom: 1%;
+	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
 	}
 }
 
@@ -50,6 +62,12 @@ body {
 	.hyperlink {
 	    margin-bottom: 1%;
 	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
+	}
 }
 
 @media screen and (min-width: 500px) and (min-height: 500px)
@@ -65,6 +83,12 @@ body {
 
 	.hyperlink {
 	    margin-bottom: 1%;
+	}
+
+	.button {
+	    padding: 16px 32px;
+	    font-size: 20px;
+	    margin: 4px 2px;
 	}
 }
 
@@ -100,6 +124,7 @@ body {
 	.hyperlink {
 	    margin-bottom: 1%;
 	}
+
 }
 
 @media screen and (min-width: 1024px) and (min-height: 768px)

@@ -3,7 +3,21 @@ body {
     margin-left: 0;
     padding-top: 6%;
     padding-left: 0;
+    color: #ffffff;
     font-family: 'Rockwell', sans-serif;
+    background: rgba(4, 40, 68, 0.85);
+}
+
+legend {
+    color: #ffffff;
+}
+
+.button {
+    color: #000000;
+}
+
+#aboutBody{
+    color: #000000;
 }
 
 /* The Modal (background) */
@@ -19,6 +33,10 @@ body {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background: rgba(4, 40, 68, 0.85);
 }
 
 /* Modal Content */
