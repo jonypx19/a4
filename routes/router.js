@@ -478,7 +478,7 @@ router.get('/user/:email', function(req,res){
 // TODO (Fullchee): 
 router.post('/submitComment/:email', function(req,res){
     console.log('asldjflksjdfklsdlfj');
-    if (req.session && req.session.username) {
+    if (req.session && req.session.email) {
         var rater = req.session.username; // current user
         var comment = req.body.comment;
         var rating = req.body.rating; //The rating given.
@@ -728,8 +728,30 @@ router.get("/userprofile", function(req, res){
     }
 });
 
+router.post("/updateBio",function(req,res){
+    if (req.session && req.session.email){
+        var bio = req.body.bio;
+        var email = req.session.email;
+
+        //TODO: REPLACE THE BIOGRAPHY OF THE USER WITH EMAIL email WITH bio.
+    }
+});
+
+router.get("/getBio",function(req,res){
+    if (req.session && req.session.email){
+        if (req.session.viewedEmail){
+            //TODO: PICKUP BIOGRAPHY BASED ON viewedEmail (similar to viewProfile)
+            //TODO: SEND BACK AS TEXT.
+            res.send(req.session.viewedEmail);
+        }
+        //TODO:PICKUP BIOGRAPHY BASED ON req.session.email (similar to profile)
+        //TODO: SEND BACK AS TEXT.
+        res.send(req.session.email);
+    }
+});
+
 router.post('/rateuser', function(req, res) {
-    if (req.session && req.session.username) {
+    if (req.session && req.session.email) {
 
         req.body.rating = req.sanitize(req.body.rating);
         req.body.content = req.sanitize(req.body.content);
@@ -737,7 +759,8 @@ router.post('/rateuser', function(req, res) {
         //TODO: ADD RATING AND THE CONTENT OF THE COMMENT TO THE DATABASE.
 
 
-        
+        //TODO: (GEORGE) ONCE UPDATED, RELOAD THE PAGE.
+        res.redirect("/userprofile");
     }
     else {
         console.log('User attempted to rate a user without a login');
@@ -880,6 +903,10 @@ router.post('/confirmSignup', function (req, res) {
             
         });
     });
+});
+
+router.get("/admin", function(req,res){
+    res.redirect("/adminlogin");
 });
 
 // export the routings, to be used in server.js
