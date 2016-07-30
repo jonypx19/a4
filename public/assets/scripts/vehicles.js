@@ -37,7 +37,7 @@ function getVehicles() {
 					text: user_cars[i].license_plate
 				}).appendTo(car_article);
 
-				var button = $('<button>', {class: 'button signup', text: 'Create Contract'}).appendTo(car_article);
+				var button = $('<button>', {class: 'button signup create', text: 'Create Contract'}).appendTo(car_article);
 
 				button.data('selected_car', user_cars[i]);
 
@@ -70,14 +70,17 @@ function createContractForm(car_values) {
 
 	var selected_info = $('<div>', {id: 'car_select'}).insertAfter('section#contract_form article h2.selected');
 
-	console.log(car_values);
-
 	var contract_article = $('section#contract_form article');
 
 	
 
 
 	contract_article.data('contract_car', car_values);
+
+	$('<img>', {
+		class: 'vehicle_info',
+		src: car_values.image
+	}).appendTo(selected_info);
 
 	$('<span>', {
 		class: 'contract_info',
@@ -98,6 +101,8 @@ function createContractForm(car_values) {
 		class: 'contract_info',
 		text: car_values.license_plate
 	}).appendTo(selected_info);
+
+	
 
 }
 
@@ -185,6 +190,10 @@ function main() {
 		$('span#total').text('$' + total + '.00');
 		$('input#price').val(total);
 
+	});
+
+	$(document).on('click', '.create', function() {
+		$('section#contract_form article').removeClass('hidden');
 	});
 
 }

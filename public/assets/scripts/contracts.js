@@ -126,6 +126,22 @@ function confirmContract(id) {
 	});
 }
 
+function deleteContract(id) {
+	var input = {
+		id: id,
+	};
+	$.ajax({
+		type: "post",
+		url: "/contracts/deleteContract",
+		"Content-Type": 'application/json',
+		dataType: 'json',
+		data: input,
+		success: function () {
+
+		}
+	});
+}
+
 function cancelContract(id, chatid) {
 	var input = {
 		id: id,
@@ -272,7 +288,13 @@ function createContractsList(contracts, section, button, washer) {
 			$('<button>', {class: "confirm button signup",text:"Confirm Completion"}).appendTo(article);
 		}
 
-		$('<button>', {class: "cancel button signup", text:"Cancel"}).appendTo(article);
+		if (washer) {
+			$('<button>', {class: "cancel button signup", text:"Drop"}).appendTo(article);
+		} else {
+			$('<button>', {class: "delete button signup", text:"Cancel"}).appendTo(article);
+		}
+
+		
 
 		
 
@@ -299,11 +321,21 @@ function main() {
 		window.location.href = '/contracts/search';
 	});
 
-	/*cancel button action*/
+	/*Drop button action*/
 
 	$(document).on('click', '.cancel', function() {
 		
 		cancelContract($(this).parent().data('id'), $(this).parent().children(".chat").data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Succefully Dropped a Contract"}).insertAfter($(this).parent());
+		$(this).parent().remove();
+	});
+
+	/*Cancel button action*/
+
+	$(document).on('click', '.delete', function() {
+		
+		deleteContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_bad", text:"You Have Canceled a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 
@@ -311,6 +343,7 @@ function main() {
 
 	$(document).on('click', '.confirm', function(e) {
 		confirmContract($(this).parent().data('id'));
+		$('<h3>', {class:"alert_good", text:"You Have Succefully Confirmed Completion of a Contract"}).insertAfter($(this).parent());
 		$(this).parent().remove();
 	});
 
