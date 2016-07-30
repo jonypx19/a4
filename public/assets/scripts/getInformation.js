@@ -3,38 +3,38 @@
  * Used in /userprofile to load reviews, ...
  */
 $(document).ready(function(){
-    // $.ajax({
-    //     url: "http://localhost:3000/getFollowing",
-    //     type:"GET",
-    //     dataType:"json"
-    // }).done(function(data) {
-    //     //Gets all the people that the current person is following.
-    //     console.log(data);
-    //     $userlist=$("<ul/>");
-    //     if(data.length == 0){
-    //         //If none exist, then place a placeholder.
-    //         $user=$("<li/>",{
-    //             text:"You aren't following anyone right now."
-    //         });
-    //         $userlist.append($user);
-    //     }
-    //     else{
-    //         //If there are followers, craft a link and place them into the page.
-    //         for (var i = 0; i < data.length; i++){
-    //             var user=data[i].username;
-    //             var email=data[i].email;
-    //
-    //             $user=$("<li/>",{
-    //                 html:"<a href=\"http://localhost:3000/user/"+data[i].email+"\">"+data[i].username+"</a>"
-    //             });
-    //             $userlist.append($user);
-    //         }
-    //     }
-    //     //If #following exists, append them. Otherwise, do nothing.
-    //     if($("#following").length!==0){
-    //         $("#following").append($userlist);
-    //     }
-    // });
+    $.ajax({
+        url: "http://localhost:3000/getFollowing",
+        type:"GET",
+        dataType:"json"
+    }).done(function(data) {
+        //Gets all the people that the current person is following.
+        console.log(data);
+        $userlist=$("<ul/>");
+        if(data.length == 0){
+            //If none exist, then place a placeholder.
+            $user=$("<li/>",{
+                text:"You aren't following anyone right now."
+            });
+            $userlist.append($user);
+        }
+        else{
+            //If there are followers, craft a link and place them into the page.
+            for (var i = 0; i < data.length; i++){
+                var user=data[i].username;
+                var email=data[i].email;
+
+                $user=$("<li/>",{
+                    html:"<a href=\"http://localhost:3000/user/"+data[i].email+"\">"+data[i].username+"</a>"
+                });
+                $userlist.append($user);
+            }
+        }
+        //If #following exists, append them. Otherwise, do nothing.
+        if($("#following").length!==0){
+            $("#following").append($userlist);
+        }
+    });
     $.ajax({
         url: "http://localhost:3000/getComments",
         type:"GET",
@@ -49,14 +49,14 @@ $(document).ready(function(){
             averageRating = 0;
             $bullet=$("<li/>");
             $comment=$("<p/>",{
-                html:"You have no comments right now."
+                html:"No comments right now."
             });
             $bullet.append($comment);
             $comments.append($bullet);
             $("#comments").append($comments);
 
             //If no ratings
-            $("#rating").text("You don't have any ratings right now");
+            $("#rating").text("No ratings right now");
         }
         else{
             //If there exists, then show them as a list.
