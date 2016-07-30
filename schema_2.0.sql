@@ -167,7 +167,7 @@ CREATE TABLE `users` (
   `year` int(11) NOT NULL,
   `bio` text DEFAULT "",
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -181,7 +181,7 @@ INSERT INTO `users` VALUES (1,'Fullchee, George, Jonathan, Ross','z@z.z','$2a$10
 (11,'Mysterion','whois@myserion.com','$2a$10$kA6DAeHoxNYMyYR5Svs3Ae8RPyKmBzbiEC8J0zGrfbB9qGb9lYOHq', TRUE, 'January',1,2016, ""),
 (12,'Terry Yan','t@t.t','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999, ""),
 (13,'asdfasdf','b@b.b','$2a$10$Lp6Sjp.GUtG3wFvFDQooVegzcHDb4zMA4a1i7NCvbqGm7c2QfU77O', FALSE, 'January',21,1999, ""),
-(14,'Ross Bevacqua','r.bevacqua94@gmail.com','$2a$10$VmiiHb0dluQYcbutufCsMebSLSGFggt9YoxEEDAfiBp./PtuPMw/2',0,'October',13,2004,''),
+(10,'Ross Bevacqua','r.bevacqua94@gmail.com','$2a$10$VmiiHb0dluQYcbutufCsMebSLSGFggt9YoxEEDAfiBp./PtuPMw/2',0,'October',13,2004,''),
 (14,'George','George@gmail.com','$2a$10$5L9ipudplZctCFWWt.xfR.WMWujtwqX48e9IXQzxGb0xWHZ1MW6mu',0,'April',20,1995,'');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
