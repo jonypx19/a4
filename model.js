@@ -142,8 +142,8 @@ Database.prototype.updateBio = function(bio, email, callback) {
 }
 
 Database.prototype.getFollowers = function(id, callback) {
-	this.con.query("SELECT users.name AS name, users.email AS email \
-		FROM (users JOIN followers ON users.id=followers.follower_id) WHERE followers.followee_id=?", 
+	this.con.query("SELECT users.name AS username, users.email AS email \
+		FROM (users JOIN followers ON users.id=followers.followee_id) WHERE followers.follower_id=?", 
 		[id],
 		function (err, result) {
 			if (err) {
