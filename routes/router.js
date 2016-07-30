@@ -533,7 +533,7 @@ router.post("/submitComment", function(req,res){
         var comment = req.body.content;
         var rating = req.body.rating;
         var washer = req.body.currentEmail;
-        database.insertReview(washer, rater, comment, rating, function(){
+        database.postReview(washer, rater, comment, rating, function(){
             res.send("Finished");
         });
     }
