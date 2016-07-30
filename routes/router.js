@@ -10,25 +10,25 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 var bcrypt = require('bcryptjs');
 
-// set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
-});
-
-// create Database connection
-var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-
-// login credentials for Heroku ClearDB
+// // set connection to mysql database
 // var con = mysql.createConnection({
-//     host: 'us-cdbr-iron-east-04.cleardb.net',
-//     user: 'bf7055f108f91a',
-//     password: '8a5f2a1f',
-//     database: 'heroku_fb3dc2d4bdd13bf'
+//     host: 'localhost',
+//     user: 'Ross',
+//     password: 'Detail&Wash',
+//     database: 'Detail_Wash'
 // });
-// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+
+// // create Database connection
+// var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+
+login credentials for Heroku ClearDB
+var con = mysql.createConnection({
+    host: 'us-cdbr-iron-east-04.cleardb.net',
+    user: 'bf7055f108f91a',
+    password: '8a5f2a1f',
+    database: 'heroku_fb3dc2d4bdd13bf'
+});
+var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
