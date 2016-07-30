@@ -11,41 +11,31 @@ $(document).ready(function(){
 		console.log(currentEmail);
 		console.log(selectedValue);
 		console.log(text);
+		if (selectedValue != undefined && text != ""){
+			var send = new Object();
+			send.currentEmail = currentEmail;
+			send.rating = selectedValue;
+			send.content = text;
 
-		var send = {
-			currentEmail: currentEmail,
-			rating: selectedValue,
-			content: text
-		};
+			var sendData= JSON.stringify(send);
 
-		$.ajax({
-			url:'/submitComment',
-			type:"POST",
-			"Content-Type": "application/json",
-			dataType:"text",
-			data:send
+			$.ajax({
+				url:'http://localhost:3000/submitComment',
+				type:"POST",
+				contentType: "application/json",
+				dataType:"text",
+				data:sendData
+			}).done(function(data){
+				alert(data);
+				location.replace("http://localhost:3000/user/" + currentEmail);
+			});
+		}
+		else{
+			alert("Please have both a rating and a comment before you can submit your review");
+		}
 
 
-		}).done(function(data){
-			location.replace("http://localhost:3000/user/" + currentEmail);
-		});
 
-		// $.ajax({
-		// 	url: '/rateuser',
-		// 	type: 'post',
-		// 	data: {
-		// 		// rater determined in router.js as req.session.user
-		// 		rating: this.value,
-		// 		ratee: getUser(window.location.href)
-		// 	},
-		// 	success: function ( data ) {
-		// 		alert('Thank you for rating!');
-		// 	},
-		//
-		// 	fail: function (xhr, status, errorThrown) {
-		// 		alert('Error thrown');
-		// 	}
-		// });
 
 	});
 });
