@@ -26,6 +26,7 @@ function getUsers(){
         for (var i = 0; i < userArray.length; i++){
             $item = $("<li/>",{
                 html:userArray[i].name + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='addUser(\""+userArray[i].email+"\")'>Follow User"
+                                    + "<button class=\"button\" type=\"button\" id=\""+userArray[i].email+"\" onclick='viewProfile(\""+userArray[i].email+"\")'>View Profile"
             });
             $list.append($item);
         }
@@ -71,4 +72,9 @@ function addUser(email){
     });
 
 };
+
+function viewProfile(email) {
+  var win = window.open("http://localhost:3000/user/" + email, '_blank');
+  win.focus();
+}
 
