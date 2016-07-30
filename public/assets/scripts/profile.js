@@ -12,17 +12,18 @@ $(document).ready(function(){
 		console.log(selectedValue);
 		console.log(text);
 
-		var send = new Object();
-		send.currentEmail = currentEmail;
-		send.rating = selectedValue;
-		send.content = text;
+		var send = {
+			currentEmail: currentEmail,
+			rating: selectedValue,
+			content: text
+		};
 
 		$.ajax({
-			url:'http://localhost:3000/submitComment',
+			url:'/submitComment',
 			type:"POST",
-			contentType: "application/json",
+			"Content-Type": "application/json",
 			dataType:"text",
-			data:send,
+			data:send
 
 
 		}).done(function(data){
