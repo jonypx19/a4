@@ -41,7 +41,7 @@ CREATE TABLE `followers` (
 
 LOCK TABLES `followers` WRITE;
 /*!40000 ALTER TABLE `followers` DISABLE KEYS */;
-INSERT INTO `followers` VALUES (1, 13, 12), (1, 12, 13);
+INSERT INTO `followers` VALUES (1, 13, 12), (2, 12, 13);
 /*!40000 ALTER TABLE `followers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -116,7 +116,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (1,'43.84519969999999','-79.5180752',13,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',0);
+INSERT INTO `contract` VALUES (1,'43.84519969999999','-79.5180752',13,1,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',1), (2,'43.84519969999999','-79.5180752',12,2,30,1,1,0,0,0,0,0,0,'Canada','400 Greenock Dr','ON','Vaughan','L6A 1P2','available',2);
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,7 +148,8 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (1, 12, 1, 2, "GREAT JOB", 4);
+INSERT INTO `review` VALUES (1, 13, 12, 1, "GREAT JOB", 4),
+(2, 12, 13, 2, "Even better job GREAT JOB", 4);
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
