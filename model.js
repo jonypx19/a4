@@ -67,6 +67,7 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
 

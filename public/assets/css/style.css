@@ -221,3 +221,7 @@ p.incorrect{
 }
 
 .modal-body {padding: 2px 16px;}
+
+nav img {
+    float: left;
+}
