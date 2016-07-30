@@ -71,6 +71,16 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 	// 	});
 };
 
+Database.prototype.checkUser_2 = function(email, callback) {
+	this.con.query("SELECT name, email FROM users WHERE email=? LIMIT 1", [email], function(err, result) {
+		if (err) {
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
+}
+
 
 // used after a user signs up
 Database.prototype.insertUser = function(user, callback) {
@@ -470,62 +480,5 @@ Database.prototype.postReview = function(washer_email, rater_email, content, rat
 		});
 	
 }
-
-Database.prototype.insertReview = function(washer_email, rater_email, comment, rating, callback) {
-	var self = this;
-
-	// check if there is already a review
-	self.con.query('SELECT c.id as contractid, washer.id as washerid, rater.id as raterid\
-			FROM users rater, users washer, vehicles v, contract c\
-			WHERE ? = rater.email and v.ownerid = rater.id and ? = washer.email and c.washerid = washer.id and v.id = c.vehicleid and rater.id <> washer.id\
-			LIMIT 1;',
-			[rater_email, washer_email],
-		function (err, result) {
-			if (err) {
-				console.log('model.js: Could not insertReview()');
-				res.end();
-				return;
-			}
-
-			console.log('---------insertReview() result------------- ');
-			console.log(result);
-
-			// if there is a review, then update it
-			if (result && result.length > 0) {
-				self.con.query('UPDATE review\
-					SET content = ?, rating = ?\
-					WHERE contractid = ? and subjectid = ? and authorid = ?',
-					[comment, rating, result.contractid, result.washerid, result.raterid], 
-					function(err, result) {
-						// if (err) {
-						// 	console.log('model.js: Could not UPDATE in insertReview()');
-						// 	console.log([err, result]);
-						// 	res.end();
-						// 	return;
-						// }
-						console.log('Updated the comment');
-						res.end();
-						return;
-					});
-			} 
-			else {  // no review => insert it
-				self.con.query('INSERT INTO review (subjectid, authorid, contractid, content, rating) \
-					VALUES (?, ?, ?, ?, ?)', [result.washerid, result.raterid, result.contractid, comment, rating], 
-					function (err, result) {
-						
-						// no contract exists => FOREIGN KEYS don't allow insertion
-						// if (err) {
-						// 	console.log('model.js: Could not insert in insertReview()');
-						// 	console.log([err, result]);
-						// 	res.end("You need to have a contract with someone to review them.");
-						// 	return;
-						// }
-
-						res.end('Successfuly inserted review');
-						return;
-					});
-			}
-		});
-};
 
 exports.Database = Database;
