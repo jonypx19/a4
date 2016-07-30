@@ -1,7 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `Detail_Wash` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `Detail_Wash`;
+-- CREATE DATABASE  IF NOT EXISTS `Detail_Wash` 
+-- USE `Detail_Wash`;
 
--- USE `heroku_fb3dc2d4bdd13bf`;
+CREATE DATABASE IF NOT EXISTS `heroku_fb3dc2d4bdd13bf` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `heroku_fb3dc2d4bdd13bf`;
 
 -- MySQL dump 10.13  Distrib 5.5.49, for debian-linux-gnu (x86_64)
 --
