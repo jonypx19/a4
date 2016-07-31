@@ -44,22 +44,18 @@
 		<div class="wrapper">
 		<form action="/confirmSignup" class="login" method="post">
 			<h2 class="title">Sign up</h2>
-			<label for="name">Name</label>
-			<input type="text" id="name" name="name" autofocus="" required="required">
+			<input type="text" id="name" name="name" autofocus="" placeholder="Name" required="required">
 		
-			<label for="email">Email</label>
-			<input type="text" id="email" name="email" required="required" pattern=".+@.+\..+">
+			<input type="text" id="email" name="email" required="required" placeholder="Email" pattern=".+@.+\..+">
 			<span class="error"><%= errors.error_email %></span>
 
-			<label for="password">Password (at least 6 characters)</label>
-			<input id="password" name="password" type="password" required="required" pattern=".{6,}">
+			<input id="password" name="password" type="password" required="required" placeholder="Password (at least 6 characters)" pattern=".{6,}">
 
-			<label for="repeat_password">Repeat Password</label>
-			<input id="repeat_password" name="repeat_password" type="password" required="required">
+			<input id="repeat_password" name="repeat_password" type="password" placeholder="Confirm Password" required="required">
 
 			<!-- birthday for later authentication -->
-			<div id="birthday">
-				<label for="birthday">Birthday:</label>
+			<div id="birthdate">
+				<label for="birthday">Birthdate:</label>
 				<select name="month" id="month" required="required">
 					<option value="January">January</option>
 					<option value="February">February</option>

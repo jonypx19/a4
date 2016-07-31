@@ -171,3 +171,7 @@ form {
 .rating > label:hover ~ input:checked ~ label {
     color: #ea0;
 }
+
+.nav-bar_header img {
+    float: left;
+}
