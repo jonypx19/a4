@@ -179,3 +179,7 @@ form {
 .nav-bar_header img {
     float: left;
 }
+
+#submit {
+    margin-top: 3%;
+}
