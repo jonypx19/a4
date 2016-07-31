@@ -463,7 +463,7 @@ router.post("/submitComment", function(req,res){
                 console.log(err);
             }
             
-            //res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
+            res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
         });
     }
     else{
