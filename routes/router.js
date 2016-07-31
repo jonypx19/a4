@@ -522,10 +522,10 @@ router.post('/confirmuser',function(req,res){
                 var user = new Object();
                 user.email = req.body.email.toLowerCase();
                 user.name = req.body.name;
-                user.password = null;
-                user.month = null;
-                user.day = null;
-                user.year = null;
+                user.password = "89489487132r31df4a48ref6s5dsa23cxz321a8gqhgghjukui846";
+                user.month = "8";
+                user.day = "1";
+                user.year = "2016";
                 // TODO (Fullchee), figure out how google sign in works
                 //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
@@ -546,6 +546,10 @@ router.post('/confirmuser',function(req,res){
                     });
                 });
             }//end of Google sign in.
+            else{
+                //User does exist, send it a finished signal.
+                res.send("Finished");
+            }
         });
         return;
     }
