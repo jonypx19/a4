@@ -40,40 +40,44 @@
             </div>
         </div>
     </nav>
-    <section>
+    <section id="profileName">
         <h2><%-name%>'s Profile!</h2>
     </section>
-    <div>
+    <div class="well">
+        <legend>Biography:</legend>
         <p id="biography">
-            This is their biography:
 
         </p>
     </div>
 
 
-    <div id="comments">
+    <div class ="well" id="comments">
+        <legend>Rating:</legend>
         <p id="rating">
-            This is their average rating:
+            Average rating:
         </p>
+        <legend>Comments:</legend>
         <p id="comment">
-            These are their comments:
+
         </p>
     </div>
     <!-- States:
     Admin/User looking at own profile: doesn't see this, can't rate yourself
     Another user: sees this, can only submit a rating and a comment -->
     <!--<form action="/submitComment/<%-name-%>" method="post">-->
-    <form action="/submitComment" id="form" method="post">
+    <div class="well">
+        <legend>Review this person:</legend>
+        <form action="/submitComment" id="form" method="post">
         <fieldset class="rating">
-            <legend>Review this person:</legend>
             <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 stars</label>
             <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 stars</label>
             <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 stars</label>
             <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 stars</label>
             <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 star</label>
         </fieldset>
-        <textarea name="comments" placeholder="Write your reviews here." id="commentText"></textarea>
+        <input name="comments" type="text" id="commentText" class="form-control" id="review" placeholder="Write your comment here">
         <input type="button" id="submit" value="Review"/>
     </form>
+    </div>
 </body>
 </html>
