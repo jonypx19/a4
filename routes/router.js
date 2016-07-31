@@ -10,8 +10,8 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 var bcrypt = require('bcryptjs');
 
-/*
-// // set connection to mysql database
+
+// set connection to mysql database
 var con = mysql.createConnection({
     host: 'localhost',
     user: 'Ross',
@@ -21,19 +21,19 @@ var con = mysql.createConnection({
 
  // create Database connection
  var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-*/
+
 
 
 // login credentials for Heroku ClearDB
-var db_config = {
-    host: 'us-cdbr-iron-east-04.cleardb.net',
-    user: 'bf7055f108f91a',
-    password: '8a5f2a1f',
-    database: 'heroku_fb3dc2d4bdd13bf'
-};
-
-var con = mysql.createConnection(db_config);
-var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
+// var db_config = {
+//     host: 'us-cdbr-iron-east-04.cleardb.net',
+//     user: 'bf7055f108f91a',
+//     password: '8a5f2a1f',
+//     database: 'heroku_fb3dc2d4bdd13bf'
+// };
+//
+// var con = mysql.createConnection(db_config);
+// var database = new model.Database('us-cdbr-iron-east-04.cleardb.net', 'bf7055f108f91a', '8a5f2a1f', 'heroku_fb3dc2d4bdd13bf');
 
 database.connect();
 
@@ -533,11 +533,13 @@ router.post('/confirmuser',function(req,res){
                     if(err){
                         console.log("Error inserting in user");
                     }
+                    console.log("Successful insertion");
                     database.checkUser(req.body.email, 0, function(err, result) {
                         if (err){
                             console.log("Error querying for inserted user after insertion");
                         }
                         if (result){
+                            console.log("Succesful query");
                             req.session.userid = result.id;
                             res.send("Finished"); //Finished the call.
                         }
