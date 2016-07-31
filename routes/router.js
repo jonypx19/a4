@@ -548,7 +548,16 @@ router.post('/confirmuser',function(req,res){
             }//end of Google sign in.
             else{
                 //User does exist, send it a finished signal.
-                res.send("Finished");
+                database.checkUser(req.body.email, 0, function(err, result) {
+                    if (err){
+                        console.log("Error querying for inserted user after insertion");
+                    }
+                    if (result){
+                        console.log("Succesful query");
+                        req.session.userid = result.id;
+                        res.send("Finished"); //Finished the call.
+                    }
+                });
             }
         });
         return;

@@ -53,22 +53,6 @@ Database.prototype.checkUser = function(email, isadmin, callback) {
 				callback(err, null);  // at most 1 result, email is unique
 			}
 		});
-
-	// OLD VERSION had a second parameter called password
-	// this.con.query("SELECT id FROM users WHERE email=? and password=?",
-	// 	[email, password],
-	// 	function (err, result) {
-	// 		if (err) {
-	// 			console.log(err);
-	// 			callback(err, null, null);
-	// 		} 
-
-	// 		if (result.length == 1) {
-	// 			callback(null, true, result[0].id);
-	// 		} else {
-	// 			callback(null, false, null);
-	// 		}
-	// 	});
 };
 
 Database.prototype.checkUser_2 = function(email, callback) {
