@@ -155,13 +155,13 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT "",
   `email` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `isadmin` tinyint(1) NOT NULL DEFAULT '0',
-  `month` varchar(255) NOT NULL,
-  `day` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
+  `month` varchar(255),
+  `day` int(11),
+  `year` int(11),
   `bio` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
