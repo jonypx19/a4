@@ -660,7 +660,11 @@ router.post("/updateBio",function(req,res){
         database.updateBio(bio, email, function(err) {
             if (err) {
                 console.log("could not update bio")
+                return;
             }
+
+            res.redirect("/userlogin");
+            return;
         });
     }
     else{
