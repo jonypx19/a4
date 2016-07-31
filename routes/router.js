@@ -10,18 +10,18 @@ var node_geocoder = require('node-geocoder');
 var signupValidation = require('../helper/signupValidation.js');
 var bcrypt = require('bcryptjs');
 
-/*
-// // set connection to mysql database
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'Ross',
-    password: 'Detail&Wash',
-    database: 'Detail_Wash'
- });
 
- // create Database connection
- var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
-*/
+// // set connection to mysql database
+// var con = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'Ross',
+//     password: 'Detail&Wash',
+//     database: 'Detail_Wash'
+//  });
+//
+//  // create Database connection
+//  var database = new model.Database('localhost', 'root', '', 'Detail_Wash');
+
 
 
 // login credentials for Heroku ClearDB
@@ -434,7 +434,7 @@ router.get('/user/:email', function(req,res){
                 }
 
                 res.render("viewprofile", {
-                    name:req.session.viewedEmail
+                    name:result[0].name
                 });
                 return;
             });
@@ -516,16 +516,16 @@ router.post('/confirmuser',function(req,res){
         req.session.privilege = "user";
         req.session.name = req.body.name;
         //Check if the user exists in the system. If it does, then go to their profile. Otherwise, we create a new profile.
-        database.checkUser(username, 0, function(err, result) {
+        database.checkUser(req.body.email, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
                 var user = new Object();
                 user.email = req.body.email.toLowerCase();
                 user.name = req.body.name;
-                user.password = null;
-                user.month = null;
-                user.day = null;
-                user.year = null;
+                user.password = "89489487132r31df4a48ref6s5dsa23cxz321a8gqhgghjukui846";
+                user.month = "8";
+                user.day = "1";
+                user.year = "2016";
                 // TODO (Fullchee), figure out how google sign in works
                 //TODO: Google sign in gives email to req.session.email. Full name is in req.body.name. The priviledge should be user.
                 // database.insertUser();
@@ -533,10 +533,32 @@ router.post('/confirmuser',function(req,res){
                     if(err){
                         console.log("Error inserting in user");
                     }
+                    console.log("Successful insertion");
+                    database.checkUser(req.body.email, 0, function(err, result) {
+                        if (err){
+                            console.log("Error querying for inserted user after insertion");
+                        }
+                        if (result){
+                            console.log("Succesful query");
+                            req.session.userid = result.id;
+                            res.send("Finished"); //Finished the call.
+                        }
+                    });
                 });
             }//end of Google sign in.
-            res.send("Finished"); //Finished the call.
-
+            else{
+                //User does exist, send it a finished signal.
+                database.checkUser(req.body.email, 0, function(err, result) {
+                    if (err){
+                        console.log("Error querying for inserted user after insertion");
+                    }
+                    if (result){
+                        console.log("Succesful query");
+                        req.session.userid = result.id;
+                        res.send("Finished"); //Finished the call.
+                    }
+                });
+            }
         });
         return;
     }
@@ -640,7 +662,7 @@ router.get("/userprofile", function(req, res){
         }
         //Render the current user's profile.
         res.render("profile", {
-            name: "USER: " + req.session.name
+            name: req.session.name
         });
     }
     else{
