@@ -12,7 +12,7 @@ $(document).ready(function(){
 		console.log(selectedValue);
 		console.log(text);
 		if (selectedValue != undefined && text != ""){
-			var send = new Object();
+			var send = new Object();    
 			send.currentEmail = currentEmail;
 			send.rating = selectedValue;
 			send.content = text;
