@@ -1,0 +1,21 @@
+.login {
+	background: rgba(4, 40, 68, 0.85);
+}
+
+.title {
+	color: white;
+}
+
+p {
+	color: white;
+}
+
+.login input {
+	background: rgba(4, 40, 68, 0.85);
+	color: #ffffff;
+}
+
+.login a {
+	color: #b3f0ff;
+	font-size: 16px;
+}
