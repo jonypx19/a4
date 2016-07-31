@@ -516,7 +516,7 @@ router.post('/confirmuser',function(req,res){
         req.session.privilege = "user";
         req.session.name = req.body.name;
         //Check if the user exists in the system. If it does, then go to their profile. Otherwise, we create a new profile.
-        database.checkUser(username, 0, function(err, result) {
+        database.checkUser(req.body.email, 0, function(err, result) {
             // username doesn't exist: put it in
             if (!result) {
                 var user = new Object();
@@ -533,10 +533,17 @@ router.post('/confirmuser',function(req,res){
                     if(err){
                         console.log("Error inserting in user");
                     }
+                    database.checkUser(req.body.email, 0, function(err, result) {
+                        if (err){
+                            console.log("Error querying for inserted user after insertion");
+                        }
+                        if (result){
+                            req.session.userid = result.id;
+                            res.send("Finished"); //Finished the call.
+                        }
+                    });
                 });
             }//end of Google sign in.
-            res.send("Finished"); //Finished the call.
-
         });
         return;
     }
