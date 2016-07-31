@@ -20,7 +20,7 @@ $(document).ready(function(){
 			var sendData= JSON.stringify(send);
 
 			$.ajax({
-				url:'http://localhost:3000/submitComment',
+				url:'/submitComment',
 				type:"POST",
 				contentType: "application/json",
 				dataType:"text",
