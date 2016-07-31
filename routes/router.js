@@ -434,7 +434,8 @@ router.get('/user/:email', function(req,res){
                 }
 
                 res.render("viewprofile", {
-                    name:result[0].name
+                    name:result[0].name,
+                    email:result[0].email
                 });
                 return;
             });
@@ -462,7 +463,7 @@ router.post("/submitComment", function(req,res){
                 console.log(err);
             }
             
-            res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
+            //res.send("Rater is " + rater + ". Comment is " + comment + ". Rating is " + rating + ". Washer is " + washer);
         });
     }
     else{
