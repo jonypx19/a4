@@ -25,7 +25,7 @@ $(document).ready(function(){
                 var email=data[i].email;
 
                 $user=$("<li/>",{
-                    html:"<a href=\"http://localhost:3000/user/"+data[i].email+"\">"+data[i].username+"</a>"
+                    html:"<a href=\"/user/"+data[i].email+"\">"+data[i].username+"</a>"
                 });
                 $userlist.append($user);
             }
@@ -36,7 +36,7 @@ $(document).ready(function(){
         }
     });
     $.ajax({
-        url: "http://localhost:3000/getComments",
+        url: "/getComments",
         type:"GET",
         dataType:"json"
     }).done(function(data) {
@@ -80,7 +80,7 @@ $(document).ready(function(){
     });
 
     $.ajax({
-        url:"http://localhost:3000/getBio",
+        url:"/getBio",
         type:"GET",
         dataType:"text"
     }).done(function(data){
