@@ -701,7 +701,8 @@ router.get("/getBio",function(req,res){
         //If we're viewing someone else's profile, get their biography.
         if (req.session.viewedEmail){     
             database.getBio(req.session.viewedEmail, function(err, result) {
-                if (result){
+                if (result.length > 0){
+
                     res.send(result[0].bio);
                     return;
                 }
@@ -714,7 +715,7 @@ router.get("/getBio",function(req,res){
         } else {
             //Otherwise get the current user's profile.
             database.getBio(req.session.email, function(err, result) {
-                if (result){
+                if (result.length > 0){
                     res.send(result[0].bio);
                     return;
                 }
