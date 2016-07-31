@@ -434,7 +434,7 @@ router.get('/user/:email', function(req,res){
                 }
 
                 res.render("viewprofile", {
-                    name:req.session.viewedEmail
+                    name:result[0].name
                 });
                 return;
             });
