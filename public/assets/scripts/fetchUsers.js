@@ -67,11 +67,13 @@ function addUser(email){
         success: function (json) {
             $('span#err-message').remove();
             $('<span>', {id:"err-message", text: json.error}).appendTo('.modal-body');
+            window.location.reload();
         },
 
         done: function(json){
             console.log(json);
             getUsers();
+
         }  
     });
 
