@@ -4,7 +4,7 @@
  */
 $(document).ready(function(){
     $.ajax({
-        url: "http://localhost:3000/getFollowing",
+        url: "/getFollowing",
         type:"GET",
         dataType:"json"
     }).done(function(data) {

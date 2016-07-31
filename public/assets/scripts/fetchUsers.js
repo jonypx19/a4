@@ -4,7 +4,7 @@
 
 function getUsers(){
     $.ajax({
-        url: "http://localhost:3000/user/listUsers",
+        url: "/user/listUsers",
         type:"GET",
         dataType:"json"
     }).done(function(data){
