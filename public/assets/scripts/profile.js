@@ -27,8 +27,10 @@ $(document).ready(function(){
 				data:sendData
 			}).done(function(data){
 				alert(data);
-				location.replace("/user/" + currentEmail);
+				//location.replace("/user/" + currentEmail);
 			});
+
+			window.location.reload();
 		}
 		else{
 			alert("Please have both a rating and a comment before you can submit your review");

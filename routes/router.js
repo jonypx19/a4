@@ -105,8 +105,9 @@ router.get('/contracts/search', function(req, res) {
 
 router.post('/search/searchContracts', function(req, res) {
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country, function(err, res_geo) {
-        if (err) {
-
+        console.log(res_geo);
+        if (err || res_geo.length == 0) {
+            res.end(JSON.stringify({error: "Enter a valid address"}));
         } else {
             database.findClientContracts(res_geo[0].latitude, res_geo[0].longitude, req.session.userid, function (err, result) {
                 res.end(JSON.stringify(result));
@@ -189,7 +190,10 @@ router.post('/contracts/registerContract', function(req, res, next) {
     req.body.postal_code = req.sanitize(req.body.postal_code);
 
     geocoder.geocode("" + req.body.address + req.body.city + req.body.province + req.body.country + req.body.postal_code, function(err, res_geo) {
-
+        if (err ||  res_geo.length == 0) {
+            res.redirect('/vehicles');
+            return;
+        }
         database.checkDuplicateContract(req.body.vehicleid, function(err, result) {
             req.body.latitude = res_geo[0].latitude;
             req.body.longitude = res_geo[0].longitude;
@@ -457,6 +461,8 @@ router.post("/submitComment", function(req,res){
         var comment = req.body.content;
         var rating = req.body.rating;
         var washer = req.body.currentEmail;
+
+        console.log(washer + " " + rater);
 
         database.postReview(washer, rater, comment, rating, function(err){
             if (err) {

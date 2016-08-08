@@ -20,7 +20,7 @@ function searchContracts() {
 			$("article#results").empty();
 			$('<h2>', {text:"Search Results"}).appendTo('article#results');
 			
-			if (contracts.length == 0) {
+			if (contracts.error) {
 
 				$('<h2>', {text:"No available Contracts"}).appendTo('article#results');
 			}
