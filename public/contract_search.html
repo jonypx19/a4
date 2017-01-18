@@ -1,0 +1,74 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="description" content="User's Vehicles">
+		<meta name="author" content="Ross Bevacqua, George Wu">
+		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/style.css">
+		<link href="../css/login.css" type="text/css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/contract_search.css">
+		<script src="../scripts/jquery-3.0.0.min.js" defer></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+		<script src="../scripts/bootstrap.min.js" defer></script>
+		<script src="../scripts/scripts.js" defer></script>
+		<script src="../scripts/contract_search.js" defer></script>
+	</head>
+	<body>
+
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+  			<div class="container-fluid">
+    			<div class="navbar-header">
+      				<a class="navbar-brand" href="/">Car Detail Exchange</a>
+      				<img src="../images/logo.png" style="width:50px;height:50px;">
+    			</div>
+    			<ul class="nav navbar-nav">
+      				<li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+      					<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+      					<li><a href="/vehicles"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+      					<li><a href="/contracts" class="active"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li> 
+    			</ul>
+  			</div>
+		</nav>
+
+		<main>
+
+			<section id="search">
+				<h2>Search For Client Contracts</h2>
+				<article id="search_info">
+					<form>
+						<legend>Enter a Location</legend>
+
+						<label>
+							<span>Country:</span>
+							<input id="country" name="country" placeholder="Country" required>
+						</label>
+
+						<label>
+							<span>City:</span>
+							<input id="city" name="city" placeholder="City" required>
+						</label>
+
+						<label>
+							<span>Province/State:</span>
+							<input id="province" name="province" placeholder="Province/State" required>
+						</label>
+
+						<label>
+							<span>Address:</span>
+							<input id="address" name="address" placeholder="Street Address" required>
+						</label>
+
+						<button type="button" class="button signup" id="submit_local">Search</button>
+
+					</form>
+				</article>
+				<span id='message'></span>
+				<article id="results">
+
+				</article>
+			</section>
+
+		<main>
+	</body>
+</html>

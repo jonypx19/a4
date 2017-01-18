@@ -3,7 +3,6 @@ form {
     border: 1px solid #ccc;
     padding: 2rem;
     margin: 2rem auto;
-    width: 66%;
 }
 
 label, input, textarea, select, option {
@@ -24,10 +23,6 @@ input {
 	border-radius: 5px;
 }
 
-input[type="text"]:hover {
-	/*box-shadow: 0 0 20px rgba(127, 127, 127, 0.1) inset;*/
-}
-
 input[type="submit"]:hover {
     background-color: #fdfdfd;
 }
@@ -38,12 +33,195 @@ input[type="submit"] {
     margin: 20 0 0 0;
 }
 
-input:invalid {
+/*input:invalid {
   box-shadow: 0 0 3pt 2pt red;
 }
-
+*/
 div.scroll {
     width: 800px;
     height: 300px;
     overflow: scroll;
+}
+
+
+body {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 3%;
+    padding-left: 0;
+    font-family: 'Rockwell', sans-serif;
+}
+
+/* Change the link color to #00ace6 (mid-blue) on hover */
+body > ul li a:hover {
+    background-color: #00264d;
+}
+
+.active {
+    background-color: #00264d;
+}
+
+p.incorrect{
+    text-align: center;
+    color:red;
+}
+
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    /* kick it off the screen */
+    position:absolute;
+    top:-9999px; 
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+}
+
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+
+.rating > input:checked ~ label {
+    color: #f70;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+}
+
+.carousel {
+    interval: 2000;
+}
+
+.carousel-caption {
+    margin-bottom: 30%;
+}
+
+.hyperlink {
+    margin-bottom: 1%;
+    font-size: 10px;
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.1s; /* Safari */
+    transition-duration: 0.1s;
+    cursor: pointer;
+}
+
+.signup {
+    background-color: white;
+    color: black;
+    border: 5px solid #0059b3;
+}
+
+.signup:hover {
+    background-color: #0059b3;
+    color: white;
+}
+
+.main_headline{
+    font-size: 50px;
+}
+
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 70%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.5s;
+    animation-name: animatetop;
+    animation-duration: 0.5s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #0059b3;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+nav img {
+    float: left;
 }

@@ -1,14 +1,7 @@
 /*General Styles*/
 
-body {
-	margin: 0;
-	padding: 0;
-	width: 80%;
-	margin-left: 20%;
-}
-
 section {
-	border-top: 4px solid #ffaa00;
+	border-top: 4px solid #00ace6;
 }
 
 button {
@@ -17,12 +10,25 @@ button {
 	margin-top: 1.5rem;
 	padding: 1rem 1rem 1rem 1rem;
 	background-color: #ffffff;
-	color: #dd8800;
+	color: #00ace6;
 	cursor: pointer;
 }
 
-/*Nav*/
+h1, h2, h3, h4 {
+	color: white;
+}
 
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+form {
+	color: black;
+	background-color: white;
+}
+
+/*Nav*/
+/*
 nav {
 	display: block;
 	position: fixed;
@@ -56,7 +62,8 @@ nav ul li a:hover {
 	cursor: pointer;
 	background-color: #ffaa00;
 	color: #ffffff;
-}
+}*/
+
 /*Vehicle List Styles*/
 
 section#list_vehicles article {
@@ -64,9 +71,10 @@ section#list_vehicles article {
 	margin: 1rem 1rem 1rem 1rem;
 	display: inline-block;
 	overflow: auto;
-	border: 2px solid #ffaa00;
+	border: 2px solid #00ace6;
 	padding: 1rem 1rem 1rem 1rem;
 	border-radius: 10px 50px;
+	background-color: white;
 
 }
 
@@ -80,6 +88,8 @@ section#list_vehicles article span {
 section#list_vehicles article button {
 	margin-left: 25%;
 	margin-right: 25%;
+	font-size: 14pt;
+	padding: 0;
 	width : 50%;
 }
 
@@ -87,6 +97,14 @@ section#list_vehicles article img {
 	width: 70%;
 	float: left;
 	clear: right;
+	border-radius: 50px;
+}
+
+section#contract_form img {
+	width: 20%;
+	margin-left: 4%;
+	margin-right: 4%;
+	float: left;
 	border-radius: 50px;
 }
 
@@ -115,9 +133,26 @@ section#contract_form article span.contract_info {
 	display: block;
 }
 
+section#contract_form article span.label_check {
+	font-size: 12pt;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+section#contract_form article span#total {
+	display: inline-block;
+	margin-left: 15%;
+	width: 50%;
+}
+
 /*Register Vehicle Form*/
 
 section#register_vehicles article h1 {
 	text-align: center;
 	font-size: 24pt;
+}
+
+section#register_vehicles span {
+	color: black;
+	line-height: 3;
 }

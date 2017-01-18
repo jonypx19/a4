@@ -3,58 +3,130 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="User's Vehicles">
 		<meta name="author" content="Ross Bevacqua, George Wu">
+		<!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link href="css/style.css" type="text/css" rel="stylesheet">
+		<link href="css/login.css" type="text/css" rel="stylesheet">
+		<link href="css/vehicles.css" type="text/css" rel="stylesheet">
 		<script src="scripts/jquery-3.0.0.min.js" defer></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+		<script src="scripts/bootstrap.min.js" defer></script>
+
+		<!-- <script src="assets/scripts/bootstrap.min.js" defer></script> -->
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" defer></script>
 		<script src="scripts/vehicles.js" defer></script>
+		<script src="scripts/about.js" defer></script>
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a>Home</a></li>
-				<li><a>Profile</a></li>
-				<li><a>Your Vehicles</a></li>
-				<li><a>Contracts</a></li>
-				<li><a>Community</a></li>
 
-			</ul>
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+  			<div class="container-fluid">
+	    		<div class="navbar-header">
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		              <span class="icon-bar"></span>
+		              <span class="icon-bar"></span>
+		              <span class="icon-bar"></span>                        
+		            </button>
+		            <a class="navbar-brand" href="/">Car Detail Exchange</a>
+		            <img src="images/logo.png" style="width:50px;height:50px;">
+	        	</div>
+	        	<div class="collapse navbar-collapse" id="myNavbar">
+	    			<ul class="nav navbar-nav">
+	      				<li><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+	      				<li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+	      				<li><a href="/vehicles" class="active"><span class="glyphicon glyphicon-star"></span> Your Vehicles</a></li>
+	      				<li><a href="/contracts"><span class="glyphicon glyphicon-list-alt"></span> Contracts</a></li> 
+	    			</ul>
+    			</div>
+  			</div>
 		</nav>
+
 		<main>
 			<header>
 				<h1>Your Vehicles</h1>
 			</header>
 			<section id="list_vehicles"></section>
 			<section id="contract_form">
-				<article>
+				<article class="hidden">
 					<h1>Create a Contract</h1>
 
-						<form method="post">
+						<form id="reg_contract"  action="contracts/registerContract" method="post">
 
 							<h2 class="selected">Selected Vehicle:</h2>
+
+							<input id='vehicleid' type="hidden" name="vehicleid" required>
+
+							<h2 class="location">Location:</h2>
+
+							<div class="form_element">
+								
+								<fieldset>
+									<legend>Choose a Location</legend>
+
+									<label id="country">
+										<span class="label">Country:</span>
+										<input name="country" placeholder="Country" required>
+									</label>
+
+									<label id="province">
+										<span class="label">Province/State</span>
+										<input name="province" placeholder="Province/State" required>
+									</label>
+
+									<label id="city">
+										<span class="label">City</span>
+										<input name="city" placeholder="City" required>
+									</label>
+
+									<label id="address">
+										<span class="label">Street Address</span>
+										<input name="address" placeholder="Street Address" required>
+									</label>
+
+									<label id="postal_code">
+										<span class="label">Postal Code</span>
+										<input name="postal_code" placeholder="Postal Code" required>
+									</label>
+
+								</fieldset>
+								
+							</div>
 
 							<h2 class="details">Detailing &amp; Washing</h2>
 
 							<div class="form_element">
-								<fieldset>
+
+								<fieldset class="detail">
 									<legend>Interior</legend>
 
-									<label id="vaccum">
-										<span class="label_check">Full Vaccuming Interior</span>
-										<input type="checkbox" name="vaccum" value="vaccum">
+									<label id="vacuum">
+										<span class="label_check">Full Vacuuming Interior</span>
+										<input type="checkbox" name="vacuum" value="vacuum">
+										<span class="price">$20.00</span>
 									</label>
 
 									<label id="mats">
 										<span class="label_check">Clean Floor Mats</span>
 										<input type="checkbox" name="mats" value="mats">
+										<span class="price">$10.00</span>
 									</label>
 
-									<label id="vaccum">
-										<span class="label_check"></span>
-										<input type="checkbox" name="vaccum" value="vaccum">
+									<label id="protect">
+										<span class="label_check">Vinyl and Plastics Restoration</span>
+										<input type="checkbox" name="protect" value="protect">
+										<span class="price">$20.00</span>
 									</label>
 
-									<label id="vaccum">
-										<span class="label_check"></span>
-										<input type="checkbox" name="vaccum" value="vaccum">
+									<label id="console">
+										<span class="label_check">Center Console</span>
+										<input type="checkbox" name="console" value="console">
+										<span class="price">$5.00</span>
+									</label>
+
+									<label id="button_clean">
+										<span class="label_check">Button Cleaning</span>
+										<input type="checkbox" name="button_clean" value="button_clean">
+										<span class="price">$5.00</span>
 									</label>
 
 								</fieldset>
@@ -62,31 +134,39 @@
 							</div>
 
 							<div id="form_element">
-								<fieldset>
+								<fieldset class="detail">
 									<legend>Exterior</legend>
-									<label id="Tires">
+									<label id="wash">
 										<span class="label_check">Hand Wash</span>
 										<input type="checkbox" name="wash" value="wash">
+										<span class="price">$25.00</span>
 									</label>
-									<label id="Tires">
+									<label id="tires">
 										<span class="label_check">Clean Tires</span>
 										<input type="checkbox" name="tires" value="tires">
+										<span class="price">$20.00</span>
+									</label>
+									<label id="wax">
+										<span class="label_check">Hand Wax</span>
+										<input type="checkbox" name="wax" value="wax">
+										<span class="price">$25.00</span>
 									</label>
 
 								</fieldset>
 
 							</div>
 
+							<span>Total Price:</span><span id="total">$0.00</span>
+							<input id="price" type="hidden" name="price">
+							<input id="SubmitButton" type="submit" value="Submit">
 						</form>
 				</article>
 				
 			</section>
 			<section id="register_vehicles">
-
-				<button id="register_vehicle">Register A Vehicle</button>
-				<article class="hidden">
+				<article>
 					<h1>Register Your Vehicle</h1>
-					<form action="/register_vehicle">
+					<form action="vehicles/registerVehicle" enctype="multipart/form-data" method="post">
 						<div class="form_element">
 							<label id="manufacturer">
 								<span class="label">Manufacturer:</span>
@@ -114,7 +194,7 @@
 						<div class="form_element">
 							<label id="image">
 								<span class="label">Picture of the Vehicle</span>
-								<input name="image" type="file" accept=" .jpg/ .png" required>
+								<input name="image" type="file" accept=".jpg" required>
 							</label>
 						</div>
 
@@ -126,6 +206,28 @@
 				</article>
 			</section>
 		</main>
+
+		<!-- The "About" Modal -->
+		<div id="myModal" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <span class="close">×</span>
+		      <h2>About Us</h2>
+		    </div>
+		    <div class="modal-body">
+				<h2>Our Mission</h2>
+					<p>Keep your car clean?</p>
+
+				<h2>Who we are</h2>
+					<p>We're people passionate about keeping cars clean.</p>
+
+				<h2>Contact Us</h2>
+					<p>Follow us on Twitter</p>
+		    </div>
+		  </div>
+		</div>
 	</body>
 
 </html>

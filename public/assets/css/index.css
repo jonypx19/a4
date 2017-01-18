@@ -1,0 +1,178 @@
+body {
+	background: rgba(4, 40, 68, 0.85);
+}
+
+/* Parameters and settings for various screen sizes */
+@media screen and (min-width: 320px) and (min-height: 480px)
+{
+
+    .main_headline{
+    	font-size: 20px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 0%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 0px;
+	    position: fixed;
+	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
+	}
+}
+
+@media screen and (min-width: 480px) and (min-height: 320px)
+{ 
+
+    .main_headline{
+    	font-size: 26px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 2%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
+	}
+}
+
+@media screen and (min-width: 480px) and (min-height: 400px)
+{
+
+    .main_headline{
+    	font-size: 38px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 15%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+	.button {
+	    padding: 8px 24px;
+	    font-size: 16px;
+	    margin: 4px 2px;
+	}
+}
+
+@media screen and (min-width: 500px) and (min-height: 500px)
+{
+
+    .main_headline{
+    	font-size: 50px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+	.button {
+	    padding: 16px 32px;
+	    font-size: 20px;
+	    margin: 4px 2px;
+	}
+}
+
+@media screen and (min-width: 500px) and (min-height: 700px)
+{
+
+    .main_headline{
+    	font-size: 46spx;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 20%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+}
+
+
+
+@media screen and (min-width: 768px) and (min-height: 1024px)
+{
+
+    .main_headline{
+    	font-size: 50px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+}
+
+@media screen and (min-width: 1024px) and (min-height: 768px)
+{ 
+
+    .main_headline{
+    	font-size: 50px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+}
+
+@media screen and (min-width: 1280px) and (min-height: 980px)
+{
+
+    .main_headline{
+    	font-size: 50px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 30%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+}
+
+@media screen and (min-width: 1280px)
+{
+
+    .main_headline{
+    	font-size: 52px;
+	}
+
+	.carousel-caption {
+	    margin-bottom: 38%;
+	}
+
+	.hyperlink {
+	    margin-bottom: 1%;
+	}
+
+}

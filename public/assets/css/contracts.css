@@ -1,0 +1,220 @@
+/*General Styles*/
+
+section {
+	border-top: 4px solid #00ace6;
+}
+
+h1, h2, h3, h4 {
+	color: white;
+}
+
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+article.contract h1, h2, h3, h4 {
+	color: white;
+}
+
+form {
+	color: black;
+	background-color: white;
+}
+
+/*
+button {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 1.5rem;
+	padding: 1rem 1rem 1rem 1rem;
+	background-color: #ffffff;
+	color: #00ace6;
+	cursor: pointer;
+}
+*/
+
+button#search_contracts {
+	display: inline-block;
+	margin: auto;
+	margin-top: 2rem;
+	margin-left: 5rem;
+	margin-right: 17%;
+	margin-bottom: 2rem;
+}
+
+button#completed {
+	display: inline-block;
+	margin: auto;
+	margin-top: 2rem;
+	margin-right: 5rem;
+	margin-left: 17%;
+	margin-bottom: 2rem;
+}
+
+article.contract {
+	margin-top: 5%;
+	height: 450px;
+	background-color: #0059b3;
+	color: white;
+	overflow: auto;
+}
+
+article.contract img {
+	margin-top: 3%;
+	width: 25%;
+	min-width: 200px;
+	float: left;
+	display: inline-block;
+}
+
+article.contract p {
+	margin-top: 50px;
+	margin-left: 5%;
+	float: left;
+	
+}
+
+article.contract p span {
+	display: block;
+	font-size: 12pt;
+}
+
+article.contract p span#status {
+	display: block;
+	font-size: 18pt;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+article.contract div.detail_info {
+	font-size: 12pt;
+	margin-top: 5%;
+	margin-left: 5%;
+	float: left;
+	
+}
+
+article.contract p.car_local {
+	font-size: 12pt;
+	margin-top: 5%;
+	float: left;
+	clear: right;
+	
+}
+
+article.contract .chat {
+	background-color: white;
+	border: 4px solid black;
+	display: block;
+	padding: 0;
+	width: 100%;
+	float: left;
+	clear: both;
+}
+
+article.contract div.messages {
+	overflow: auto;
+	border-right: 5px solid #0088bb;
+	width: 75%;
+	height: 25rem;
+	float: left;
+}
+
+article.contract .chat textarea {
+	overflow: auto;
+	margin-top: 2rem;
+	margin-left: 2.5%;
+	width: 20%;
+	color: black;
+	float: left;
+	resize: none;
+}
+
+article.contract .chat textarea:invalid {
+	box-shadow: 0 0 3pt 2pt red;
+}
+
+article.contract button.send_button {
+	margin: 0;
+	margin-top: 2rem;
+	margin-right: 2.5%;
+	width: 20%;
+	color: black;
+	float: right;
+}
+
+article.contract > button {
+	margin: 0;
+	margin-top: 2rem;
+	margin-right: 2rem;
+	color: black;
+	width: 25%;
+	float: left;
+
+}
+
+.alert_good {
+	background-color: green;
+	color: white;
+}
+
+.alert_bad {
+	background-color: red;
+	color: white;
+}
+
+section#personal_contracts button.cancel {
+	clear: both;
+}
+
+section#personal_contracts button.delete {
+	clear: both;
+}
+
+article.contract button.confirm {
+	clear: both;
+}
+
+article.contract button.confirm:hover {
+	background-color: green;
+}
+
+article.contract button.delete:hover {
+	background-color: red;
+}
+
+article.contract button.cancel:hover {
+	background-color: red;
+}
+
+article.contract button.chat_button:hover {
+	background-color: #0088bb;
+}
+
+article.contract .chat .send_error {
+	margin-left: 5rem;
+	color: red;
+}
+
+article.contract .chat .messages p {
+	max-width: 50%;
+	padding: 5%;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	border-radius: 15px;
+	border: 2px solid black;
+	background-color: rgba(0,0,255,0.3);
+	margin-left: 5%;
+	float: left;
+	clear: both;
+	word-break: keep-all;
+    white-space: normal;
+}
+
+article.contract .chat .messages p.owner {
+	background-color: rgba(0,255,0,0.3);
+	float: right;
+	clear: both;
+	margin-left: 0;
+	margin-right: 5%;
+}

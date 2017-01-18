@@ -1,0 +1,90 @@
+form {
+	color: black;
+	background-color: white;
+}
+
+
+
+form h1, h2, h3, h4 {
+	color: black;
+}
+
+h1, h2, h3, h4 {
+	color: white;
+}
+
+div.contract {
+	margin-top: 5%;
+	display: block;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+	background-color: #0059b3;
+	border: 4px solid black;
+	color: white;
+	overflow: auto;
+}
+
+div.contract img {
+	width: 25%;
+	min-width: 200px;
+	float: left;
+	display: inline-block;
+}
+
+div.contract p {
+	margin-top: 50px;
+	margin-left: 5%;
+	float: left;
+	
+}
+
+div.contract p span {
+	display: block;
+	font-size: 10pt;
+}
+
+div.contract div.detail_info {
+	font-size: 10pt;
+	margin-top: 5%;
+	margin-left: 5%;
+	float: left;
+	
+}
+
+div.contract button {
+	margin: 0;
+	margin-top: 2rem;
+	margin-right: 2rem;
+	float: right;
+}
+
+button {
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.9s; /* Safari */
+    transition-duration: 0.9s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 5px solid #0059b3;
+}
+
+button:hover {
+	background-color: green;
+    color: white;
+}
+
+span#message {
+	display: block;
+	text-align: center;
+	font-size: 18pt;
+	color: green;
+	background-color: white;
+}

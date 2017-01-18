@@ -1,87 +1,43 @@
 # a4
 Assignment 4 Repository
 
-## How to use this app
+**Online Link**: https://hidden-shore-40090.herokuapp.com/
+**GitHub Link**: https://github.com/George334456/a4
+**Facebook Page**: https://www.facebook.com/Car-Detail-Exchange-310067925993835/
+
+## How to install the web app locally
 1. Install node.js (version 4+)
 	to check, open the command prompt/ terminal and type "node -v".
 2. Download the zip file and extract the contents.
-3. Open up the command prompt/terminal and change directories to the zip file.
-4. In the command prompt/terminal, type "node server.js"
-5. Open up a browser and go to this site: http://localhost:8080/
-6. The site will now be open. :)
-
-##What this is:
-
-
-##TODOS:
-- **Decide on an idea for a sharing economy**
-
-- **3-tier or MVC?**
-
-- Home Page
-	- Social media icons in the footer
-	- links to becoming a host
-	- links to finding a host
-	- search bar
-	- link to login, sign up
-
-- Sign up page
-	- lab8 verification
-	- lab8 UI
-	- look into lab8 css for looks
-
-- put information into a DB (sequelize from lab7?)
-	- store passwords and info using bcrypt hashing and salting
-
-- make the app stateful (give the user a cookie/sessionID)
-	- hash and salt the cookie
-	- make the cookies expire (or make them session cookies)
-	- 
-
-- Login Page
-	- lab8
-	- authentification & authorization
-	- add Google or Facebook or Github Login
-		- To be researched
-	- two-factor authentification
-	- Forgot my password feature
-		- we could send real emails
-	- forgot my username feature (unless we just use email as a username)
+3. Open up the command prompt/terminal and change directories to the a4 folder from the zip file.
+4. Type "npm install" in the command prompt/terminal. (install the module dependencies)
+5. Install MySQL Community Server here: http://dev.mysql.com/downloads/mysql/
+6. After the installation, in the MySQL Workbench, press the big box with “Load instance of MySQL” with the dolphin.
+7. In the Menu Bar, click on File -> Run SQL Script… and click on “schema_2.0.sql” and click Run.
+8. As a precaution, please create a user in MySQL with username “root” and with an empty string as a password. Run the SQL command 
+“SET PASSWORD FOR root@localhost=PASSWORD('');”
+9. If you are experiencing errors, please create another user with username: “bf7055f108f91a” and password “8a5f2a1f”
+10. Start the MySQL process. (this may require a restart)
+11. In the browser, type "npm start" or “**node server.js**”
+	If you see the error “Error connecting to the db” please do not hesitate to contact with the authors of this web app.
+12. In a browser, go to the URL: http://localhost:3000/
+13. The site will now be open. :)
 
 
-- Profile page
-	- Components:
-		- Overall rating
-		- The rank you gave that user*
-		- the rank 
-	- update your own profile
-	- see other people's profiles 
-		- admin level view
-		- regular user view
-- Search functionality
-	- ?????? to be researched
-- Recommendation system
-	- ????? to be researched
-- /admin
-	- login
-	- if successful, gets a sessionID or cookie
+##How to use our app: 
 
-- **How do we write tests?**
+###Creating a user
+From the home page, click on “Sign up” in the top right corner.
 
-- Address 2 well-known security vulnerabilities
-	- should have security by design
+Or to login with Google sign in, press login on the top right corner and click on the button with the Google logo. Be aware of the fact that **if you did not already sign up with that email, then you can only log on with Google signin and you cannot make another account with that same email.**
+###Logging in
+This can be done by entering with the email and the password you chose in the sign up process. 
+After that, you will be taken to your profile. Here you can update your biography, see comments left on your profile, and see your average vehicle. From your main profile page, you can see a list of users existing in our system in order for you to follow them. Once you follow them, you can view their profile, and leave comments and ratings. You can go to the top navigation bar in order to add contracts, add vehicles, search for contracts, and take contracts for you to fulfil.
 
-- Measure performance of the app
-	- ????
+A sample login would be Email: "t@t.t", password: "asdfasdf"
 
-- Social Media:
-	- make a Facebook Page for this fake service
-	- make a Twitter account for this fake service
-	- create some profiles
-	- create some profiles which indicates racial discrimination #AirbnbWhileBlack
-	- have a fake hiring page
-
-- Put app online with Heroku
+###Admin login
+If you want to delete users, go to our admin login page with the URL path “/adminlogin” and login with “z@z.z” and password “asdfasdf”.
 
 ##Contributors
 Name: Ross Bevacqua
@@ -99,3 +55,4 @@ Email: georgewu.wu@mail.utoronto.ca
 Name: Fullchee Zhang
 CDF: g5zhangf
 Email: fullchee.zhang@mail.utoronto.ca
+

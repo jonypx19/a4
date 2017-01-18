@@ -1,0 +1,71 @@
+<!-- Purpose: Manage users in the system -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Administrator</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/profile.css">
+        <link rel="stylesheet" href="css/adminProfile.css">
+        <script src="scripts/jquery-3.0.0.min.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer></script>
+        <script src="scripts/bootstrap.min.js" defer></script>
+        <script src="scripts/about.js" defer></script>
+        <script src="/scripts/GAuth.js" defer></script>
+        <script src="/scripts/userObject.js" defer></script>
+        <script src="/scripts/admin.js" defer></script>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #004080;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Car Detail Exchange</a>
+                    <img src="images/logo.png" style="width:50px;height:50px;">
+                </div>
+                <ul id="navigation" class="nav navbar-nav">
+                    <li class="active"><a href="/userprofile"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li id="about_link"><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                </ul>
+                <ul id="navigation" class="nav navbar-nav navbar-right">
+                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <p class="adminGreeting">
+            Welcome <%- name %>! This is your user profile. From here, you can delete users.
+        </p>
+        <div class="container">
+            <div class="well">
+                <div id="payload">
+
+                </div>
+            </div>
+        </div>
+
+        <!-- The "About" Modal -->
+            <div id="myModal" class="modal">
+
+              <!-- Modal content -->
+              <div id="aboutModalContent" class="modal-content">
+                <div class="modal-header">
+                  <span class="close">×</span>
+                  <h2>About Us</h2>
+                </div>
+                <div class="modal-body">
+                    <h2>Our Mission</h2>
+                        <p>Keep your car clean?</p>
+
+                    <h2>Who we are</h2>
+                        <p>We're people passionate about keeping cars clean.</p>
+
+                    <h2>Contact Us</h2>
+                        <p>Follow us on Twitter</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

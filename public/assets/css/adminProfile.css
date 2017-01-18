@@ -1,0 +1,32 @@
+body {
+    background: rgba(4, 40, 68, 0.85);
+}
+
+p{
+	color: white;
+}
+
+h2 {
+	color: black;
+}
+
+
+li{
+	color:white;
+}
+
+.adminGreeting {
+	text-align: center;
+	font-size: 20px;
+	color: #ffffff;
+}
+
+.list-group {
+	font-size: 20px;
+}
+
+.well {
+	margin-left: 26%;
+	width: 43%;
+}
+

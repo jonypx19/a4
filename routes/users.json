@@ -1,0 +1,133 @@
+[
+	{
+		"username": "George",
+		"password": "1234",
+		"privilege": "user",
+		"email": "Georgehzwu@gmail.com",
+		"following":[
+			{
+				"username":"Billy",
+				"email":"Billy@gmail.com"
+			},
+			{
+				"username":"User1",
+				"email":"User1@gmail.com"
+			}
+		],
+		"comments":[
+			{
+				"from":"Billy",
+				"content": "Amazing.",
+				"rating": 4
+			},
+			{
+				"from":"User1",
+				"content":"Could be better",
+				"rating":2
+			}
+		]
+	},
+	{
+		"username": "Bob",
+		"password": "4321",
+		"privilege": "admin",
+		"email": "Bob@gmail.com"
+	},
+	{
+		"username": "Billy",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "Billy@gmail.com",
+		"following":[
+			{
+				"username":"User1",
+				"email":"User1@gmail.com"
+			},
+			{
+				"username":"User2",
+				"email":"User2@gmail.com"
+			}
+		],
+		"comments":[
+			{
+				"from":"User2",
+				"content": "Amazing.",
+				"rating": 1
+			},
+			{
+				"from":"User1",
+				"content":"Could be better",
+				"rating":2
+			},
+			{
+				"from":"George",
+				"content": "Perfect.",
+				"rating":5
+			}
+		]
+	},
+	{
+		"username": "User1",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "User1@gmail.com",
+		"following":[
+		],
+		"comments":[
+			{
+				"from":"Billy",
+				"content": "Amazing.",
+				"rating": 2
+			},
+			{
+				"from":"User2",
+				"content":"Could be better",
+				"rating":2
+			},
+			{
+				"from":"George",
+				"content": "Perfect.",
+				"rating":5
+			}
+		]
+	},
+	{
+		"username": "User2",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "User2@gmail.com",
+		"following":[
+			{
+				"username":"Billy",
+				"email":"Billy@gmail.com"
+			},
+			{
+				"username":"User1",
+				"email":"User1@gmail.com"
+			}
+		],
+		"comments":[
+		]
+
+	},
+	{
+		"username": "User3",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "User3@gmail.com",
+		"following":[
+		],
+		"comments":[
+		]
+	},
+	{
+		"username": "test",
+		"password": "asdf",
+		"privilege": "user",
+		"email": "test@gmail.com",
+		"following":[
+		],
+		"comments":[
+		]
+	}
+]

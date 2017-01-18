@@ -1,13 +1,25 @@
 var express = require('express');
+var session = require('client-sessions');
 var app = express();
+var path = require('path');
 var expressValidator = require('express-validator');
 var bodyParser = require('body-parser');
+var expressSanitizer = require('express-sanitizer')
+var compression = require('compression');  // gzip middleware
+var morgan = require('morgan');
+var router = require('./routes/router.js');
+var user = require('./public/assets/scripts/users.js');
+var signupValidation = require('./helper/signupValidation.js');
+
+app.use(morgan('tiny'));  // simple logger to the server console for debugging
 
 // Set views path, template engine and default layout
-app.use(express.static(__dirname + '/assets'));  // built in middleware function
+app.use(express.static(path.join(__dirname + '/public/assets')));  // location of static/client files
 app.engine('.html', require('ejs').__express);
-app.set('views', __dirname);
+app.set('views', path.join(__dirname + '/public'));
 app.set('view engine', 'html');
+
+app.set('port', (process.env.PORT || 3000));  // set the port number
 
 // The request body is received on GET or POST.
 // A middleware that just simplifies things a bit.
@@ -18,81 +30,52 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(expressValidator({
     customValidators: {
-    	
+    // Hint: You can re-use the regular expressions you used client-side!
+    // But be sure to use forward slashes for the start and end of the expression ...
+    isEmail: function(value) {
+        if (value.search(/.+@.+\../) !== -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    },
+    isDay: function(value) {
+            if (typeof value === 'number' && value > 0 && value < 31) {
+                return true;
+            }
+            return false;
+    },
+
+    isMonth: signupValidation.isMonth,
+
+    isYear: signupValidation.isYear,
+
+    isPassword: function(value) {
+    	// could enforce more password requirements
+		if (value.length >= 6) {
+			return true;
+		}
+		return false;
     }
-})); // This line must be immediately after express.bodyParser()!    	
+}})); // This line must be immediately after express.bodyParser()
+
+app.use(expressSanitizer());  // no options used
 
 
-// Get the index page:
-app.get('/', function(req, res) {
-    res.send("Hello there, how's it going?");
-    
-});
+app.use(session({
+    cookieName: 'session',
+    secret: 'passwordstring',
+    duration: 30 * 60 * 1000,
+    activeDuration: 3 * 60 * 1000,
+    httpOnly: true,
+    ephmeral: true
+}));
 
-app.post('/signup', function(req, res) {
+app.use(router.router);  // get all the GET and POST routing
+app.use(compression());  // put gzip in place
 
-});
-
-app.get('/userlogin', function(req, res) {
-    res.render('userlogin',{
-        errors:''
-    });
-
-});
-
-app.get('/vehicles', function(req, res){
-	res.render('vehicles.html');
-})
-
-app.get('/vehicles/listVehicles', function(req, res) {
-
-	// sample json data of cars. going to replace this with a database access
-	// method 
-	var json = [{
-        manufacturer: 'Porsche',
-        model: '911',
-        year: '2004',
-        license: 'ABCD 555',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'Nissan',
-        model: 'GT-R',
-        year: '2014',
-        license: 'ABCD 554',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'BMW',
-        model: 'M3',
-        year: '2004',
-        license: 'ABCD 553',
-        img: 'placeholder_car.jpg'
-    },{
-        manufacturer: 'Audi',
-        model: 'S5',
-        year: '2013',
-        license: 'ABCD 552',
-        img: 'placeholder_car.jpg'
-    }];
-
-    var result = JSON.stringify(json)
-    res.write(result);
-    res.end();
-});
-
-app.get('/adminlogin', function(req, res){
-    //TODO: Password authenication
-    //TODO: Two factor login
-    // res.send("Hi, you're an admin.")
-    res.render('adminlogin',{
-        errors:''
-    });
-});
-
-app.post('/login',function(req,res){
-    res.send("Request noted.");
-});
-
-var server = app.listen(8080,function(){
+var server = app.listen(app.get('port'), function(){
     var port = server.address().port;
-    console.log("Running on 127.0.0.1:%s", port);
-})
+    console.log("Running on port ", app.get('port'));
+});
